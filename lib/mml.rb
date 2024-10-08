@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
+require "lutaml/model"
 require_relative "mml/version"
-
-module Mml
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require_relative "mml/mml"
+require_relative "mml/configuration"
