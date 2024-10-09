@@ -8,13 +8,14 @@ module Mml
     class ConfigStruct < Struct; end
 
     def self.config
-      @config ||= set_config(Parser.serialized_classes)
+      # @config ||= set_config(Parser.serialized_classes)
+      @config
     end
 
     def self.config=(config)
       type_error!("Hash", config.class) unless config.is_a?(Hash)
 
-      @config = set_config(Parser.serialized_classes.merge(config))
+      # @config = set_config(Parser.serialized_classes.merge(config))
     end
 
     def self.adapter
