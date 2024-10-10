@@ -1,25 +1,27 @@
-require 'lutaml/model'
+# frozen_string_literal: true
 
-require_relative 'mprescripts'
-require_relative 'none'
+require_relative "mprescripts"
+require_relative "none"
 
-class Mmultiscripts < Lutaml::Model::Serializable
-  attribute :mathcolor, :string
-  attribute :mathbackground, :string
-  attribute :subscriptshift, :string
-  attribute :superscriptshift, :string
-  attribute :none, None, collection: true
-  attribute :mprescripts, Mprescripts
+module Mml
+  class Mmultiscripts < Lutaml::Model::Serializable
+    attribute :mathcolor, :string
+    attribute :mathbackground, :string
+    attribute :subscriptshift, :string
+    attribute :superscriptshift, :string
+    attribute :none, None, collection: true
+    attribute :mprescripts, Mprescripts
 
-  xml do
-    root 'mmultiscripts'
-    namespace 'http://www.w3.org/1998/Math/MathML', 'm'
+    xml do
+      root "mmultiscripts"
+      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
-    map_attribute 'mathcolor', to: :mathcolor
-    map_attribute 'mathbackground', to: :mathbackground
-    map_attribute 'subscriptshift', to: :subscriptshift
-    map_attribute 'superscriptshift', to: :superscriptshift
-    map_element 'none', to: :none
-    map_element 'mprescripts', to: :mprescripts
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "subscriptshift", to: :subscriptshift
+      map_attribute "superscriptshift", to: :superscriptshift
+      map_element "none", to: :none
+      map_element "mprescripts", to: :mprescripts
+    end
   end
 end

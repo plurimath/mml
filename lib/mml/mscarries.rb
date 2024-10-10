@@ -1,29 +1,31 @@
-require 'lutaml/model'
+# frozen_string_literal: true
 
-require_relative 'mscarry'
-require_relative 'none'
+require_relative "mscarry"
+require_relative "none"
 
-class Mscarries < Lutaml::Model::Serializable
-  attribute :mathcolor, :string
-  attribute :mathbackground, :string
-  attribute :position, :integer
-  attribute :location, :string
-  attribute :crossout, :string
-  attribute :scriptsizemultiplier, Shale::Type::Float
-  attribute :none, None, collection: true
-  attribute :mscarry, Mscarry, collection: true
+module Mml
+  class Mscarries < Lutaml::Model::Serializable
+    attribute :mathcolor, :string
+    attribute :mathbackground, :string
+    attribute :position, :integer
+    attribute :location, :string
+    attribute :crossout, :string
+    attribute :scriptsizemultiplier, :integer
+    attribute :none, None, collection: true
+    attribute :mscarry, Mscarry, collection: true
 
-  xml do
-    root 'mscarries'
-    namespace 'http://www.w3.org/1998/Math/MathML', 'm'
+    xml do
+      root "mscarries"
+      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
-    map_attribute 'mathcolor', to: :mathcolor
-    map_attribute 'mathbackground', to: :mathbackground
-    map_attribute 'position', to: :position
-    map_attribute 'location', to: :location
-    map_attribute 'crossout', to: :crossout
-    map_attribute 'scriptsizemultiplier', to: :scriptsizemultiplier
-    map_element 'none', to: :none
-    map_element 'mscarry', to: :mscarry
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "position", to: :position
+      map_attribute "location", to: :location
+      map_attribute "crossout", to: :crossout
+      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier
+      map_element "none", to: :none
+      map_element "mscarry", to: :mscarry
+    end
   end
 end

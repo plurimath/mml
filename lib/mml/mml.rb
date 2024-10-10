@@ -1,22 +1,25 @@
 # frozen_string_literal: true
 
 require_relative "configuration"
-require_relative "parser"
+require_relative "math"
+require_relative "mi"
 
 module Mml
   class Error < StandardError; end
 
-  def self.config
+  def config
     Configuration.config
   end
 
-  def self.adapter
+  def adapter
     Configuration.adapter ||= :nokogiri
   end
 
-  def self.parse(input)
+  def parse(input)
     Configuration.adapter
 
-    Parser::Math.from_xml(input)
+    Mml::Math.from_xml(input)
   end
+
+  module_function :config, :adapter, :parse
 end

@@ -1,14 +1,16 @@
-require 'lutaml/model'
+# frozen_string_literal: true
 
-class Mroot < Lutaml::Model::Serializable
-  attribute :mathcolor, :string
-  attribute :mathbackground, :string
+module Mml
+  class Mroot < Lutaml::Model::Serializable
+    attribute :mathcolor, :string
+    attribute :mathbackground, :string
 
-  xml do
-    root 'mroot'
-    namespace 'http://www.w3.org/1998/Math/MathML', 'm'
+    xml do
+      root "mroot"
+      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
-    map_attribute 'mathcolor', to: :mathcolor
-    map_attribute 'mathbackground', to: :mathbackground
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+    end
   end
 end
