@@ -1,18 +1,15 @@
 # frozen_string_literal: true
 
 require_relative "mi"
-require_relative "mml"
 
 module Mml
-  class Mstyle < Lutaml::Model::Serializable; end
-
   class Mrow < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:mrow)
 
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :dir, :string
-    attribute :mi, Mi
+    attribute :mi, Mml::Mi
 
     xml do
       root "mrow"

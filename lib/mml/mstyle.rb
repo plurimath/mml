@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "mrow"
+require_relative "mi"
+
 module Mml
   # rubocop:disable Metrics/ClassLength
   class Mstyle < Lutaml::Model::Serializable
@@ -99,6 +102,8 @@ module Mml
     attribute :thickmathspace, :string
     attribute :verythickmathspace, :string
     attribute :veryverythickmathspace, :string
+    attribute :mrow, Mrow, collection: true
+    attribute :mi, Mi, collection: true
 
     # rubocop:disable Metrics/BlockLength
     xml do
@@ -201,6 +206,8 @@ module Mml
       map_attribute "thickmathspace", to: :thickmathspace
       map_attribute "verythickmathspace", to: :verythickmathspace
       map_attribute "veryverythickmathspace", to: :veryverythickmathspace
+      map_element "mrow", to: :mrow
+      map_element "mi", to: :mi
     end
     # rubocop:enable Metrics/BlockLength
   end

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "mml"
 require_relative "malignmark"
 require_relative "mglyph"
 
@@ -8,26 +7,26 @@ module Mml
   class Mi < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:mi)
 
-    attribute :text, :string
+    attribute :value, :string
     attribute :mathcolor, :string # implemented in Plurimath
     attribute :mathbackground, :string # implemented in Plurimath
-    attribute :mathvariant, :string
-    attribute :mathsize, :string
-    attribute :dir, :string
-    attribute :fontfamily, :string
-    attribute :fontweight, :string
-    attribute :fontstyle, :string
-    attribute :fontsize, :string
+    attribute :mathvariant, :string # implemented in Plurimath
+    attribute :mathsize, :string # implemented in Plurimath
+    attribute :dir, :string # implemented in Plurimath
+    attribute :fontfamily, :string # implemented in Plurimath
+    attribute :fontweight, :string # implemented in Plurimath
+    attribute :fontstyle, :string # implemented in Plurimath
+    attribute :fontsize, :string # implemented in Plurimath
     attribute :color, :string # implemented in Plurimath
     attribute :background, :string # implemented in Plurimath
-    attribute :mglyph, Mglyph, collection: true
-    attribute :malignmark, Malignmark, collection: true
+    attribute :mglyph, Mglyph, collection: true # implemented in Plurimath
+    attribute :malignmark, Malignmark, collection: true # implemented in Plurimath
 
     xml do
       root "mi"
       namespace "http://www.w3.org/1998/Math/MathML", "m"
 
-      map_content to: :text
+      map_content to: :value
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground
       map_attribute "mathvariant", to: :mathvariant
