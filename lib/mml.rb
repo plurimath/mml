@@ -2,5 +2,5 @@
 
 require "lutaml/model"
 require_relative "mml/version"
-require_relative "mml/mml"
 require_relative "mml/configuration"
+require_relative "mml/mml"

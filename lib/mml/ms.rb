@@ -21,12 +21,14 @@ module Mml
     attribute :rquote, :string
     attribute :mglyph, Mglyph, collection: true
     attribute :malignmark, Malignmark, collection: true
+    attribute :mi, Mi
 
     xml do
-      root "ms"
+      root "ms", mixed: true
       namespace "http://www.w3.org/1998/Math/MathML", "m"
 
       map_content to: :content
+      map_element "mi", to: :mi
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground
       map_attribute "mathvariant", to: :mathvariant

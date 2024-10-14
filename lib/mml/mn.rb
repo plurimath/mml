@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "malignmark"
-require_relative "mglyph"
-
 module Mml
   class Mn < Lutaml::Model::Serializable
-    attribute :content, :string
+    model Mml::Configuration.class_for(:mn)
+
+    attribute :value, :integer
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :mathvariant, :string
@@ -17,14 +16,12 @@ module Mml
     attribute :fontsize, :string
     attribute :color, :string
     attribute :background, :string
-    attribute :mglyph, Mglyph, collection: true
-    attribute :malignmark, Malignmark, collection: true
 
     xml do
       root "mn"
       namespace "http://www.w3.org/1998/Math/MathML", "m"
 
-      map_content to: :content
+      map_content to: :value
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground
       map_attribute "mathvariant", to: :mathvariant
@@ -36,8 +33,6 @@ module Mml
       map_attribute "fontsize", to: :fontsize
       map_attribute "color", to: :color
       map_attribute "background", to: :background
-      map_element "mglyph", to: :mglyph
-      map_element "malignmark", to: :malignmark
     end
   end
 end

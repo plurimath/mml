@@ -11,15 +11,11 @@ module Mml
     Configuration.config
   end
 
-  def adapter
-    Configuration.adapter ||= :nokogiri
-  end
-
   def parse(input)
-    Configuration.adapter
+    Configuration.adapter = :nokogiri unless Configuration.adapter
 
     Mml::Math.from_xml(input)
   end
 
-  module_function :config, :adapter, :parse
+  module_function :config, :parse
 end

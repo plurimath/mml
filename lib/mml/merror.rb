@@ -2,6 +2,8 @@
 
 module Mml
   class Merror < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:merror)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
 

@@ -7,6 +7,8 @@ require_relative "msrow"
 
 module Mml
   class Mlongdiv < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:mlongdiv)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :position, :integer

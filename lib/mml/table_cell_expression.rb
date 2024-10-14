@@ -2,6 +2,8 @@
 
 module Mml
   class TableCellExpression < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:tablecellexpression)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :rowspan, :integer

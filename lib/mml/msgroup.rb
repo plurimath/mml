@@ -6,6 +6,8 @@ require_relative "msrow"
 
 module Mml
   class Msgroup < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:msgroup)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :position, :integer

@@ -4,6 +4,8 @@ require_relative "none"
 
 module Mml
   class Msrow < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:msrow)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :position, :integer

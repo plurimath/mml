@@ -7,6 +7,8 @@ require_relative "msrow"
 
 module Mml
   class Mstack < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:mstack)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :align, :string

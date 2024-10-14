@@ -2,6 +2,8 @@
 
 module Mml
   class None < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:none)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
 

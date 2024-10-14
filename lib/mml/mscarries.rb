@@ -5,6 +5,8 @@ require_relative "none"
 
 module Mml
   class Mscarries < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:mscarries)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :position, :integer

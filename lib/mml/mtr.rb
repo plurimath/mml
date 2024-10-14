@@ -4,6 +4,8 @@ require_relative "table_cell_expression"
 
 module Mml
   class Mtr < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:mtr)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :rowalign, :string

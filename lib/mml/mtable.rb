@@ -2,6 +2,8 @@
 
 module Mml
   class Mtable < Lutaml::Model::Serializable
+    model Mml::Configuration.class_for(:mtable)
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :align, :string
