@@ -48,7 +48,6 @@ module Mml
     # rubocop:disable Metrics/BlockLength
     xml do
       root "mo"
-      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
       map_content to: :value
       map_attribute "dir", to: :dir

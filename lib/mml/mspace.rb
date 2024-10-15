@@ -29,7 +29,6 @@ module Mml
 
     xml do
       root "mspace"
-      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground

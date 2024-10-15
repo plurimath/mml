@@ -25,7 +25,6 @@ module Mml
 
     xml do
       root "ms", mixed: true
-      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
       map_content to: :content
       map_element "mi", to: :mi

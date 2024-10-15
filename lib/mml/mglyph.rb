@@ -23,7 +23,6 @@ module Mml
 
     xml do
       root "mglyph"
-      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
       map_attribute "src", to: :src
       map_attribute "alt", to: :alt

@@ -19,7 +19,6 @@ module Mml
 
     xml do
       root "mn"
-      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
       map_content to: :value
       map_attribute "mathcolor", to: :mathcolor

@@ -24,7 +24,6 @@ module Mml
 
     xml do
       root "mi"
-      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
       map_content to: :value
       map_attribute "dir", to: :dir

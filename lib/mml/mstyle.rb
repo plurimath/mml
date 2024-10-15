@@ -101,16 +101,16 @@ module Mml
     attribute :thickmathspace, :string
     attribute :verythickmathspace, :string
     attribute :veryverythickmathspace, :string
-    attribute :mrow, Mrow, collection: true
-    attribute :mi, Mi, collection: true
-    attribute :mo, Mo, collection: true
-    attribute :mn, Mn, collection: true
-    attribute :ms, Ms, collection: true
+    attribute :munderover, Mml::Munderover, collection: true
+    attribute :mrow, Mrow
+    attribute :mo, Mo
+    attribute :mn, Mn
+    attribute :ms, Ms
+    attribute :mi, Mi
 
     # rubocop:disable Metrics/BlockLength
     xml do
       root "mstyle"
-      namespace "http://www.w3.org/1998/Math/MathML", "m"
 
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground
@@ -208,6 +208,7 @@ module Mml
       map_attribute "thickmathspace", to: :thickmathspace
       map_attribute "verythickmathspace", to: :verythickmathspace
       map_attribute "veryverythickmathspace", to: :veryverythickmathspace
+      map_element "munderover", to: :munderover
       map_element "mrow", to: :mrow
       map_element "mi", to: :mi
       map_element "mo", to: :mo
