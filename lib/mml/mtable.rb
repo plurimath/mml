@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "mtr"
+
 module Mml
   class Mtable < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:mtable)
@@ -25,9 +27,11 @@ module Mml
     attribute :side, :string
     attribute :minlabelspacing, :string
     attribute :table_row_expression, :string, collection: true
+    attribute :mtr_value, Mtr, collection: true
 
     xml do
       root "mtable"
+      namespace "http://www.w3.org/1998/Math/MathML", nil
 
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground
@@ -50,6 +54,7 @@ module Mml
       map_attribute "side", to: :side
       map_attribute "minlabelspacing", to: :minlabelspacing
       map_element "TableRowExpression", to: :table_row_expression
+      map_element "mtr", to: :mtr_value
     end
   end
 end

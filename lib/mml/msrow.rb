@@ -13,6 +13,7 @@ module Mml
 
     xml do
       root "msrow"
+      namespace "http://www.w3.org/1998/Math/MathML", nil
 
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground

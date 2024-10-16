@@ -4,7 +4,23 @@ module Mml
   class Munderover < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:munderover)
 
-    SUPPORTED_TAGS = %w[mi mo mn ms mtext mrow mstyle].freeze
+    SUPPORTED_TAGS = %w[
+      munderover
+      msubsup
+      munder
+      mstyle
+      mtable
+      mfrac
+      mover
+      mtext
+      mrow
+      msub
+      msup
+      mi
+      mo
+      mn
+      ms
+    ].freeze
 
     attribute :mathcolor, :string
     attribute :mathbackground, :string
@@ -17,6 +33,7 @@ module Mml
 
     xml do
       root "munderover"
+      namespace "http://www.w3.org/1998/Math/MathML", nil
 
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground

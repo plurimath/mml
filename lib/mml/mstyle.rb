@@ -5,6 +5,24 @@ module Mml
   class Mstyle < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:mstyle)
 
+    SUPPORTED_TAGS = %w[
+      munderover
+      msubsup
+      mtable
+      munder
+      mstyle
+      mfrac
+      mover
+      mtext
+      mrow
+      msub
+      msup
+      mi
+      mo
+      mn
+      ms
+    ].freeze
+
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :scriptlevel, :integer
@@ -101,16 +119,14 @@ module Mml
     attribute :thickmathspace, :string
     attribute :verythickmathspace, :string
     attribute :veryverythickmathspace, :string
-    attribute :munderover, Mml::Munderover, collection: true
-    attribute :mrow, Mrow
-    attribute :mo, Mo
-    attribute :mn, Mn
-    attribute :ms, Ms
-    attribute :mi, Mi
+    SUPPORTED_TAGS.each do |tag|
+      attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
+    end
 
     # rubocop:disable Metrics/BlockLength
     xml do
       root "mstyle"
+      namespace "http://www.w3.org/1998/Math/MathML", nil
 
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground
@@ -208,12 +224,9 @@ module Mml
       map_attribute "thickmathspace", to: :thickmathspace
       map_attribute "verythickmathspace", to: :verythickmathspace
       map_attribute "veryverythickmathspace", to: :veryverythickmathspace
-      map_element "munderover", to: :munderover
-      map_element "mrow", to: :mrow
-      map_element "mi", to: :mi
-      map_element "mo", to: :mo
-      map_element "mn", to: :mn
-      map_element "ms", to: :ms
+      SUPPORTED_TAGS.each do |tag|
+        map_element tag.to_sym, to: :"#{tag}_value"
+      end
     end
     # rubocop:enable Metrics/BlockLength
   end

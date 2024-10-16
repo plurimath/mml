@@ -4,6 +4,7 @@ module Mml
   class Msubsup < Lutaml::Model::Serializable; end
   class Munder < Lutaml::Model::Serializable; end
   class Mover < Lutaml::Model::Serializable; end
+  class Mfrac < Lutaml::Model::Serializable; end
 
   class Msub < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:msub)
@@ -13,6 +14,8 @@ module Mml
       msubsup
       munder
       mstyle
+      mtable
+      mfrac
       mover
       mtext
       mrow
@@ -33,6 +36,7 @@ module Mml
 
     xml do
       root "msub"
+      namespace "http://www.w3.org/1998/Math/MathML", nil
 
       map_attribute "mathbackground", to: :mathbackground
       map_attribute "subscriptshift", to: :subscriptshift
