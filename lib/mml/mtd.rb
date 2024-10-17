@@ -14,6 +14,7 @@ module Mml
       mstyle
       mfrac
       mover
+      msqrt
       mtext
       mrow
       msub

@@ -8,6 +8,7 @@ module Mml
   class Mtable < Lutaml::Model::Serializable; end
   class Mtext < Lutaml::Model::Serializable; end
   class Mfrac < Lutaml::Model::Serializable; end
+  class Msqrt < Lutaml::Model::Serializable; end
   class Mover < Lutaml::Model::Serializable; end
   class Msub < Lutaml::Model::Serializable; end
   class Msup < Lutaml::Model::Serializable; end
@@ -21,6 +22,7 @@ module Mml
       munder
       mstyle
       mtable
+      msqrt
       mfrac
       mover
       mtext

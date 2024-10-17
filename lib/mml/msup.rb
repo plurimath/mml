@@ -16,6 +16,7 @@ module Mml
       munder
       mstyle
       mtable
+      msqrt
       mfrac
       mover
       mtext

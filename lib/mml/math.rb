@@ -9,6 +9,7 @@ require_relative "msup"
 require_relative "msub"
 require_relative "mtext"
 require_relative "mfrac"
+require_relative "msqrt"
 require_relative "mover"
 require_relative "mtable"
 require_relative "munder"
@@ -26,6 +27,7 @@ module Mml
       munder
       mstyle
       mtable
+      msqrt
       mfrac
       mover
       mtext

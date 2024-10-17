@@ -12,6 +12,7 @@ module Mml
       mtable
       mfrac
       mover
+      msqrt
       mtext
       mrow
       msub
