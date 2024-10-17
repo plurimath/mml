@@ -5,25 +5,6 @@ module Mml
   class Mstyle < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:mstyle)
 
-    SUPPORTED_TAGS = %w[
-      munderover
-      msubsup
-      mtable
-      munder
-      mstyle
-      msqrt
-      mfrac
-      mover
-      mtext
-      mrow
-      msub
-      msup
-      mi
-      mo
-      mn
-      ms
-    ].freeze
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :scriptlevel, :integer
@@ -120,7 +101,7 @@ module Mml
     attribute :thickmathspace, :string
     attribute :verythickmathspace, :string
     attribute :veryverythickmathspace, :string
-    SUPPORTED_TAGS.each do |tag|
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
       attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
     end
 
@@ -225,7 +206,7 @@ module Mml
       map_attribute "thickmathspace", to: :thickmathspace
       map_attribute "verythickmathspace", to: :verythickmathspace
       map_attribute "veryverythickmathspace", to: :veryverythickmathspace
-      SUPPORTED_TAGS.each do |tag|
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end
     end

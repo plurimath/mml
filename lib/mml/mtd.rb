@@ -6,30 +6,11 @@ module Mml
   class Mtd < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:mtd)
 
-    SUPPORTED_TAGS = %w[
-      munderover
-      msubsup
-      munder
-      mtable
-      mstyle
-      mfrac
-      mover
-      msqrt
-      mtext
-      mrow
-      msub
-      msup
-      mi
-      mo
-      mn
-      ms
-    ].freeze
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :rowalign, :string
     attribute :columnalign, :string
-    SUPPORTED_TAGS.each do |tag|
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
       attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
     end
 
@@ -41,7 +22,7 @@ module Mml
       map_attribute "mathbackground", to: :mathbackground
       map_attribute "rowalign", to: :rowalign
       map_attribute "columnalign", to: :columnalign
-      SUPPORTED_TAGS.each do |tag|
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end
     end

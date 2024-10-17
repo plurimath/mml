@@ -14,6 +14,8 @@ require_relative "mover"
 require_relative "mtable"
 require_relative "munder"
 require_relative "mstyle"
+require_relative "munder"
+require_relative "mfenced"
 require_relative "msubsup"
 require_relative "munderover"
 
@@ -21,26 +23,7 @@ module Mml
   class Math < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:math)
 
-    SUPPORTED_TAGS = %w[
-      munderover
-      msubsup
-      munder
-      mstyle
-      mtable
-      msqrt
-      mfrac
-      mover
-      mtext
-      mrow
-      msub
-      msup
-      mi
-      mo
-      mn
-      ms
-    ].freeze
-
-    SUPPORTED_TAGS.each do |tag|
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
       attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
     end
 
@@ -48,7 +31,7 @@ module Mml
       root "math", mixed: true
       namespace "http://www.w3.org/1998/Math/MathML", nil
 
-      SUPPORTED_TAGS.each do |tag|
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end
     end

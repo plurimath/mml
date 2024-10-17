@@ -2,6 +2,29 @@
 
 module Mml
   module Configuration
+    # Sharing supported tags between models to avoid duplication
+    # TODO: Find a better way to do this
+    SUPPORTED_TAGS = %w[
+      munderover
+      msubsup
+      mfenced
+      munder
+      mtable
+      munder
+      mstyle
+      mfrac
+      mover
+      mtext
+      msqrt
+      mrow
+      msub
+      msup
+      mi
+      mo
+      mn
+      ms
+    ].freeze
+
     def config
       @config ||= {}
     end

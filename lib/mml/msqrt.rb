@@ -4,27 +4,9 @@ module Mml
   class Msqrt < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:msqrt)
 
-    SUPPORTED_TAGS = %w[
-      munderover
-      msubsup
-      munder
-      mstyle
-      mfrac
-      mover
-      mtext
-      msqrt
-      mrow
-      msub
-      msup
-      mi
-      mo
-      mn
-      ms
-    ].freeze
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
-    SUPPORTED_TAGS.each do |tag|
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
       attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
     end
 
@@ -35,8 +17,8 @@ module Mml
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground
 
-      SUPPORTED_TAGS.each do |tag|
-        map_attribute "#{tag}_value", to: :"#{tag}_value"
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+        map_attribute tag, to: :"#{tag}_value"
       end
     end
   end

@@ -4,32 +4,13 @@ module Mml
   class Mfrac < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:mfrac)
 
-    SUPPORTED_TAGS = %w[
-      munderover
-      msubsup
-      munder
-      mtable
-      mstyle
-      mfrac
-      mover
-      mtext
-      msqrt
-      mrow
-      msub
-      msup
-      mi
-      mo
-      mn
-      ms
-    ].freeze
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :linethickness, :string
     attribute :numalign, :string
     attribute :denomalign, :string
     attribute :bevelled, :string
-    SUPPORTED_TAGS.each do |tag|
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
       attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
     end
 
@@ -43,7 +24,7 @@ module Mml
       map_attribute "numalign", to: :numalign
       map_attribute "denomalign", to: :denomalign
       map_attribute "bevelled", to: :bevelled
-      SUPPORTED_TAGS.each do |tag|
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end
     end

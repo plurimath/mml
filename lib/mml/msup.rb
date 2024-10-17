@@ -10,29 +10,10 @@ module Mml
   class Msup < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:msup)
 
-    SUPPORTED_TAGS = %w[
-      munderover
-      msubsup
-      munder
-      mstyle
-      mtable
-      msqrt
-      mfrac
-      mover
-      mtext
-      mrow
-      msub
-      msup
-      mi
-      mo
-      mn
-      ms
-    ].freeze
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :superscriptshift, :string
-    SUPPORTED_TAGS.each do |tag|
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
       attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
     end
 
@@ -43,7 +24,7 @@ module Mml
       map_attribute "mathcolor", to: :mathcolor
       map_attribute "mathbackground", to: :mathbackground
       map_attribute "superscriptshift", to: :superscriptshift
-      SUPPORTED_TAGS.each do |tag|
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end
     end

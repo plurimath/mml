@@ -9,6 +9,9 @@ module Mml
     attribute :open, :string
     attribute :close, :string
     attribute :separators, :string
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+      attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
+    end
 
     xml do
       root "mfenced"
@@ -19,6 +22,10 @@ module Mml
       map_attribute "open", to: :open
       map_attribute "close", to: :close
       map_attribute "separators", to: :separators
+
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+        map_element tag.to_sym, to: :"#{tag}_value"
+      end
     end
   end
 end
