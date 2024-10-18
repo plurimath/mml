@@ -3,10 +3,12 @@
 module Mml
   class Munderover < Lutaml::Model::Serializable; end
   class Msubsup < Lutaml::Model::Serializable; end
+
   class Mfenced < Lutaml::Model::Serializable; end
   class Munder < Lutaml::Model::Serializable; end
   class Mstyle < Lutaml::Model::Serializable; end
   class Mtable < Lutaml::Model::Serializable; end
+  class Mroot < Lutaml::Model::Serializable; end
   class Mtext < Lutaml::Model::Serializable; end
   class Mfrac < Lutaml::Model::Serializable; end
   class Msqrt < Lutaml::Model::Serializable; end

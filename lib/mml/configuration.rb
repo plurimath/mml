@@ -10,10 +10,10 @@ module Mml
       mfenced
       munder
       mtable
-      munder
       mstyle
       mfrac
       mover
+      mroot
       mtext
       msqrt
       mrow
