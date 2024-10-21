@@ -31,28 +31,28 @@ module Mml
 
     xml do
       root "mtable"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "align", to: :align
-      map_attribute "rowalign", to: :rowalign
-      map_attribute "columnalign", to: :columnalign
-      map_attribute "groupalign", to: :groupalign
-      map_attribute "alignmentscope", to: :alignmentscope
-      map_attribute "columnwidth", to: :columnwidth
-      map_attribute "width", to: :width
-      map_attribute "rowspacing", to: :rowspacing
-      map_attribute "columnspacing", to: :columnspacing
-      map_attribute "rowlines", to: :rowlines
-      map_attribute "columnlines", to: :columnlines
-      map_attribute "frame", to: :frame
-      map_attribute "framespacing", to: :framespacing
-      map_attribute "equalrows", to: :equalrows
-      map_attribute "equalcolumns", to: :equalcolumns
-      map_attribute "displaystyle", to: :displaystyle
-      map_attribute "side", to: :side
-      map_attribute "minlabelspacing", to: :minlabelspacing
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "align", to: :align, namespace: nil
+      map_attribute "rowalign", to: :rowalign, namespace: nil
+      map_attribute "columnalign", to: :columnalign, namespace: nil
+      map_attribute "groupalign", to: :groupalign, namespace: nil
+      map_attribute "alignmentscope", to: :alignmentscope, namespace: nil
+      map_attribute "columnwidth", to: :columnwidth, namespace: nil
+      map_attribute "width", to: :width, namespace: nil
+      map_attribute "rowspacing", to: :rowspacing, namespace: nil
+      map_attribute "columnspacing", to: :columnspacing, namespace: nil
+      map_attribute "rowlines", to: :rowlines, namespace: nil
+      map_attribute "columnlines", to: :columnlines, namespace: nil
+      map_attribute "frame", to: :frame, namespace: nil
+      map_attribute "framespacing", to: :framespacing, namespace: nil
+      map_attribute "equalrows", to: :equalrows, namespace: nil
+      map_attribute "equalcolumns", to: :equalcolumns, namespace: nil
+      map_attribute "displaystyle", to: :displaystyle, namespace: nil
+      map_attribute "side", to: :side, namespace: nil
+      map_attribute "minlabelspacing", to: :minlabelspacing, namespace: nil
       map_element "TableRowExpression", to: :table_row_expression
       map_element "mtr", to: :mtr_value
     end

@@ -15,8 +15,10 @@ require_relative "mroot"
 require_relative "mtable"
 require_relative "munder"
 require_relative "mstyle"
+require_relative "mspace"
 require_relative "mfenced"
 require_relative "msubsup"
+require_relative "msgroup"
 require_relative "munderover"
 
 module Mml

@@ -18,11 +18,11 @@ module Mml
 
     xml do
       root "msub"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "subscriptshift", to: :subscriptshift
-      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "subscriptshift", to: :subscriptshift, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
       Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end

@@ -18,14 +18,14 @@ module Mml
 
     xml do
       root "mscarries"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "position", to: :position
-      map_attribute "location", to: :location
-      map_attribute "crossout", to: :crossout
-      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "position", to: :position, namespace: nil
+      map_attribute "location", to: :location, namespace: nil
+      map_attribute "crossout", to: :crossout, namespace: nil
+      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier, namespace: nil
       map_element "none", to: :none
       map_element "mscarry", to: :mscarry
     end

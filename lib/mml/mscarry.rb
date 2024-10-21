@@ -14,12 +14,12 @@ module Mml
 
     xml do
       root "mscarry"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "location", to: :location
-      map_attribute "crossout", to: :crossout
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "location", to: :location, namespace: nil
+      map_attribute "crossout", to: :crossout, namespace: nil
       map_element "none", to: :none
     end
   end

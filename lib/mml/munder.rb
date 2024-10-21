@@ -14,12 +14,12 @@ module Mml
 
     xml do
       root "munder"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "accentunder", to: :accentunder
-      map_attribute "align", to: :align
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "accentunder", to: :accentunder, namespace: nil
+      map_attribute "align", to: :align, namespace: nil
       Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end

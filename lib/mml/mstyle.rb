@@ -108,104 +108,104 @@ module Mml
     # rubocop:disable Metrics/BlockLength
     xml do
       root "mstyle"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "scriptlevel", to: :scriptlevel
-      map_attribute "displaystyle", to: :displaystyle
-      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier
-      map_attribute "scriptminsize", to: :scriptminsize
-      map_attribute "infixlinebreakstyle", to: :infixlinebreakstyle
-      map_attribute "decimalpoint", to: :decimalpoint
-      map_attribute "accent", to: :accent
-      map_attribute "accentunder", to: :accentunder
-      map_attribute "align", to: :align
-      map_attribute "alignmentscope", to: :alignmentscope
-      map_attribute "bevelled", to: :bevelled
-      map_attribute "charalign", to: :charalign
-      map_attribute "charspacing", to: :charspacing
-      map_attribute "close", to: :close
-      map_attribute "columnalign", to: :columnalign
-      map_attribute "columnlines", to: :columnlines
-      map_attribute "columnspacing", to: :columnspacing
-      map_attribute "columnspan", to: :columnspan
-      map_attribute "columnwidth", to: :columnwidth
-      map_attribute "crossout", to: :crossout
-      map_attribute "denomalign", to: :denomalign
-      map_attribute "depth", to: :depth
-      map_attribute "dir", to: :dir
-      map_attribute "edge", to: :edge
-      map_attribute "equalcolumns", to: :equalcolumns
-      map_attribute "equalrows", to: :equalrows
-      map_attribute "fence", to: :fence
-      map_attribute "form", to: :form
-      map_attribute "frame", to: :frame
-      map_attribute "framespacing", to: :framespacing
-      map_attribute "groupalign", to: :groupalign
-      map_attribute "height", to: :height
-      map_attribute "indentalign", to: :indentalign
-      map_attribute "indentalignfirst", to: :indentalignfirst
-      map_attribute "indentalignlast", to: :indentalignlast
-      map_attribute "indentshift", to: :indentshift
-      map_attribute "indentshiftfirst", to: :indentshiftfirst
-      map_attribute "indentshiftlast", to: :indentshiftlast
-      map_attribute "indenttarget", to: :indenttarget
-      map_attribute "largeop", to: :largeop
-      map_attribute "leftoverhang", to: :leftoverhang
-      map_attribute "length", to: :length
-      map_attribute "linebreak", to: :linebreak
-      map_attribute "linebreakmultchar", to: :linebreakmultchar
-      map_attribute "linebreakstyle", to: :linebreakstyle
-      map_attribute "lineleading", to: :lineleading
-      map_attribute "linethickness", to: :linethickness
-      map_attribute "location", to: :location
-      map_attribute "longdivstyle", to: :longdivstyle
-      map_attribute "lquote", to: :lquote
-      map_attribute "lspace", to: :lspace
-      map_attribute "mathsize", to: :mathsize
-      map_attribute "mathvariant", to: :mathvariant
-      map_attribute "maxsize", to: :maxsize
-      map_attribute "minlabelspacing", to: :minlabelspacing
-      map_attribute "minsize", to: :minsize
-      map_attribute "movablelimits", to: :movablelimits
-      map_attribute "mslinethickness", to: :mslinethickness
-      map_attribute "notation", to: :notation
-      map_attribute "numalign", to: :numalign
-      map_attribute "open", to: :open
-      map_attribute "position", to: :position
-      map_attribute "rightoverhang", to: :rightoverhang
-      map_attribute "rowalign", to: :rowalign
-      map_attribute "rowlines", to: :rowlines
-      map_attribute "rowspacing", to: :rowspacing
-      map_attribute "rowspan", to: :rowspan
-      map_attribute "rquote", to: :rquote
-      map_attribute "rspace", to: :rspace
-      map_attribute "selection", to: :selection
-      map_attribute "separator", to: :separator
-      map_attribute "separators", to: :separators
-      map_attribute "shift", to: :shift
-      map_attribute "side", to: :side
-      map_attribute "stackalign", to: :stackalign
-      map_attribute "stretchy", to: :stretchy
-      map_attribute "subscriptshift", to: :subscriptshift
-      map_attribute "superscriptshift", to: :superscriptshift
-      map_attribute "symmetric", to: :symmetric
-      map_attribute "valign", to: :valign
-      map_attribute "width", to: :width
-      map_attribute "fontfamily", to: :fontfamily
-      map_attribute "fontweight", to: :fontweight
-      map_attribute "fontstyle", to: :fontstyle
-      map_attribute "fontsize", to: :fontsize
-      map_attribute "color", to: :color
-      map_attribute "background", to: :background
-      map_attribute "veryverythinmathspace", to: :veryverythinmathspace
-      map_attribute "verythinmathspace", to: :verythinmathspace
-      map_attribute "thinmathspace", to: :thinmathspace
-      map_attribute "mediummathspace", to: :mediummathspace
-      map_attribute "thickmathspace", to: :thickmathspace
-      map_attribute "verythickmathspace", to: :verythickmathspace
-      map_attribute "veryverythickmathspace", to: :veryverythickmathspace
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "scriptlevel", to: :scriptlevel, namespace: nil
+      map_attribute "displaystyle", to: :displaystyle, namespace: nil
+      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier, namespace: nil
+      map_attribute "scriptminsize", to: :scriptminsize, namespace: nil
+      map_attribute "infixlinebreakstyle", to: :infixlinebreakstyle, namespace: nil
+      map_attribute "decimalpoint", to: :decimalpoint, namespace: nil
+      map_attribute "accent", to: :accent, namespace: nil
+      map_attribute "accentunder", to: :accentunder, namespace: nil
+      map_attribute "align", to: :align, namespace: nil
+      map_attribute "alignmentscope", to: :alignmentscope, namespace: nil
+      map_attribute "bevelled", to: :bevelled, namespace: nil
+      map_attribute "charalign", to: :charalign, namespace: nil
+      map_attribute "charspacing", to: :charspacing, namespace: nil
+      map_attribute "close", to: :close, namespace: nil
+      map_attribute "columnalign", to: :columnalign, namespace: nil
+      map_attribute "columnlines", to: :columnlines, namespace: nil
+      map_attribute "columnspacing", to: :columnspacing, namespace: nil
+      map_attribute "columnspan", to: :columnspan, namespace: nil
+      map_attribute "columnwidth", to: :columnwidth, namespace: nil
+      map_attribute "crossout", to: :crossout, namespace: nil
+      map_attribute "denomalign", to: :denomalign, namespace: nil
+      map_attribute "depth", to: :depth, namespace: nil
+      map_attribute "dir", to: :dir, namespace: nil
+      map_attribute "edge", to: :edge, namespace: nil
+      map_attribute "equalcolumns", to: :equalcolumns, namespace: nil
+      map_attribute "equalrows", to: :equalrows, namespace: nil
+      map_attribute "fence", to: :fence, namespace: nil
+      map_attribute "form", to: :form, namespace: nil
+      map_attribute "frame", to: :frame, namespace: nil
+      map_attribute "framespacing", to: :framespacing, namespace: nil
+      map_attribute "groupalign", to: :groupalign, namespace: nil
+      map_attribute "height", to: :height, namespace: nil
+      map_attribute "indentalign", to: :indentalign, namespace: nil
+      map_attribute "indentalignfirst", to: :indentalignfirst, namespace: nil
+      map_attribute "indentalignlast", to: :indentalignlast, namespace: nil
+      map_attribute "indentshift", to: :indentshift, namespace: nil
+      map_attribute "indentshiftfirst", to: :indentshiftfirst, namespace: nil
+      map_attribute "indentshiftlast", to: :indentshiftlast, namespace: nil
+      map_attribute "indenttarget", to: :indenttarget, namespace: nil
+      map_attribute "largeop", to: :largeop, namespace: nil
+      map_attribute "leftoverhang", to: :leftoverhang, namespace: nil
+      map_attribute "length", to: :length, namespace: nil
+      map_attribute "linebreak", to: :linebreak, namespace: nil
+      map_attribute "linebreakmultchar", to: :linebreakmultchar, namespace: nil
+      map_attribute "linebreakstyle", to: :linebreakstyle, namespace: nil
+      map_attribute "lineleading", to: :lineleading, namespace: nil
+      map_attribute "linethickness", to: :linethickness, namespace: nil
+      map_attribute "location", to: :location, namespace: nil
+      map_attribute "longdivstyle", to: :longdivstyle, namespace: nil
+      map_attribute "lquote", to: :lquote, namespace: nil
+      map_attribute "lspace", to: :lspace, namespace: nil
+      map_attribute "mathsize", to: :mathsize, namespace: nil
+      map_attribute "mathvariant", to: :mathvariant, namespace: nil
+      map_attribute "maxsize", to: :maxsize, namespace: nil
+      map_attribute "minlabelspacing", to: :minlabelspacing, namespace: nil
+      map_attribute "minsize", to: :minsize, namespace: nil
+      map_attribute "movablelimits", to: :movablelimits, namespace: nil
+      map_attribute "mslinethickness", to: :mslinethickness, namespace: nil
+      map_attribute "notation", to: :notation, namespace: nil
+      map_attribute "numalign", to: :numalign, namespace: nil
+      map_attribute "open", to: :open, namespace: nil
+      map_attribute "position", to: :position, namespace: nil
+      map_attribute "rightoverhang", to: :rightoverhang, namespace: nil
+      map_attribute "rowalign", to: :rowalign, namespace: nil
+      map_attribute "rowlines", to: :rowlines, namespace: nil
+      map_attribute "rowspacing", to: :rowspacing, namespace: nil
+      map_attribute "rowspan", to: :rowspan, namespace: nil
+      map_attribute "rquote", to: :rquote, namespace: nil
+      map_attribute "rspace", to: :rspace, namespace: nil
+      map_attribute "selection", to: :selection, namespace: nil
+      map_attribute "separator", to: :separator, namespace: nil
+      map_attribute "separators", to: :separators, namespace: nil
+      map_attribute "shift", to: :shift, namespace: nil
+      map_attribute "side", to: :side, namespace: nil
+      map_attribute "stackalign", to: :stackalign, namespace: nil
+      map_attribute "stretchy", to: :stretchy, namespace: nil
+      map_attribute "subscriptshift", to: :subscriptshift, namespace: nil
+      map_attribute "superscriptshift", to: :superscriptshift, namespace: nil
+      map_attribute "symmetric", to: :symmetric, namespace: nil
+      map_attribute "valign", to: :valign, namespace: nil
+      map_attribute "width", to: :width, namespace: nil
+      map_attribute "fontfamily", to: :fontfamily, namespace: nil
+      map_attribute "fontweight", to: :fontweight, namespace: nil
+      map_attribute "fontstyle", to: :fontstyle, namespace: nil
+      map_attribute "fontsize", to: :fontsize, namespace: nil
+      map_attribute "color", to: :color, namespace: nil
+      map_attribute "background", to: :background, namespace: nil
+      map_attribute "veryverythinmathspace", to: :veryverythinmathspace, namespace: nil
+      map_attribute "verythinmathspace", to: :verythinmathspace, namespace: nil
+      map_attribute "thinmathspace", to: :thinmathspace, namespace: nil
+      map_attribute "mediummathspace", to: :mediummathspace, namespace: nil
+      map_attribute "thickmathspace", to: :thickmathspace, namespace: nil
+      map_attribute "verythickmathspace", to: :verythickmathspace, namespace: nil
+      map_attribute "veryverythickmathspace", to: :veryverythickmathspace, namespace: nil
       Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end

@@ -16,12 +16,12 @@ module Mml
 
     xml do
       root "mtd"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "rowalign", to: :rowalign
-      map_attribute "columnalign", to: :columnalign
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "rowalign", to: :rowalign, namespace: nil
+      map_attribute "columnalign", to: :columnalign, namespace: nil
       Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end

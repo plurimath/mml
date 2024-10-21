@@ -48,43 +48,43 @@ module Mml
     # rubocop:disable Metrics/BlockLength
     xml do
       root "mo"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
       map_content to: :value
-      map_attribute "dir", to: :dir
-      map_attribute "form", to: :form
-      map_attribute "fence", to: :fence
-      map_attribute "color", to: :color
-      map_attribute "accent", to: :accent
-      map_attribute "lspace", to: :lspace
-      map_attribute "rspace", to: :rspace
-      map_attribute "maxsize", to: :maxsize
-      map_attribute "minsize", to: :minsize
-      map_attribute "largeop", to: :largeop
-      map_attribute "stretchy", to: :stretchy
-      map_attribute "mathsize", to: :mathsize
-      map_attribute "fontsize", to: :fontsize
-      map_attribute "linebreak", to: :linebreak
-      map_attribute "fontstyle", to: :fontstyle
-      map_attribute "separator", to: :separator
-      map_attribute "symmetric", to: :symmetric
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "fontfamily", to: :fontfamily
-      map_attribute "fontweight", to: :fontweight
-      map_attribute "background", to: :background
-      map_attribute "mathvariant", to: :mathvariant
-      map_attribute "lineleading", to: :lineleading
-      map_attribute "indentalign", to: :indentalign
-      map_attribute "indentshift", to: :indentshift
-      map_attribute "indenttarget", to: :indenttarget
-      map_attribute "movablelimits", to: :movablelimits
-      map_attribute "linebreakstyle", to: :linebreakstyle
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "indentalignlast", to: :indentalignlast
-      map_attribute "indentshiftlast", to: :indentshiftlast
-      map_attribute "indentalignfirst", to: :indentalignfirst
-      map_attribute "indentshiftfirst", to: :indentshiftfirst
-      map_attribute "linebreakmultchar", to: :linebreakmultchar
+      map_attribute "dir", to: :dir, namespace: nil
+      map_attribute "form", to: :form, namespace: nil
+      map_attribute "fence", to: :fence, namespace: nil
+      map_attribute "color", to: :color, namespace: nil
+      map_attribute "accent", to: :accent, namespace: nil
+      map_attribute "lspace", to: :lspace, namespace: nil
+      map_attribute "rspace", to: :rspace, namespace: nil
+      map_attribute "maxsize", to: :maxsize, namespace: nil
+      map_attribute "minsize", to: :minsize, namespace: nil
+      map_attribute "largeop", to: :largeop, namespace: nil
+      map_attribute "stretchy", to: :stretchy, namespace: nil
+      map_attribute "mathsize", to: :mathsize, namespace: nil
+      map_attribute "fontsize", to: :fontsize, namespace: nil
+      map_attribute "linebreak", to: :linebreak, namespace: nil
+      map_attribute "fontstyle", to: :fontstyle, namespace: nil
+      map_attribute "separator", to: :separator, namespace: nil
+      map_attribute "symmetric", to: :symmetric, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "fontfamily", to: :fontfamily, namespace: nil
+      map_attribute "fontweight", to: :fontweight, namespace: nil
+      map_attribute "background", to: :background, namespace: nil
+      map_attribute "mathvariant", to: :mathvariant, namespace: nil
+      map_attribute "lineleading", to: :lineleading, namespace: nil
+      map_attribute "indentalign", to: :indentalign, namespace: nil
+      map_attribute "indentshift", to: :indentshift, namespace: nil
+      map_attribute "indenttarget", to: :indenttarget, namespace: nil
+      map_attribute "movablelimits", to: :movablelimits, namespace: nil
+      map_attribute "linebreakstyle", to: :linebreakstyle, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "indentalignlast", to: :indentalignlast, namespace: nil
+      map_attribute "indentshiftlast", to: :indentshiftlast, namespace: nil
+      map_attribute "indentalignfirst", to: :indentalignfirst, namespace: nil
+      map_attribute "indentshiftfirst", to: :indentshiftfirst, namespace: nil
+      map_attribute "linebreakmultchar", to: :linebreakmultchar, namespace: nil
       # map_element "mglyph", to: :mglyph
       # map_element "malignmark", to: :malignmark
     end

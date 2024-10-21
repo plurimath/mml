@@ -8,9 +8,11 @@ module Mml
       munderover
       msubsup
       mfenced
+      msgroup
       munder
       mtable
       mstyle
+      mspace
       mfrac
       mover
       mroot

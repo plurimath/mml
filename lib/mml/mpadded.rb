@@ -14,15 +14,15 @@ module Mml
 
     xml do
       root "mpadded"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "height", to: :height
-      map_attribute "depth", to: :depth
-      map_attribute "width", to: :width
-      map_attribute "lspace", to: :lspace
-      map_attribute "voffset", to: :voffset
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "height", to: :height, namespace: nil
+      map_attribute "depth", to: :depth, namespace: nil
+      map_attribute "width", to: :width, namespace: nil
+      map_attribute "lspace", to: :lspace, namespace: nil
+      map_attribute "voffset", to: :voffset, namespace: nil
     end
   end
 end

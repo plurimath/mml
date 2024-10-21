@@ -25,23 +25,23 @@ module Mml
 
     xml do
       root "ms", mixed: true
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
       map_content to: :content
       map_element "mi", to: :mi
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "mathvariant", to: :mathvariant
-      map_attribute "mathsize", to: :mathsize
-      map_attribute "dir", to: :dir
-      map_attribute "fontfamily", to: :fontfamily
-      map_attribute "fontweight", to: :fontweight
-      map_attribute "fontstyle", to: :fontstyle
-      map_attribute "fontsize", to: :fontsize
-      map_attribute "color", to: :color
-      map_attribute "background", to: :background
-      map_attribute "lquote", to: :lquote
-      map_attribute "rquote", to: :rquote
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "mathvariant", to: :mathvariant, namespace: nil
+      map_attribute "mathsize", to: :mathsize, namespace: nil
+      map_attribute "dir", to: :dir, namespace: nil
+      map_attribute "fontfamily", to: :fontfamily, namespace: nil
+      map_attribute "fontweight", to: :fontweight, namespace: nil
+      map_attribute "fontstyle", to: :fontstyle, namespace: nil
+      map_attribute "fontsize", to: :fontsize, namespace: nil
+      map_attribute "color", to: :color, namespace: nil
+      map_attribute "background", to: :background, namespace: nil
+      map_attribute "lquote", to: :lquote, namespace: nil
+      map_attribute "rquote", to: :rquote, namespace: nil
       map_element "mglyph", to: :mglyph
       map_element "malignmark", to: :malignmark
     end

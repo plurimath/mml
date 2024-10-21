@@ -14,15 +14,15 @@ module Mml
 
     xml do
       root "TableCellExpression"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "rowspan", to: :rowspan
-      map_attribute "columnspan", to: :columnspan
-      map_attribute "rowalign", to: :rowalign
-      map_attribute "columnalign", to: :columnalign
-      map_attribute "groupalign", to: :groupalign
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "rowspan", to: :rowspan, namespace: nil
+      map_attribute "columnspan", to: :columnspan, namespace: nil
+      map_attribute "rowalign", to: :rowalign, namespace: nil
+      map_attribute "columnalign", to: :columnalign, namespace: nil
+      map_attribute "groupalign", to: :groupalign, namespace: nil
     end
   end
 end

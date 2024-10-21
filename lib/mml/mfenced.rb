@@ -15,13 +15,13 @@ module Mml
 
     xml do
       root "mfenced"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "open", to: :open
-      map_attribute "close", to: :close
-      map_attribute "separators", to: :separators
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "open", to: :open, namespace: nil
+      map_attribute "close", to: :close, namespace: nil
+      map_attribute "separators", to: :separators, namespace: nil
 
       Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"

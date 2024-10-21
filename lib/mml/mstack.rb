@@ -22,14 +22,14 @@ module Mml
 
     xml do
       root "mstack"
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      namespace "http://www.w3.org/1998/Math/MathML"
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "align", to: :align
-      map_attribute "stackalign", to: :stackalign
-      map_attribute "charalign", to: :charalign
-      map_attribute "charspacing", to: :charspacing
+      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "align", to: :align, namespace: nil
+      map_attribute "stackalign", to: :stackalign, namespace: nil
+      map_attribute "charalign", to: :charalign, namespace: nil
+      map_attribute "charspacing", to: :charspacing, namespace: nil
       map_element "mscarries", to: :mscarries
       map_element "msline", to: :msline
       map_element "msrow", to: :msrow
