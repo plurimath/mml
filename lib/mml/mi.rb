@@ -7,20 +7,20 @@ module Mml
   class Mi < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:mi)
 
-    attribute :dir, :string # implemented in Plurimath
-    attribute :value, :string # implemented in Plurimath
-    attribute :color, :string # implemented in Plurimath
-    attribute :mathsize, :string # implemented in Plurimath
-    attribute :fontsize, :string # implemented in Plurimath
-    attribute :fontstyle, :string # implemented in Plurimath
-    attribute :mathcolor, :string # implemented in Plurimath
-    attribute :background, :string # implemented in Plurimath
-    attribute :fontfamily, :string # implemented in Plurimath
-    attribute :fontweight, :string # implemented in Plurimath
-    attribute :mathvariant, :string # implemented in Plurimath
-    attribute :mathbackground, :string # implemented in Plurimath
-    # attribute :mglyph, Mglyph, collection: true # implemented in Plurimath
-    # attribute :malignmark, Malignmark, collection: true # implemented in Plurimath
+    attribute :dir, :string
+    attribute :value, :string
+    attribute :color, :string
+    attribute :mathsize, :string
+    attribute :fontsize, :string
+    attribute :fontstyle, :string
+    attribute :mathcolor, :string
+    attribute :background, :string
+    attribute :fontfamily, :string
+    attribute :fontweight, :string
+    attribute :mathvariant, :string
+    attribute :mathbackground, :string
+    # attribute :mglyph, Mglyph, collection: true
+    # attribute :malignmark, Malignmark, collection: true
 
     xml do
       root "mi"

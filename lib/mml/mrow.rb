@@ -2,6 +2,8 @@
 
 module Mml
   class Munderover < Lutaml::Model::Serializable; end
+  class Semantics < Lutaml::Model::Serializable; end
+  class Mscarries < Lutaml::Model::Serializable; end
   class Msubsup < Lutaml::Model::Serializable; end
   class Msgroup < Lutaml::Model::Serializable; end
   class Mfenced < Lutaml::Model::Serializable; end
@@ -9,6 +11,9 @@ module Mml
   class Mstyle < Lutaml::Model::Serializable; end
   class Mtable < Lutaml::Model::Serializable; end
   class Mspace < Lutaml::Model::Serializable; end
+  class Mstack < Lutaml::Model::Serializable; end
+  class Msline < Lutaml::Model::Serializable; end
+  class Msrow < Lutaml::Model::Serializable; end
   class Mroot < Lutaml::Model::Serializable; end
   class Mtext < Lutaml::Model::Serializable; end
   class Mfrac < Lutaml::Model::Serializable; end

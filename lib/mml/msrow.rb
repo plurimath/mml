@@ -10,6 +10,9 @@ module Mml
     attribute :mathbackground, :string
     attribute :position, :integer
     attribute :none, None, collection: true
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+      attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
+    end
 
     xml do
       root "msrow"
@@ -19,6 +22,10 @@ module Mml
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
       map_attribute "position", to: :position, namespace: nil
       map_element "none", to: :none
+
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+        map_element tag, to: :"#{tag}_value"
+      end
     end
   end
 end

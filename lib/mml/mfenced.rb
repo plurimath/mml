@@ -6,8 +6,8 @@ module Mml
 
     attribute :mathcolor, :string
     attribute :mathbackground, :string
-    attribute :open, :string
-    attribute :close, :string
+    attribute :open, :string, default: -> { "(" }
+    attribute :close, :string, default: -> { ")" }
     attribute :separators, :string
     Mml::Configuration::SUPPORTED_TAGS.each do |tag|
       attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true

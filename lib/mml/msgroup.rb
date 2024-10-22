@@ -13,7 +13,6 @@ module Mml
     attribute :position, :integer
     attribute :shift, :integer
     attribute :mscarries_value, Mscarries, collection: true
-    attribute :msline_value, Msline, collection: true
     attribute :msrow_value, Msrow, collection: true
     attribute :msgroup_text, :string
 
@@ -30,9 +29,6 @@ module Mml
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
       map_attribute "position", to: :position, namespace: nil
       map_attribute "shift", to: :shift, namespace: nil
-      map_element "mscarries", to: :mscarries_value
-      map_element "msline", to: :msline_value
-      map_element "msrow", to: :msrow_value
       Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag.to_sym, to: :"#{tag}_value"
       end

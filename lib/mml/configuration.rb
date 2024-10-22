@@ -6,13 +6,19 @@ module Mml
     # TODO: Find a better way to do this
     SUPPORTED_TAGS = %w[
       munderover
+      semantics
+      mscarries
       msubsup
       mfenced
       msgroup
+      mstack
       munder
       mtable
       mstyle
       mspace
+      msline
+      msrow
+      msrow
       mfrac
       mover
       mroot

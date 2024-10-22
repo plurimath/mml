@@ -15,10 +15,9 @@ module Mml
     attribute :stackalign, :string
     attribute :charalign, :string
     attribute :charspacing, :string
-    attribute :mscarries, Mscarries, collection: true
-    attribute :msline, Msline, collection: true
-    attribute :msrow, Msrow, collection: true
-    attribute :msgroup, Msgroup, collection: true
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+      attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
+    end
 
     xml do
       root "mstack"
@@ -30,10 +29,9 @@ module Mml
       map_attribute "stackalign", to: :stackalign, namespace: nil
       map_attribute "charalign", to: :charalign, namespace: nil
       map_attribute "charspacing", to: :charspacing, namespace: nil
-      map_element "mscarries", to: :mscarries
-      map_element "msline", to: :msline
-      map_element "msrow", to: :msrow
-      map_element "msgroup", to: :msgroup
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+        map_element tag, to: :"#{tag}_value"
+      end
     end
   end
 end
