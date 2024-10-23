@@ -25,11 +25,12 @@ module Mml
   class Mrow < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:mrow)
 
-    attribute :mathcolor, :string
     attribute :mathbackground, :string
-    attribute :dir, :string
-    attribute :intent, :string
+    attribute :mathcolor, :string
     attribute :is_mrow, :boolean
+    attribute :content, :string
+    attribute :intent, :string
+    attribute :dir, :string
 
     Mml::Configuration::SUPPORTED_TAGS.each do |tag|
       attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
@@ -39,10 +40,12 @@ module Mml
       root "mrow"
       namespace "http://www.w3.org/1998/Math/MathML"
 
+      map_content to: :content
       map_attribute "dir", to: :dir, namespace: nil
       map_attribute "intent", to: :intent, namespace: nil
       map_attribute "mathcolor", to: :mathcolor, namespace: nil
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
+
       map_element "is_mrow", to: :is_mrow
 
       Mml::Configuration::SUPPORTED_TAGS.each do |tag|
