@@ -11,7 +11,6 @@ module Mml
     attribute :mathbackground, :string
     attribute :subscriptshift, :string
     attribute :superscriptshift, :string
-    attribute :none, None, collection: true
     attribute :mprescripts, Mprescripts
 
     xml do
@@ -22,7 +21,6 @@ module Mml
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
       map_attribute "subscriptshift", to: :subscriptshift, namespace: nil
       map_attribute "superscriptshift", to: :superscriptshift, namespace: nil
-      map_element "none", to: :none
       map_element "mprescripts", to: :mprescripts
     end
   end

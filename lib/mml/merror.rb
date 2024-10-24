@@ -4,8 +4,11 @@ module Mml
   class Merror < Lutaml::Model::Serializable
     model Mml::Configuration.class_for(:merror)
 
-    attribute :mathcolor, :string
     attribute :mathbackground, :string
+    attribute :mathcolor, :string
+    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+      attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
+    end
 
     xml do
       root "merror"
@@ -13,6 +16,9 @@ module Mml
 
       map_attribute "mathcolor", to: :mathcolor, namespace: nil
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+        map_element tag.to_sym, to: :"#{tag}_value"
+      end
     end
   end
 end

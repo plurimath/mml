@@ -4,6 +4,8 @@ module Mml
   class Munderover < Lutaml::Model::Serializable; end
   class Semantics < Lutaml::Model::Serializable; end
   class Mscarries < Lutaml::Model::Serializable; end
+  class Mlongdiv < Lutaml::Model::Serializable; end
+  class Mscarry < Lutaml::Model::Serializable; end
   class Msubsup < Lutaml::Model::Serializable; end
   class Msgroup < Lutaml::Model::Serializable; end
   class Mfenced < Lutaml::Model::Serializable; end
@@ -13,12 +15,14 @@ module Mml
   class Mspace < Lutaml::Model::Serializable; end
   class Mstack < Lutaml::Model::Serializable; end
   class Msline < Lutaml::Model::Serializable; end
+  class Merror < Lutaml::Model::Serializable; end
   class Msrow < Lutaml::Model::Serializable; end
   class Mroot < Lutaml::Model::Serializable; end
   class Mtext < Lutaml::Model::Serializable; end
   class Mfrac < Lutaml::Model::Serializable; end
   class Msqrt < Lutaml::Model::Serializable; end
   class Mover < Lutaml::Model::Serializable; end
+  class None < Lutaml::Model::Serializable; end
   class Msub < Lutaml::Model::Serializable; end
   class Msup < Lutaml::Model::Serializable; end
 
@@ -27,7 +31,6 @@ module Mml
 
     attribute :mathbackground, :string
     attribute :mathcolor, :string
-    attribute :is_mrow, :boolean
     attribute :content, :string
     attribute :intent, :string
     attribute :dir, :string
@@ -45,8 +48,6 @@ module Mml
       map_attribute "intent", to: :intent, namespace: nil
       map_attribute "mathcolor", to: :mathcolor, namespace: nil
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
-
-      map_element "is_mrow", to: :is_mrow
 
       Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag, to: :"#{tag}_value"

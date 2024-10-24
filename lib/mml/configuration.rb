@@ -8,7 +8,9 @@ module Mml
       munderover
       semantics
       mscarries
+      mlongdiv
       msubsup
+      mscarry
       mfenced
       msgroup
       mstack
@@ -17,6 +19,7 @@ module Mml
       mstyle
       mspace
       msline
+      merror
       msrow
       msrow
       mfrac
@@ -24,6 +27,7 @@ module Mml
       mroot
       mtext
       msqrt
+      none
       mrow
       msub
       msup
