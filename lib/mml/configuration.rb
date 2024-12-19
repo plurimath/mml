@@ -57,10 +57,7 @@ module Mml
     end
 
     def adapter=(adapter)
-      Lutaml::Model::Config.configure do |config|
-        require "lutaml/model/xml_adapter/#{adapter.downcase}_adapter"
-        config.xml_adapter = Lutaml::Model::XmlAdapter.const_get("#{adapter.to_s.capitalize}Adapter")
-      end
+      Lutaml::Model::Config.xml_adapter_type = adapter.downcase
     end
 
     def class_for(class_name)
