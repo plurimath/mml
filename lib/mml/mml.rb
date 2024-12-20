@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+DEFAULT_ADAPTER = if RUBY_VERSION == "opal"
+  require "lutaml/model/xml_adapter/oga_adapter"
+  :oga
+else
+  require "lutaml/model/xml_adapter/ox_adapter"
+  :ox
+end
+
 module Mml
   class Error < StandardError; end
 
@@ -10,7 +18,7 @@ module Mml
   end
 
   def parse(input, namespace_exist: true)
-    Configuration.adapter = :ox unless Configuration.adapter
+    Configuration.adapter = DEFAULT_ADAPTER unless Configuration.adapter
 
     if namespace_exist
       Mml::MathWithNamespace.from_xml(input)
