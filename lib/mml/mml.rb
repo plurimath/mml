@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-DEFAULT_ADAPTER = if RUBY_VERSION == "opal"
+DEFAULT_ADAPTER = if RUBY_ENGINE == "opal"
                     require "lutaml/model/xml_adapter/oga_adapter"
                     :oga
                   else
