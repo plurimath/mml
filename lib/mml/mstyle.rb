@@ -3,8 +3,6 @@
 module Mml
   # rubocop:disable Metrics/ClassLength
   class Mstyle < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mstyle)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :scriptlevel, :integer

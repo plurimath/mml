@@ -2,8 +2,6 @@
 
 module Mml
   class Mlongdiv < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mlongdiv)
-
     attribute :mathbackground, :string
     attribute :longdivstyle, :string
     attribute :mathcolor, :string

@@ -2,8 +2,6 @@
 
 module Mml
   class Munderover < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:munderover)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :accent, :string

@@ -2,8 +2,6 @@
 
 module Mml
   class Mglyph < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mglyph)
-
     attribute :alt, :string
     attribute :src, :string
     attribute :width, :string

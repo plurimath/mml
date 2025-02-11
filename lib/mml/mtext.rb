@@ -2,8 +2,6 @@
 
 module Mml
   class Mtext < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mtext)
-
     attribute :value, :string
     attribute :mathcolor, :string
     attribute :mathbackground, :string

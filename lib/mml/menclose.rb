@@ -2,8 +2,6 @@
 
 module Mml
   class Menclose < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:menclose)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :notation, :string

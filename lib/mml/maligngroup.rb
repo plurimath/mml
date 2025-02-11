@@ -2,8 +2,6 @@
 
 module Mml
   class Maligngroup < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:maligngroup)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :groupalign, :string

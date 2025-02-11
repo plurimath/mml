@@ -2,8 +2,6 @@
 
 module Mml
   class Mroot < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mroot)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     Mml::Configuration::SUPPORTED_TAGS.each do |tag|

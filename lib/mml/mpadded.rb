@@ -2,8 +2,6 @@
 
 module Mml
   class Mpadded < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mpadded)
-
     attribute :mathbackground, :string
     attribute :mathcolor, :string
     attribute :voffset, :string

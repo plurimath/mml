@@ -2,8 +2,6 @@
 
 module Mml
   class Mspace < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mspace)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :mathvariant, :string

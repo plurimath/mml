@@ -2,8 +2,6 @@
 
 module Mml
   class Malignmark < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:malignmark)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :edge, :string

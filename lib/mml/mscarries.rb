@@ -2,8 +2,6 @@
 
 module Mml
   class Mscarries < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mscarries)
-
     attribute :scriptsizemultiplier, :integer
     attribute :mathbackground, :string
     attribute :mathcolor, :string

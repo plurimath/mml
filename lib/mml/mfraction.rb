@@ -2,8 +2,6 @@
 
 module Mml
   class Mfraction < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mfraction)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :linethickness, :string

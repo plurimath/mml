@@ -2,8 +2,6 @@
 
 module Mml
   class Mrow < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mrow)
-
     attribute :mathbackground, :string
     attribute :mathcolor, :string
     attribute :content, :string
