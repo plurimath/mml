@@ -2,8 +2,6 @@
 
 module Mml
   class Mtd < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mtd)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :rowalign, :string

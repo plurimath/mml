@@ -2,8 +2,6 @@
 
 module Mml
   class Msubsup < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:msubsup)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :subscriptshift, :string

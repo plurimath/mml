@@ -2,8 +2,6 @@
 
 module Mml
   class Msup < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:msup)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :superscriptshift, :string

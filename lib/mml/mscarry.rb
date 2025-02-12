@@ -2,8 +2,6 @@
 
 module Mml
   class Mscarry < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mscarry)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :location, :string

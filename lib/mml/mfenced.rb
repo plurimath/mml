@@ -2,8 +2,6 @@
 
 module Mml
   class Mfenced < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mfenced)
-
     attribute :mathbackground, :string
     attribute :separators, :string
     attribute :mathcolor, :string

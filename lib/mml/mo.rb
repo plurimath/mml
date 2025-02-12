@@ -2,8 +2,6 @@
 
 module Mml
   class Mo < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mo)
-
     attribute :value, :string
     attribute :mathcolor, :string
     attribute :mathbackground, :string

@@ -52,6 +52,11 @@ module Mml
       self.config.merge!(config)
     end
 
+    def custom_models=(models_hash)
+      # { Mi => CustomMiClass, Mo => CustomMoClass }
+      models_hash.each { |klass, model| klass.model(model) }
+    end
+
     def adapter
       Lutaml::Model::Config.xml_adapter
     end

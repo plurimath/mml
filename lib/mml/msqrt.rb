@@ -2,8 +2,6 @@
 
 module Mml
   class Msqrt < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:msqrt)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     Mml::Configuration::SUPPORTED_TAGS.each do |tag|

@@ -2,8 +2,6 @@
 
 module Mml
   class Mlabeledtr < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mlabeledtr)
-
     attribute :mathbackground, :string
     attribute :columnalign, :string
     attribute :groupalign, :string

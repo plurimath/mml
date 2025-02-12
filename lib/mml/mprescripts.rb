@@ -2,8 +2,6 @@
 
 module Mml
   class Mprescripts < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mprescripts)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
 

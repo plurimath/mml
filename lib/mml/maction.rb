@@ -2,8 +2,6 @@
 
 module Mml
   class Maction < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:maction)
-
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :actiontype, :string

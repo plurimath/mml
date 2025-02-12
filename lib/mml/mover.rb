@@ -2,8 +2,6 @@
 
 module Mml
   class Mover < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mover)
-
     attribute :mathbackground, :string
     attribute :mathcolor, :string
     attribute :accent, :string

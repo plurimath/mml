@@ -2,8 +2,6 @@
 
 module Mml
   class Munder < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:munder)
-
     attribute :mathbackground, :string
     attribute :accentunder, :string
     attribute :mathcolor, :string

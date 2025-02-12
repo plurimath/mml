@@ -2,8 +2,6 @@
 
 module Mml
   class Ms < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:ms)
-
     attribute :mathbackground, :string
     attribute :mathvariant, :string
     attribute :fontfamily, :string
@@ -19,7 +17,7 @@ module Mml
     attribute :value, :string
     attribute :dir, :string
     Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-      attribute :"#{tag}_value", Mml.const_get(tag.capitalize)
+      attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
     end
 
     xml do

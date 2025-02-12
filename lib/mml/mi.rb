@@ -2,8 +2,6 @@
 
 module Mml
   class Mi < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:mi)
-
     attribute :dir, :string
     attribute :value, :string
     attribute :color, :string

@@ -2,8 +2,6 @@
 
 module Mml
   class Merror < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:merror)
-
     attribute :mathbackground, :string
     attribute :mathcolor, :string
     Mml::Configuration::SUPPORTED_TAGS.each do |tag|

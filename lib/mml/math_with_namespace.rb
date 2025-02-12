@@ -2,8 +2,6 @@
 
 module Mml
   class MathWithNamespace < Lutaml::Model::Serializable
-    model Mml::Configuration.class_for(:math)
-
     Mml::Configuration::SUPPORTED_TAGS.each do |tag|
       attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
     end
