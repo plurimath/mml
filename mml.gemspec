@@ -31,5 +31,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "lutaml-model"
+  spec.add_runtime_dependency "opal-zeitwerk"
   spec.add_runtime_dependency "zeitwerk"
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "zeitwerk"
+require "opal-zeitwerk"
 require "lutaml/model"
 require_relative "mml/mml"
 

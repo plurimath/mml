@@ -14,7 +14,6 @@ module Mml
     xml do
       root "mlongdiv", mixed: true
 
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
       map_attribute "longdivstyle", to: :longdivstyle, namespace: nil
       map_attribute "mathcolor", to: :mathcolor, namespace: nil
       map_attribute "position", to: :position, namespace: nil
