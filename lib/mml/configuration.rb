@@ -2,7 +2,7 @@
 
 module Mml
   module Configuration
-    SUPPORTED_TAGS = %w[
+    SUPPORTED_TAGS = %i[
       mmultiscripts
       maligngroup
       malignmark
@@ -40,6 +40,38 @@ module Mml
       mo
       mn
       ms
+    ].freeze
+
+    COMMON_ATTRIBUTES_CLASSES = %w[
+      MathWithNilNamespace
+      MathWithNamespace
+      Mmultiscripts
+      Munderover
+      Semantics
+      Mscarries
+      Mfraction
+      Mlongdiv
+      Mphantom
+      Menclose
+      Mfenced
+      Mpadded
+      Msubsup
+      Msgroup
+      Mscarry
+      Munder
+      Mstyle
+      Mstack
+      Merror
+      Mover
+      Mfrac
+      Msrow
+      Mroot
+      Msqrt
+      Mrow
+      Msub
+      Msup
+      Mtd
+      Ms
     ].freeze
 
     module_function

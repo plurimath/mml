@@ -8,9 +8,6 @@ module Mml
     attribute :stackalign, :string
     attribute :charalign, :string
     attribute :charspacing, :string
-    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-      attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
-    end
 
     xml do
       root "mstack", mixed: true
@@ -21,9 +18,6 @@ module Mml
       map_attribute "stackalign", to: :stackalign, namespace: nil
       map_attribute "charalign", to: :charalign, namespace: nil
       map_attribute "charspacing", to: :charspacing, namespace: nil
-      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-        map_element tag, to: :"#{tag}_value"
-      end
     end
   end
 end

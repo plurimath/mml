@@ -9,9 +9,6 @@ module Mml
     attribute :lspace, :string
     attribute :depth, :string
     attribute :width, :string
-    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-      attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
-    end
 
     xml do
       root "mpadded", mixed: true
@@ -23,9 +20,6 @@ module Mml
       map_attribute "lspace", to: :lspace, namespace: nil
       map_attribute "depth", to: :depth, namespace: nil
       map_attribute "width", to: :width, namespace: nil
-      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-        map_element tag.to_sym, to: :"#{tag}_value"
-      end
     end
   end
 end
