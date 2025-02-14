@@ -16,9 +16,6 @@ module Mml
     attribute :color, :string
     attribute :value, :string
     attribute :dir, :string
-    Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-      attribute :"#{tag}_value", Mml.const_get(tag.capitalize), collection: true
-    end
 
     xml do
       root "ms", mixed: true
@@ -37,9 +34,6 @@ module Mml
       map_attribute "rquote", to: :rquote, namespace: nil
       map_attribute "color", to: :color, namespace: nil
       map_attribute "dir", to: :dir, namespace: nil
-      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-        map_element tag.to_sym, to: :"#{tag}_value"
-      end
     end
   end
 end
