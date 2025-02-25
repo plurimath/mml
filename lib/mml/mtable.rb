@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Mml
+  autoload(:Mlabeledtr, "mml/mlabeledtr")
+  autoload(:Mtr, "mml/mtr")
   class Mtable < Lutaml::Model::Serializable
     attribute :mathcolor, :string
     attribute :mathbackground, :string
