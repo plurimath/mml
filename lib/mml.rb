@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
-require "zeitwerk"
 require "lutaml/model"
+require "mml/configuration"
+if RUBY_ENGINE == "opal"
+  require_relative "mml/opal_setup"
+else
+  files = Dir["lib/mml/*.rb"].reject { |file| File.basename(file, ".*") == "common_attributes" }
+  files.each { |file| require_relative "mml/#{File.basename(file, ".rb")}" }
+end
+require "mml/common_attributes"
 
 DEFAULT_ADAPTER = if RUBY_ENGINE == "opal"
                     require "lutaml/model/xml_adapter/oga_adapter"
@@ -11,8 +18,7 @@ DEFAULT_ADAPTER = if RUBY_ENGINE == "opal"
                     :ox
                   end
 
-loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
-loader.setup
+Moxml::Config.default_adapter = DEFAULT_ADAPTER
 
 module Mml
   class Error < StandardError; end
@@ -21,6 +27,12 @@ module Mml
 
   def config
     Configuration.config
+  end
+
+  def update_attributes
+    Configuration::COMMON_ATTRIBUTES_CLASSES.each do |klass|
+      const_get(klass).import_model(CommonAttributes)
+    end
   end
 
   def parse(input, namespace_exist: true)
@@ -34,8 +46,4 @@ module Mml
   end
 end
 
-begin
-  loader.eager_load(force: true)
-rescue Zeitwerk::NameError => e
-  flunk e.message
-end
+Mml.update_attributes

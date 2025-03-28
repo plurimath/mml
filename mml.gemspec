@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "lutaml-model"
-  spec.add_runtime_dependency "zeitwerk"
+  spec.add_runtime_dependency "moxml"
 end

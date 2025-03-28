@@ -1,0 +1,6 @@
+<%
+  files = Dir["#{__dir__}/*.rb"].reject { |file| ["common_attributes", "opal_setup"].include?(File.basename(file, ".rb")) }
+  files.each do |file_name|
+%>
+  require 'mml/<%= File.basename(file_name, ".rb") %>'
+<% end %>
