@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Mml
-  VERSION = "0.4.5"
+  VERSION = "2.0.2"
 end
