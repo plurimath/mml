@@ -3,6 +3,29 @@
 require "spec_helper"
 
 RSpec.describe Mml do
+  context "class loading" do
+    it "loads all common attribute classes" do
+      Mml::Configuration::COMMON_ATTRIBUTES_CLASSES.each do |class_name|
+        klass = Mml.const_get(class_name)
+        expect(klass).to be_a(Class)
+      end
+    end
+
+    it "loads all supported tag classes" do
+      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
+        klass = Mml.const_get(tag.to_s.capitalize)
+        expect(klass).to be_a(Class)
+      end
+    end
+
+    it "loads special classes" do
+      %w[MathWithNamespace MathWithNilNamespace].each do |class_name|
+        klass = Mml.const_get(class_name)
+        expect(klass).to be_a(Class)
+      end
+    end
+  end
+
   context "with namespace" do
     Dir.glob("./spec/fixtures/with_namespace/*.mml").each do |file|
       it "round-trips #{File.basename(file, ".mml")}" do
