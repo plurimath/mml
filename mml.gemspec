@@ -16,7 +16,6 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/plurimath/mml"
   spec.license = "BSD-2-Clause"
 
-  spec.test_files = `git ls-files -- {spec}/*`.split("\n")
   spec.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
 
   # Specify which files should be added to the gem when it is released.
@@ -30,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "lutaml-model"
-  spec.add_runtime_dependency "moxml"
+  spec.add_dependency "lutaml-model"
+  spec.add_dependency "moxml"
+  spec.metadata["rubygems_mfa_required"] = "true"
 end
