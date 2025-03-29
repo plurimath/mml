@@ -108,9 +108,11 @@ module Mml
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
       map_attribute "scriptlevel", to: :scriptlevel, namespace: nil
       map_attribute "displaystyle", to: :displaystyle, namespace: nil
-      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier, namespace: nil
+      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier,
+                                            namespace: nil
       map_attribute "scriptminsize", to: :scriptminsize, namespace: nil
-      map_attribute "infixlinebreakstyle", to: :infixlinebreakstyle, namespace: nil
+      map_attribute "infixlinebreakstyle", to: :infixlinebreakstyle,
+                                           namespace: nil
       map_attribute "decimalpoint", to: :decimalpoint, namespace: nil
       map_attribute "accent", to: :accent, namespace: nil
       map_attribute "accentunder", to: :accentunder, namespace: nil
@@ -193,13 +195,16 @@ module Mml
       map_attribute "fontsize", to: :fontsize, namespace: nil
       map_attribute "color", to: :color, namespace: nil
       map_attribute "background", to: :background, namespace: nil
-      map_attribute "veryverythinmathspace", to: :veryverythinmathspace, namespace: nil
+      map_attribute "veryverythinmathspace", to: :veryverythinmathspace,
+                                             namespace: nil
       map_attribute "verythinmathspace", to: :verythinmathspace, namespace: nil
       map_attribute "thinmathspace", to: :thinmathspace, namespace: nil
       map_attribute "mediummathspace", to: :mediummathspace, namespace: nil
       map_attribute "thickmathspace", to: :thickmathspace, namespace: nil
-      map_attribute "verythickmathspace", to: :verythickmathspace, namespace: nil
-      map_attribute "veryverythickmathspace", to: :veryverythickmathspace, namespace: nil
+      map_attribute "verythickmathspace", to: :verythickmathspace,
+                                          namespace: nil
+      map_attribute "veryverythickmathspace", to: :veryverythickmathspace,
+                                              namespace: nil
     end
     # rubocop:enable Metrics/BlockLength
   end

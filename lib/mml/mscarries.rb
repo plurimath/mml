@@ -12,7 +12,8 @@ module Mml
     xml do
       root "mscarries", mixed: true
 
-      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier, namespace: nil
+      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier,
+                                            namespace: nil
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
       map_attribute "mathcolor", to: :mathcolor, namespace: nil
       map_attribute "position", to: :position, namespace: nil

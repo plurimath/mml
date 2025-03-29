@@ -8,7 +8,8 @@ module Mml
 
   class CommonAttributes < Lutaml::Model::Serializable
     Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-      attribute :"#{tag}_value", Mml.const_get(tag.to_s.capitalize), collection: true
+      attribute :"#{tag}_value", Mml.const_get(tag.to_s.capitalize),
+                collection: true
     end
 
     xml do
