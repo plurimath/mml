@@ -5,9 +5,16 @@ require "mml/configuration"
 if RUBY_ENGINE == "opal"
   require_relative "mml/opal_setup"
 else
-  files = Dir["lib/mml/*.rb"].reject { |file| File.basename(file, ".*") == "common_attributes" }
-  files.each { |file| require_relative "mml/#{File.basename(file, ".rb")}" }
+  lib_path = File.join(__dir__, "mml", "*.rb")
+  Dir[lib_path].each do |file|
+    basename = File.basename(file, ".rb")
+    next if basename == "common_attributes"
+
+    require_relative "mml/#{basename}"
+  end
 end
+# Ensure that the CommonAttributes class is loaded after all
+# other classes
 require "mml/common_attributes"
 
 DEFAULT_ADAPTER = if RUBY_ENGINE == "opal"
