@@ -2,7 +2,8 @@
 
 module Mml
   Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-    autoload(tag.to_s.capitalize.to_sym, tag.to_s)
+    # `autoload` is `require`, not `require_relative`
+    autoload(tag.to_s.capitalize.to_sym, "mml/#{tag}.rb")
   end
 
   class CommonAttributes < Lutaml::Model::Serializable
