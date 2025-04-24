@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Msgroup < Lutaml::Model::Serializable
+  class Msgroup < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :position, :integer
@@ -18,4 +18,5 @@ module Mml
       map_attribute "shift", to: :shift, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Msgroup, id:  :msgroup)
 end

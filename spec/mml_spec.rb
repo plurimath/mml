@@ -28,9 +28,9 @@ RSpec.describe Mml do
 
   context "with namespace" do
     Dir.glob("./spec/fixtures/with_namespace/*.mml").each do |file|
-      it "round-trips #{File.basename(file, '.mml')}" do
-        input = File.read(file)
-        output = described_class.parse(input, namespace_exist: true).to_xml
+      it "round-trips #{File.basename(file, ".mml")}" do
+        input = File.open(file).read
+        output = Mml.parse(input, namespace_exist: true).to_xml(register: Lutaml::Model::GlobalRegister.lookup(Mml::DEFAULT_REGISTER_ID))
         expect(output).to be_equivalent_to(input)
       end
     end
@@ -38,9 +38,9 @@ RSpec.describe Mml do
 
   context "without namespace" do
     Dir.glob("./spec/fixtures/without_namespace/*.mml").each do |file|
-      it "round-trips #{File.basename(file, '.mml')}" do
-        input = File.read(file)
-        output = described_class.parse(input, namespace_exist: false).to_xml
+      it "round-trips #{File.basename(file, ".mml")}" do
+        input = File.open(file).read
+        output = Mml.parse(input, namespace_exist: false).to_xml(register: Lutaml::Model::GlobalRegister.lookup(Mml::DEFAULT_REGISTER_ID))
         expect(output).to be_equivalent_to(input)
       end
     end

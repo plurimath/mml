@@ -1,34 +1,8 @@
 # frozen_string_literal: true
 
-require "lutaml/model"
-require "mml/configuration"
-if RUBY_ENGINE == "opal"
-  require_relative "mml/opal_setup"
-else
-  lib_path = File.join(__dir__, "mml", "*.rb")
-  Dir[lib_path].each do |file|
-    basename = File.basename(file, ".rb")
-    next if basename == "common_attributes"
-
-    require_relative "mml/#{basename}"
-  end
-end
-# Ensure that the CommonAttributes class is loaded after all
-# other classes
-require "mml/common_attributes"
-
-DEFAULT_ADAPTER = if RUBY_ENGINE == "opal"
-                    require "lutaml/model/xml_adapter/oga_adapter"
-                    :oga
-                  else
-                    require "lutaml/model/xml_adapter/ox_adapter"
-                    :ox
-                  end
-
-Moxml::Config.default_adapter = DEFAULT_ADAPTER
-
 module Mml
   class Error < StandardError; end
+  DEFAULT_REGISTER_ID = :mml
 
   module_function
 
@@ -36,21 +10,30 @@ module Mml
     Configuration.config
   end
 
-  def update_attributes
-    Configuration::COMMON_ATTRIBUTES_CLASSES.each do |klass|
-      const_get(klass).import_model(CommonAttributes)
-    end
-  end
-
-  def parse(input, namespace_exist: true)
+  def parse(input, register: Configuration.default_register, namespace_exist: true)
     Configuration.adapter = DEFAULT_ADAPTER unless Configuration.adapter
 
     if namespace_exist
-      Mml::MathWithNamespace.from_xml(input)
+      Mml::MathWithNamespace.from_xml(input, register: register)
     else
-      Mml::MathWithNilNamespace.from_xml(input)
+      Mml::MathWithNilNamespace.from_xml(input, register: register)
     end
   end
 end
 
-Mml.update_attributes
+require "lutaml/model"
+require "mml/configuration"
+DEFAULT_ADAPTER = if RUBY_ENGINE == "opal"
+  require "lutaml/model/xml_adapter/oga_adapter"
+  :oga
+else
+  require "lutaml/model/xml_adapter/ox_adapter"
+  :ox
+end
+Moxml::Config.default_adapter = DEFAULT_ADAPTER
+Mml::Configuration.default_register = Mml::DEFAULT_REGISTER_ID # creates a new register with id: :mml, only if it's not already created
+if RUBY_ENGINE == "opal"
+  require_relative "mml/opal_setup"
+else
+  Dir["lib/mml/*.rb"].each { |file| require "mml/#{File.basename(file, ".rb")}" }
+end

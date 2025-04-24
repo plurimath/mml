@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Mlongdiv < Lutaml::Model::Serializable
+  class Mlongdiv < CommonAttributes
     attribute :mathbackground, :string
     attribute :longdivstyle, :string
     attribute :mathcolor, :string
@@ -18,4 +18,5 @@ module Mml
       map_attribute "shift", to: :shift, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mlongdiv, id:  :mlongdiv)
 end

@@ -3,7 +3,7 @@
 module Mml
   autoload(:Mtd, "mml/mtd")
 
-  class Mtr < Lutaml::Model::Serializable
+  class Mtr < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :rowalign, :string
@@ -22,4 +22,5 @@ module Mml
       map_element "mtd", to: :mtd_value
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mtr, id:  :mtr)
 end

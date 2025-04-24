@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Mstack < Lutaml::Model::Serializable
+  class Mstack < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :align, :string
@@ -20,4 +20,5 @@ module Mml
       map_attribute "charspacing", to: :charspacing, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mstack, id:  :mstack)
 end

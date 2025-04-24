@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Msubsup < Lutaml::Model::Serializable
+  class Msubsup < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :subscriptshift, :string
@@ -16,4 +16,5 @@ module Mml
       map_attribute "superscriptshift", to: :superscriptshift, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Msubsup, id:  :msubsup)
 end

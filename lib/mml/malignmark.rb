@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Malignmark < Lutaml::Model::Serializable
+  class Malignmark < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :edge, :string
@@ -14,4 +14,5 @@ module Mml
       map_attribute "edge", to: :edge, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Malignmark, id:  :malignmark)
 end

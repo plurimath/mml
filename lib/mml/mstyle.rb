@@ -2,7 +2,7 @@
 
 module Mml
   # rubocop:disable Metrics/ClassLength
-  class Mstyle < Lutaml::Model::Serializable
+  class Mstyle < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :scriptlevel, :integer
@@ -209,4 +209,5 @@ module Mml
     # rubocop:enable Metrics/BlockLength
   end
   # rubocop:enable Metrics/ClassLength
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mstyle, id:  :mstyle)
 end

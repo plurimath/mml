@@ -52,4 +52,5 @@ module Mml
       map_attribute "indentshiftlast", to: :indentshiftlast, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mspace, id:  :mspace)
 end

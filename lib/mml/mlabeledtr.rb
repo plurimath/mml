@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
 module Mml
-  autoload(:Mtd, "mml/mtd")
-
-  class Mlabeledtr < Lutaml::Model::Serializable
+  class Mlabeledtr < CommonAttributes
     attribute :mathbackground, :string
     attribute :columnalign, :string
     attribute :groupalign, :string
     attribute :mathcolor, :string
     attribute :rowalign, :string
     attribute :id, :string
-    attribute :mtd_value, Mtd, collection: true
+    attribute :mtd_value, :mtd, collection: true
 
     xml do
       root "mlabeledtr", mixed: true
@@ -24,4 +22,5 @@ module Mml
       map_element "mtd", to: :mtd_value
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mlabeledtr, id:  :mlabeledtr)
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Mscarries < Lutaml::Model::Serializable
+  class Mscarries < CommonAttributes
     attribute :scriptsizemultiplier, :integer
     attribute :mathbackground, :string
     attribute :mathcolor, :string
@@ -21,4 +21,5 @@ module Mml
       map_attribute "crossout", to: :crossout, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mscarries, id:  :mscarries)
 end

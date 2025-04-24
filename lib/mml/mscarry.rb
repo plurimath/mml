@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Mscarry < Lutaml::Model::Serializable
+  class Mscarry < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :location, :string
@@ -16,4 +16,5 @@ module Mml
       map_attribute "crossout", to: :crossout, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mscarry, id:  :mscarry)
 end

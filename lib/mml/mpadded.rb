@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Mpadded < Lutaml::Model::Serializable
+  class Mpadded < CommonAttributes
     attribute :mathbackground, :string
     attribute :mathcolor, :string
     attribute :voffset, :string
@@ -22,4 +22,5 @@ module Mml
       map_attribute "width", to: :width, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mpadded, id:  :mpadded)
 end

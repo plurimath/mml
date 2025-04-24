@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Mfrac < Lutaml::Model::Serializable
+  class Mfrac < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :linethickness, :string
@@ -20,4 +20,5 @@ module Mml
       map_attribute "bevelled", to: :bevelled, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mfrac, id:  :mfrac)
 end

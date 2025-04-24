@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Munder < Lutaml::Model::Serializable
+  class Munder < CommonAttributes
     attribute :mathbackground, :string
     attribute :accentunder, :string
     attribute :mathcolor, :string
@@ -18,4 +18,5 @@ module Mml
       map_content to: :content
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Munder, id:  :munder)
 end

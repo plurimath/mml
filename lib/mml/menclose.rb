@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Menclose < Lutaml::Model::Serializable
+  class Menclose < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :notation, :string
@@ -14,4 +14,5 @@ module Mml
       map_attribute "notation", to: :notation, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Menclose, id:  :menclose)
 end

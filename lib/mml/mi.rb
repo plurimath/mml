@@ -32,4 +32,5 @@ module Mml
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mi, id:  :mi)
 end

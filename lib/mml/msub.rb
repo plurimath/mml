@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Msub < Lutaml::Model::Serializable
+  class Msub < CommonAttributes
     attribute :mathbackground, :string
     attribute :subscriptshift, :string
     attribute :mathcolor, :string
@@ -14,4 +14,5 @@ module Mml
       map_attribute "mathcolor", to: :mathcolor, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Msub, id:  :msub)
 end

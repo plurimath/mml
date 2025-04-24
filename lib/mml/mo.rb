@@ -80,4 +80,5 @@ module Mml
     end
     # rubocop:enable Metrics/BlockLength
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mo, id:  :mo)
 end

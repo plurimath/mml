@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Mfenced < Lutaml::Model::Serializable
+  class Mfenced < CommonAttributes
     attribute :mathbackground, :string
     attribute :separators, :string
     attribute :mathcolor, :string
@@ -21,4 +21,5 @@ module Mml
       map_attribute "open", to: :open, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mfenced, id:  :mfenced)
 end

@@ -3,7 +3,7 @@
 module Mml
   autoload(:Mi, "mml/mi")
 
-  class Semantics < Lutaml::Model::Serializable
+  class Semantics < CommonAttributes
     attribute :annotation, Mi, collection: true
 
     xml do
@@ -12,4 +12,5 @@ module Mml
       map_element :annotation, to: :annotation
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Semantics, id:  :semantics)
 end

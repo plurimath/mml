@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Mtd < Lutaml::Model::Serializable
+  class Mtd < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :rowalign, :string
@@ -16,4 +16,5 @@ module Mml
       map_attribute "columnalign", to: :columnalign, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mtd, id: :mtd)
 end

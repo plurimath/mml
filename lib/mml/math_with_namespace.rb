@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class MathWithNamespace < Lutaml::Model::Serializable
+  class MathWithNamespace < CommonAttributes
     attribute :display, :string
 
     xml do

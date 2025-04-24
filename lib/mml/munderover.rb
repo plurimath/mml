@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Munderover < Lutaml::Model::Serializable
+  class Munderover < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :accent, :string
@@ -18,4 +18,5 @@ module Mml
       map_attribute "align", to: :align, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Munderover, id:  :munderover)
 end

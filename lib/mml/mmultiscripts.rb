@@ -3,7 +3,7 @@
 module Mml
   autoload(:Mprescripts, "mml/mprescripts")
 
-  class Mmultiscripts < Lutaml::Model::Serializable
+  class Mmultiscripts < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :subscriptshift, :string
@@ -20,4 +20,5 @@ module Mml
       map_element "mprescripts", to: :mprescripts_value
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mmultiscripts, id:  :mmultiscripts)
 end

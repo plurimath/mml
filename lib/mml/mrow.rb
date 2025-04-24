@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Mrow < Lutaml::Model::Serializable
+  class Mrow < CommonAttributes
     attribute :mathbackground, :string
     attribute :mathcolor, :string
     attribute :content, :string
@@ -18,4 +18,5 @@ module Mml
       map_attribute "mathbackground", to: :mathbackground, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Mrow, id:  :mrow)
 end

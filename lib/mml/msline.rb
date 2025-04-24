@@ -22,4 +22,5 @@ module Mml
       map_attribute "mslinethickness", to: :mslinethickness, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Msline, id:  :msline)
 end

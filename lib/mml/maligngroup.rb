@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Maligngroup < Lutaml::Model::Serializable
+  class Maligngroup < CommonAttributes
     attribute :mathcolor, :string
     attribute :mathbackground, :string
     attribute :groupalign, :string
@@ -14,4 +14,5 @@ module Mml
       map_attribute "groupalign", to: :groupalign, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Maligngroup, id:  :maligngroup)
 end

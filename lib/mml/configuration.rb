@@ -97,6 +97,17 @@ module Mml
       Lutaml::Model::Config.xml_adapter_type = adapter.downcase
     end
 
+    def default_register
+      @register
+    end
+
+    def default_register=(register_id)
+      return @register if @register&.id == register_id
+
+      @register = Lutaml::Model::Register.new(register_id)
+      Lutaml::Model::GlobalRegister.register(@register)
+    end
+
     def class_for(class_name)
       config[class_name]
     end

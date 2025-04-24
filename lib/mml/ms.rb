@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mml
-  class Ms < Lutaml::Model::Serializable
+  class Ms < CommonAttributes
     attribute :mathbackground, :string
     attribute :mathvariant, :string
     attribute :fontfamily, :string
@@ -36,4 +36,5 @@ module Mml
       map_attribute "dir", to: :dir, namespace: nil
     end
   end
+  Lutaml::Model::GlobalRegister.lookup(DEFAULT_REGISTER_ID).register_model(Ms, id:  :ms)
 end
