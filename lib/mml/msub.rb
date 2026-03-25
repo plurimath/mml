@@ -7,11 +7,12 @@ module Mml
     attribute :mathcolor, :string
 
     xml do
-      root "msub", mixed: true
+      element "msub"
+      mixed_content
 
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "subscriptshift", to: :subscriptshift, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "subscriptshift", to: :subscriptshift
+      map_attribute "mathcolor", to: :mathcolor
     end
   end
 end

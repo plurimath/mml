@@ -18,22 +18,23 @@ module Mml
     attribute :dir, :string
 
     xml do
-      root "ms", mixed: true
+      element "ms"
+      mixed_content
 
       map_content to: :value
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "mathvariant", to: :mathvariant, namespace: nil
-      map_attribute "fontfamily", to: :fontfamily, namespace: nil
-      map_attribute "fontweight", to: :fontweight, namespace: nil
-      map_attribute "background", to: :background, namespace: nil
-      map_attribute "fontstyle", to: :fontstyle, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "fontsize", to: :fontsize, namespace: nil
-      map_attribute "mathsize", to: :mathsize, namespace: nil
-      map_attribute "lquote", to: :lquote, namespace: nil
-      map_attribute "rquote", to: :rquote, namespace: nil
-      map_attribute "color", to: :color, namespace: nil
-      map_attribute "dir", to: :dir, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "mathvariant", to: :mathvariant
+      map_attribute "fontfamily", to: :fontfamily
+      map_attribute "fontweight", to: :fontweight
+      map_attribute "background", to: :background
+      map_attribute "fontstyle", to: :fontstyle
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "fontsize", to: :fontsize
+      map_attribute "mathsize", to: :mathsize
+      map_attribute "lquote", to: :lquote
+      map_attribute "rquote", to: :rquote
+      map_attribute "color", to: :color
+      map_attribute "dir", to: :dir
     end
   end
 end

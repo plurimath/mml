@@ -7,11 +7,11 @@ module Mml
     attribute :groupalign, :string
 
     xml do
-      root "maligngroup"
+      element "maligngroup"
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "groupalign", to: :groupalign, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "groupalign", to: :groupalign
     end
   end
 end

@@ -10,15 +10,16 @@ module Mml
     attribute :open, :string
 
     xml do
-      root "mfenced", mixed: true
+      element "mfenced"
+      mixed_content
 
       map_content to: :content
 
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "separators", to: :separators, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "close", to: :close, namespace: nil
-      map_attribute "open", to: :open, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "separators", to: :separators
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "close", to: :close
+      map_attribute "open", to: :open
     end
   end
 end

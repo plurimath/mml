@@ -11,12 +11,13 @@ module Mml
     attribute :mprescripts_value, Mprescripts
 
     xml do
-      root "mmultiscripts", mixed: true
+      element "mmultiscripts"
+      mixed_content
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "subscriptshift", to: :subscriptshift, namespace: nil
-      map_attribute "superscriptshift", to: :superscriptshift, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "subscriptshift", to: :subscriptshift
+      map_attribute "superscriptshift", to: :superscriptshift
       map_element "mprescripts", to: :mprescripts_value
     end
   end

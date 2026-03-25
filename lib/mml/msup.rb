@@ -7,11 +7,12 @@ module Mml
     attribute :superscriptshift, :string
 
     xml do
-      root "msup", mixed: true
+      element "msup"
+      mixed_content
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "superscriptshift", to: :superscriptshift, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "superscriptshift", to: :superscriptshift
     end
   end
 end

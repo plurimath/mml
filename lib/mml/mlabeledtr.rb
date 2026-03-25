@@ -13,14 +13,15 @@ module Mml
     attribute :mtd_value, Mtd, collection: true
 
     xml do
-      root "mlabeledtr", mixed: true
+      element "mlabeledtr"
+      mixed_content
 
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "columnalign", to: :columnalign, namespace: nil
-      map_attribute "groupalign", to: :groupalign, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "rowalign", to: :rowalign, namespace: nil
-      map_attribute "id", to: :id, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "columnalign", to: :columnalign
+      map_attribute "groupalign", to: :groupalign
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "rowalign", to: :rowalign
+      map_attribute "id", to: :id
       map_element "mtd", to: :mtd_value
     end
   end

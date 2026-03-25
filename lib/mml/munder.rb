@@ -9,12 +9,13 @@ module Mml
     attribute :align, :string
 
     xml do
-      root "munder", mixed: true
+      element "munder"
+      mixed_content
 
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "accentunder", to: :accentunder, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "align", to: :align, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "accentunder", to: :accentunder
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "align", to: :align
       map_content to: :content
     end
   end

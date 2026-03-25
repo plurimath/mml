@@ -10,14 +10,15 @@ module Mml
     attribute :bevelled, :string
 
     xml do
-      root "mfraction", mixed: true
+      element "mfraction"
+      mixed_content
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "linethickness", to: :linethickness, namespace: nil
-      map_attribute "numalign", to: :numalign, namespace: nil
-      map_attribute "denomalign", to: :denomalign, namespace: nil
-      map_attribute "bevelled", to: :bevelled, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "linethickness", to: :linethickness
+      map_attribute "numalign", to: :numalign
+      map_attribute "denomalign", to: :denomalign
+      map_attribute "bevelled", to: :bevelled
     end
   end
 end

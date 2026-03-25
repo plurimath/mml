@@ -7,11 +7,12 @@ module Mml
     attribute :notation, :string
 
     xml do
-      root "menclose", mixed: true
+      element "menclose"
+      mixed_content
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "notation", to: :notation, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "notation", to: :notation
     end
   end
 end

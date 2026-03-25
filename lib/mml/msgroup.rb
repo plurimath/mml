@@ -9,13 +9,14 @@ module Mml
     attribute :msgroup_text, :string
 
     xml do
-      root "msgroup", mixed: true
+      element "msgroup"
+      mixed_content
 
       map_content to: :msgroup_text
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "position", to: :position, namespace: nil
-      map_attribute "shift", to: :shift, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "position", to: :position
+      map_attribute "shift", to: :shift
     end
   end
 end

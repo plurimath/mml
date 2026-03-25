@@ -9,13 +9,14 @@ module Mml
     attribute :shift, :integer
 
     xml do
-      root "mlongdiv", mixed: true
+      element "mlongdiv"
+      mixed_content
 
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "longdivstyle", to: :longdivstyle, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "position", to: :position, namespace: nil
-      map_attribute "shift", to: :shift, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "longdivstyle", to: :longdivstyle
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "position", to: :position
+      map_attribute "shift", to: :shift
     end
   end
 end

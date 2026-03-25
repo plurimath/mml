@@ -7,11 +7,11 @@ module Mml
     attribute :edge, :string
 
     xml do
-      root "malignmark"
+      element "malignmark"
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "edge", to: :edge, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "edge", to: :edge
     end
   end
 end
