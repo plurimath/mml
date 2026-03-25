@@ -5,7 +5,8 @@ source "https://rubygems.org"
 gemspec
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-gem "equivalent-xml"
+gem "canon"
+gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "ox"
 gem "pry"
 gem "rake", "~> 12.0"

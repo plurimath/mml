@@ -11,15 +11,15 @@ module Mml
     attribute :mslinethickness, :string
 
     xml do
-      root "msline"
+      element "msline"
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "position", to: :position, namespace: nil
-      map_attribute "length", to: :length, namespace: nil
-      map_attribute "leftoverhang", to: :leftoverhang, namespace: nil
-      map_attribute "rightoverhang", to: :rightoverhang, namespace: nil
-      map_attribute "mslinethickness", to: :mslinethickness, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "position", to: :position
+      map_attribute "length", to: :length
+      map_attribute "leftoverhang", to: :leftoverhang
+      map_attribute "rightoverhang", to: :rightoverhang
+      map_attribute "mslinethickness", to: :mslinethickness
     end
   end
 end

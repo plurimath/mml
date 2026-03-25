@@ -10,15 +10,15 @@ module Mml
     attribute :crossout, :string
 
     xml do
-      root "mscarries", mixed: true
+      element "mscarries"
+      mixed_content
 
-      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier,
-                                            namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "position", to: :position, namespace: nil
-      map_attribute "location", to: :location, namespace: nil
-      map_attribute "crossout", to: :crossout, namespace: nil
+      map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "position", to: :position
+      map_attribute "location", to: :location
+      map_attribute "crossout", to: :crossout
     end
   end
 end

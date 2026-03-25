@@ -11,15 +11,16 @@ module Mml
     attribute :width, :string
 
     xml do
-      root "mpadded", mixed: true
+      element "mpadded"
+      mixed_content
 
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "voffset", to: :voffset, namespace: nil
-      map_attribute "height", to: :height, namespace: nil
-      map_attribute "lspace", to: :lspace, namespace: nil
-      map_attribute "depth", to: :depth, namespace: nil
-      map_attribute "width", to: :width, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "voffset", to: :voffset
+      map_attribute "height", to: :height
+      map_attribute "lspace", to: :lspace
+      map_attribute "depth", to: :depth
+      map_attribute "width", to: :width
     end
   end
 end

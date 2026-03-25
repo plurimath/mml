@@ -8,12 +8,12 @@ module Mml
     attribute :selection, :string
 
     xml do
-      root "maction"
+      element "maction"
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "actiontype", to: :actiontype, namespace: nil
-      map_attribute "selection", to: :selection, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "actiontype", to: :actiontype
+      map_attribute "selection", to: :selection
     end
   end
 end

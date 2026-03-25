@@ -8,12 +8,13 @@ module Mml
     attribute :align, :string
 
     xml do
-      root "mover", mixed: true
+      element "mover"
+      mixed_content
 
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "accent", to: :accent, namespace: nil
-      map_attribute "align", to: :align, namespace: nil
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "accent", to: :accent
+      map_attribute "align", to: :align
     end
   end
 end

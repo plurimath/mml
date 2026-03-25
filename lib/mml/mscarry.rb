@@ -8,12 +8,13 @@ module Mml
     attribute :crossout, :string
 
     xml do
-      root "mscarry", mixed: true
+      element "mscarry"
+      mixed_content
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "location", to: :location, namespace: nil
-      map_attribute "crossout", to: :crossout, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "location", to: :location
+      map_attribute "crossout", to: :crossout
     end
   end
 end

@@ -9,13 +9,14 @@ module Mml
     attribute :dir, :string
 
     xml do
-      root "mrow", mixed: true
+      element "mrow"
+      mixed_content
 
       map_content to: :content
-      map_attribute "dir", to: :dir, namespace: nil
-      map_attribute "intent", to: :intent, namespace: nil
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "dir", to: :dir
+      map_attribute "intent", to: :intent
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
     end
   end
 end

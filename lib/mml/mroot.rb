@@ -6,10 +6,11 @@ module Mml
     attribute :mathbackground, :string
 
     xml do
-      root "mroot", mixed: true
+      element "mroot"
+      mixed_content
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
     end
   end
 end

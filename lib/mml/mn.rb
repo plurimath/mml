@@ -16,20 +16,20 @@ module Mml
     attribute :background, :string
 
     xml do
-      root "mn"
+      element "mn"
 
       map_content to: :value
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "mathvariant", to: :mathvariant, namespace: nil
-      map_attribute "mathsize", to: :mathsize, namespace: nil
-      map_attribute "dir", to: :dir, namespace: nil
-      map_attribute "fontfamily", to: :fontfamily, namespace: nil
-      map_attribute "fontweight", to: :fontweight, namespace: nil
-      map_attribute "fontstyle", to: :fontstyle, namespace: nil
-      map_attribute "fontsize", to: :fontsize, namespace: nil
-      map_attribute "color", to: :color, namespace: nil
-      map_attribute "background", to: :background, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "mathvariant", to: :mathvariant
+      map_attribute "mathsize", to: :mathsize
+      map_attribute "dir", to: :dir
+      map_attribute "fontfamily", to: :fontfamily
+      map_attribute "fontweight", to: :fontweight
+      map_attribute "fontstyle", to: :fontstyle
+      map_attribute "fontsize", to: :fontsize
+      map_attribute "color", to: :color
+      map_attribute "background", to: :background
     end
   end
 end

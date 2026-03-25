@@ -5,7 +5,8 @@ module Mml
     attribute :display, :string
 
     xml do
-      root "math", mixed: true
+      element "math"
+      mixed_content
 
       map_attribute :display, to: :display
     end

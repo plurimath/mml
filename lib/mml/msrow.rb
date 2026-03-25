@@ -7,11 +7,12 @@ module Mml
     attribute :position, :integer
 
     xml do
-      root "msrow", mixed: true
+      element "msrow"
+      mixed_content
 
-      map_attribute "mathcolor", to: :mathcolor, namespace: nil
-      map_attribute "mathbackground", to: :mathbackground, namespace: nil
-      map_attribute "position", to: :position, namespace: nil
+      map_attribute "mathcolor", to: :mathcolor
+      map_attribute "mathbackground", to: :mathbackground
+      map_attribute "position", to: :position
     end
   end
 end

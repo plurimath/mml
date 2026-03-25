@@ -31,7 +31,19 @@ RSpec.describe Mml do
       it "round-trips #{File.basename(file, '.mml')}" do
         input = File.read(file)
         output = described_class.parse(input, namespace_exist: true).to_xml
-        expect(output).to be_equivalent_to(input)
+        expect(output).to be_xml_equivalent_to(input)
+      end
+    end
+  end
+
+  xcontext "with namespace prefix",
+           skip: "all elements should be namespaced here but we did not specify due to lutaml-model not able to handle both namespaced-root and non-namespaced-root" do
+    Dir.glob("./spec/fixtures/with_namespace_prefix/*.mml").each do |file|
+      it "round-trips #{File.basename(file, '.mml')}" do
+        input = File.read(file)
+        output = described_class.parse(input,
+                                       namespace_exist: true).to_xml(prefix: true)
+        expect(output).to be_xml_equivalent_to(input)
       end
     end
   end
@@ -41,7 +53,7 @@ RSpec.describe Mml do
       it "round-trips #{File.basename(file, '.mml')}" do
         input = File.read(file)
         output = described_class.parse(input, namespace_exist: false).to_xml
-        expect(output).to be_equivalent_to(input)
+        expect(output).to be_xml_equivalent_to(input)
       end
     end
   end

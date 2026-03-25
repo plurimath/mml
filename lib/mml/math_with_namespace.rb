@@ -5,8 +5,9 @@ module Mml
     attribute :display, :string
 
     xml do
-      root "math", mixed: true
-      namespace "http://www.w3.org/1998/Math/MathML", nil
+      element "math"
+      mixed_content
+      namespace Namespace
 
       map_attribute :display, to: :display
     end

@@ -7,7 +7,8 @@ module Mml
     attribute :annotation, Mi, collection: true
 
     xml do
-      root "semantics", mixed: true
+      element "semantics"
+      mixed_content
 
       map_element :annotation, to: :annotation
     end

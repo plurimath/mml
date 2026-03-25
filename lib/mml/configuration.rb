@@ -94,7 +94,7 @@ module Mml
     end
 
     def adapter=(adapter)
-      Lutaml::Model::Config.xml_adapter_type = adapter.downcase
+      Lutaml::Model::Config.xml_adapter_type = adapter
     end
 
     def class_for(class_name)
