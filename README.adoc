@@ -1,9 +1,318 @@
-= Plurimath MathML library
+= Mml: MathML parser and builder
+
+:toc:
+:toclevels: 2
 
 == Purpose
 
-Mml is the MathML library used by Plurimath.
+Mml provides MathML 3 XML parsing and serialization for Ruby. It maps the full
+MathML element set into Ruby model classes using the
+https://github.com/lutaml/lutaml-model[lutaml-model] framework and is used by
+https://github.com/plurimath/plurimath[Plurimath] for mathematical formula
+representation.
 
-== Copyright and License
+Key features:
 
-Copyright (c) 2024 Ribose Inc.
+* **MathML 3 element support**: 43 elements including presentation markup,
+  tables, scripts, fractions, and more
+* **Namespace handling**: Default `xmlns`, prefixed `mml:`, and namespace-less
+  input
+* **Round-trip fidelity**: Parse XML to an object graph, modify, and serialize
+  back
+* **Opal support**: Runs in the browser via Ruby-to-JavaScript compilation
+
+== Installation
+
+Add to your application's Gemfile:
+
+[source,ruby]
+----
+gem 'mml'
+----
+
+Then execute:
+
+[source,bash]
+----
+$ bundle install
+----
+
+Or install directly:
+
+[source,bash]
+----
+$ gem install mml
+----
+
+== Quick start
+
+=== Parse with a namespace (compliant)
+
+`Mml.parse` expects a namespace by default (`namespace_exist: true`). It accepts
+both default and prefixed forms:
+
+[source,ruby]
+----
+require "mml"
+
+# Default namespace
+math = Mml.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>')
+
+# Prefixed namespace
+math = Mml.parse('<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>x</mml:mi></mml:math>')
+----
+
+=== Parse without namespace (non-compliant)
+
+Some XML schemas embed MathML without a namespace declaration, which is
+non-compliant but common in practice. Pass `namespace_exist: false` to handle
+this — the namespace is injected internally before parsing:
+
+[source,ruby]
+----
+math = Mml.parse("<math><mi>x</mi></math>", namespace_exist: false)
+----
+
+=== Serialize to XML
+
+[source,ruby]
+----
+# Default namespace (default)
+math.to_xml
+# => "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi></math>"
+
+# Prefixed namespace
+math.to_xml(prefix: true)
+# => "<mml:math xmlns:mml=\"http://www.w3.org/1998/Math/MathML\"><mml:mi>x</mml:mi></mml:math>"
+
+# Omit XML declaration
+math.to_xml(declaration: false)
+----
+
+== Building MathML with the API
+
+=== Leaf elements
+
+Leaf elements (`Mi`, `Mn`, `Mo`, `Ms`, `Mtext`) hold text content in the `value`
+attribute:
+
+[source,ruby]
+----
+# An identifier: <mi>x</mi>
+Mml::Mi.new(value: "x")
+
+# A number: <mn>42</mn>
+Mml::Mn.new(value: "42")
+
+# An operator: <mo>+</mo>
+Mml::Mo.new(value: "+")
+
+# With attributes: <mi mathvariant="bold">x</mi>
+Mml::Mi.new(value: "x", mathvariant: "bold")
+----
+
+=== Container elements
+
+Container elements hold child elements via collection attributes named
+`#{tag}_value`. The supported child types come from the `CommonAttributes` model
+mixed into container classes.
+
+[source,ruby]
+----
+# <mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow>
+Mml::Mrow.new(
+  mi_value: [Mml::Mi.new(value: "x")],
+  mo_value: [Mml::Mo.new(value: "+")],
+  mn_value: [Mml::Mn.new(value: "1")],
+)
+----
+
+=== Composing complex expressions
+
+Build an expression tree by nesting elements, then wrap in `Mml::Math`:
+
+[source,ruby]
+----
+# <math xmlns="http://www.w3.org/1998/Math/MathML">
+#   <mfrac><mi>a</mi><mi>b</mi></mfrac>
+# </math>
+math = Mml::Math.new(
+  mfrac_value: [
+    Mml::Mfrac.new(
+      mi_value: [Mml::Mi.new(value: "a"), Mml::Mi.new(value: "b")],
+    ),
+  ],
+)
+
+math.to_xml
+----
+
+=== Fractions, subscripts, and superscripts
+
+[source,ruby]
+----
+# <msup><mi>x</mi><mn>2</mn></msup>  —  x²
+Mml::Msup.new(mi_value: [Mml::Mi.new(value: "x")],
+              mn_value: [Mml::Mn.new(value: "2")])
+
+# <msub><mi>a</mi><mn>1</mn></msup>  —  a₁
+Mml::Msub.new(mi_value: [Mml::Mi.new(value: "a")],
+              mn_value: [Mml::Mn.new(value: "1")])
+
+# <msubsup><mi>b</mi><mn>1</mn><mn>2</mn></msubsup>  —  b₁²
+Mml::Msubsup.new(mi_value: [Mml::Mi.new(value: "b")],
+                 mn_value: [Mml::Mn.new(value: "1"),
+                            Mml::Mn.new(value: "2")])
+
+# <mfrac linethickness="0"><mi>a</mi><mi>b</mi></mfrac>  —  a/b
+Mml::Mfrac.new(
+  linethickness: "0",
+  mi_value: [Mml::Mi.new(value: "a"), Mml::Mi.new(value: "b")],
+)
+----
+
+=== Tables
+
+`Mtable` uses typed `mtr_value` and `mlabeledtr_value` attributes for its rows:
+
+[source,ruby]
+----
+# <mtable>
+#   <mtr><mtd><mi>a</mi></mtd><mtd><mi>b</mi></mtd></mtr>
+# </mtable>
+Mml::Mtable.new(
+  mtr_value: [
+    Mml::Mtr.new(
+      mtd_value: [
+        Mml::Mtd.new(mi_value: [Mml::Mi.new(value: "a")]),
+        Mml::Mtd.new(mi_value: [Mml::Mi.new(value: "b")]),
+      ],
+    ),
+  ],
+)
+----
+
+=== Parsing, modifying, and re-serializing
+
+The object graph is fully mutable — parse, modify attributes or children, then
+serialize back:
+
+[source,ruby]
+----
+math = Mml.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>')
+
+# Modify the root element's display attribute
+math.display = "block"
+
+# Serialize with the changes
+math.to_xml
+# => "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">...</math>"
+----
+
+== Architecture
+
+Mml follows a data mapper pattern where each MathML element is a Ruby class
+under the `Mml::` namespace, inheriting from `Lutaml::Model::Serializable`.
+
+=== Element classes
+
+Two element patterns:
+
+* *Leaf elements* (`Mi`, `Mn`, `Mo`, `Ms`, `Mtext`, `Mspace`): hold text content
+  via `map_content to: :value`
+* *Container elements* (`Math`, `Mrow`, `Mfrac`, `Mtable`, `Msubsup`): hold
+  child elements via `mixed_content`
+
+[source,ruby]
+----
+# Leaf element — text content
+module Mml
+  class Mi < Lutaml::Model::Serializable
+    attribute :value, :string
+
+    xml do
+      namespace Namespace
+      element "mi"
+      map_content to: :value
+    end
+  end
+end
+
+# Container element — child elements
+module Mml
+  class Mrow < Lutaml::Model::Serializable
+    xml do
+      namespace Namespace
+      element "mrow"
+      mixed_content
+    end
+  end
+end
+----
+
+=== CommonAttributes
+
+Container elements that can hold arbitrary MathML children use a shared
+`CommonAttributes` model.
+
+The classes that receive it are listed in
+`Configuration::COMMON_ATTRIBUTES_CLASSES`.
+
+=== Namespace
+
+All elements declare `namespace Namespace` using the MathML namespace URI
+(`http://www.w3.org/1998/Math/MathML`) with prefix `mml`. The `Mml.parse`
+method handles three input forms:
+
+* Default namespace: `<math xmlns="http://www.w3.org/1998/Math/MathML">`
+* Prefixed: `<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML">`
+* No namespace: handled by injecting the namespace before parsing
+
+=== Configuration
+
+[source,ruby]
+----
+# Switch XML adapter
+Mml::Configuration.adapter = :nokogiri
+
+# Register custom model replacements
+Mml::Configuration.custom_models = { Mi => MyCustomMi }
+----
+
+== Supported elements
+
+Mml supports the following MathML 3 presentation elements:
+
+`math`, `mi`, `mn`, `mo`, `ms`, `mtext`, `mspace`, `mglyph`
+`mrow`, `mfrac`, `msqrt`, `mroot`, `mstyle`, `merror`, `mpadded`,
+`mphantom`, `mfenced`, `menclose`, `maction`
+`msub`, `msup`, `msubsup`, `munder`, `mover`, `munderover`,
+`mmultiscripts`, `mprescripts`
+`mtable`, `mtr`, `mtd`, `mlabeledtr`
+`mstack`, `msrow`, `mscarries`, `mscarry`, `msline`, `msgroup`, `mlongdiv`
+`mfraction`, `semantics`, `none`
+
+== Development
+
+After checking out the repo, run `bin/setup` to install dependencies. Then run
+`rake` to run the tests and linter. You can also run `bin/console` for an
+interactive prompt.
+
+[source,bash]
+----
+rake                    # Run specs + rubocop
+bundle exec rspec       # Run tests
+bundle exec rubocop     # Lint
+bin/console             # Interactive IRB
+----
+
+== Contributing
+
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/plurimath/mml.
+
+== Copyright and license
+
+Copyright Ribose Inc.
+
+https://opensource.org/licenses/BSD-2-Clause[BSD-2-Clause License].
