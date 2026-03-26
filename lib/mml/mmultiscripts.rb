@@ -11,6 +11,7 @@ module Mml
     attribute :mprescripts_value, Mprescripts
 
     xml do
+      namespace Namespace
       element "mmultiscripts"
       mixed_content
 

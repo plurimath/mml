@@ -9,6 +9,7 @@ module Mml
     attribute :dir, :string
 
     xml do
+      namespace Namespace
       element "mrow"
       mixed_content
 

@@ -16,6 +16,7 @@ module Mml
     attribute :mathbackground, :string
 
     xml do
+      namespace Namespace
       element "mi"
 
       map_content to: :value

@@ -8,6 +8,7 @@ module Mml
     attribute :columnalign, :string
 
     xml do
+      namespace Namespace
       element "mtd"
       mixed_content
 

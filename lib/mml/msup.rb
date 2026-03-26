@@ -7,6 +7,7 @@ module Mml
     attribute :superscriptshift, :string
 
     xml do
+      namespace Namespace
       element "msup"
       mixed_content
 

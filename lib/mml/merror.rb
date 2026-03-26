@@ -6,6 +6,7 @@ module Mml
     attribute :mathcolor, :string
 
     xml do
+      namespace Namespace
       element "merror"
       mixed_content
 

@@ -7,6 +7,7 @@ module Mml
     attribute :mathcolor, :string
 
     xml do
+      namespace Namespace
       element "msub"
       mixed_content
 

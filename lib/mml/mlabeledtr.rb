@@ -13,6 +13,7 @@ module Mml
     attribute :mtd_value, Mtd, collection: true
 
     xml do
+      namespace Namespace
       element "mlabeledtr"
       mixed_content
 

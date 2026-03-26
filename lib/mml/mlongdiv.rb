@@ -9,6 +9,7 @@ module Mml
     attribute :shift, :integer
 
     xml do
+      namespace Namespace
       element "mlongdiv"
       mixed_content
 

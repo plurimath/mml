@@ -9,6 +9,7 @@ module Mml
     attribute :msgroup_text, :string
 
     xml do
+      namespace Namespace
       element "msgroup"
       mixed_content
 

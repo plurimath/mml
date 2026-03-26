@@ -7,6 +7,7 @@ module Mml
     attribute :annotation, Mi, collection: true
 
     xml do
+      namespace Namespace
       element "semantics"
       mixed_content
 

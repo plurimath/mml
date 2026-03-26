@@ -10,6 +10,7 @@ module Mml
     attribute :crossout, :string
 
     xml do
+      namespace Namespace
       element "mscarries"
       mixed_content
 

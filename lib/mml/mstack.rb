@@ -10,6 +10,7 @@ module Mml
     attribute :charspacing, :string
 
     xml do
+      namespace Namespace
       element "mstack"
       mixed_content
 

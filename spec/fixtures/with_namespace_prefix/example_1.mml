@@ -94,7 +94,7 @@
     <mml:mmultiscripts>
       <mml:mi>x</mml:mi>
       <mml:mprescripts/>
-      <none/>
+      <mml:none/>
       <mml:mn>2</mml:mn>
     </mml:mmultiscripts>
     <mml:maligngroup/>

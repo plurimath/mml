@@ -102,6 +102,7 @@ module Mml
 
     # rubocop:disable Metrics/BlockLength
     xml do
+      namespace Namespace
       element "mstyle"
       mixed_content
 

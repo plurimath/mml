@@ -26,6 +26,7 @@ module Mml
     attribute :indentshiftlast, :string
 
     xml do
+      namespace Namespace
       element "mspace"
 
       map_attribute "mathcolor", to: :mathcolor
