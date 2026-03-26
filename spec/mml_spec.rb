@@ -44,9 +44,10 @@ RSpec.describe Mml do
     Dir.glob("./spec/fixtures/without_namespace/*.mml").each do |file|
       it "round-trips #{File.basename(file, '.mml')}" do
         input = File.read(file)
-        output = described_class.parse(input, namespace_exist: false).to_xml(declaration: false)
+        output = described_class.parse(input,
+                                       namespace_exist: false).to_xml(declaration: false)
 
-        output.sub!(/xmlns="[^"]+"/, '')
+        output.sub!(/xmlns="[^"]+"/, "")
         expect(output).to be_xml_equivalent_to(input)
       end
     end
