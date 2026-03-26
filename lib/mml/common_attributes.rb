@@ -13,8 +13,6 @@ module Mml
     end
 
     xml do
-      no_root
-
       Mml::Configuration::SUPPORTED_TAGS.each do |tag|
         map_element tag, to: :"#{tag}_value"
       end

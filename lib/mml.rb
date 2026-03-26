@@ -80,18 +80,20 @@ module Mml
   def parse(input, namespace_exist: true)
     Configuration.adapter ||= DEFAULT_ADAPTER
 
-    # TODO: If there is no namespace we should treat it as having an ex-vivo
-    # assigned namespace.
-    # For now, use Moxml to inject the namespace if it is missing, and then
-    # parse the XML into a MathML object
-
-    unless namespace_exist
-      input = Moxml.parse(input).tap do |doc|
-        doc.root["xmlns"] = Namespace.uri
-      end.to_xml
-    end
+    return parse_with_no_namespace(input) unless namespace_exist
 
     Mml::Math.from_xml(input)
+  end
+
+  def parse_with_no_namespace(input)
+    # TODO: If there is no namespace we should treat it as having an ex-vivo
+    # assigned namespace. For now, use Nokogiri to inject the namespace if it is
+    # missing, and then parse the XML into a MathML object
+    with_ns = Nokogiri::XML.parse(input).tap do |doc|
+      doc.root["xmlns"] = Namespace.uri
+    end.to_xml
+
+    Mml::Math.from_xml(with_ns)
   end
 end
 
