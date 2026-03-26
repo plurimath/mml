@@ -40,6 +40,7 @@ module Mml
 
     # rubocop:disable Metrics/BlockLength
     xml do
+      namespace Namespace
       element "mo"
 
       map_content to: :value

@@ -28,6 +28,7 @@ module Mml
     attribute :mtr_value, Mtr, collection: true
 
     xml do
+      namespace Namespace
       element "mtable"
       mixed_content
 

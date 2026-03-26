@@ -43,8 +43,7 @@ module Mml
     ].freeze
 
     COMMON_ATTRIBUTES_CLASSES = %w[
-      MathWithNilNamespace
-      MathWithNamespace
+      Math
       Mmultiscripts
       Munderover
       Semantics

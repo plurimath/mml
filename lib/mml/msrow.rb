@@ -7,6 +7,7 @@ module Mml
     attribute :position, :integer
 
     xml do
+      namespace Namespace
       element "msrow"
       mixed_content
 

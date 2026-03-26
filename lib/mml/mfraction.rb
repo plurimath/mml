@@ -10,6 +10,7 @@ module Mml
     attribute :bevelled, :string
 
     xml do
+      namespace Namespace
       element "mfraction"
       mixed_content
 

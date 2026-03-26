@@ -10,6 +10,7 @@ module Mml
     attribute :bevelled, :string
 
     xml do
+      namespace Namespace
       element "mfrac"
       mixed_content
 

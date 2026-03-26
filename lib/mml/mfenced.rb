@@ -10,6 +10,7 @@ module Mml
     attribute :open, :string
 
     xml do
+      namespace Namespace
       element "mfenced"
       mixed_content
 

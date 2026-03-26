@@ -7,6 +7,7 @@ module Mml
     attribute :notation, :string
 
     xml do
+      namespace Namespace
       element "menclose"
       mixed_content
 

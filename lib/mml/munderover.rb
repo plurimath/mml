@@ -9,6 +9,7 @@ module Mml
     attribute :align, :string
 
     xml do
+      namespace Namespace
       element "munderover"
       mixed_content
 

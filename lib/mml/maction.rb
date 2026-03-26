@@ -8,6 +8,7 @@ module Mml
     attribute :selection, :string
 
     xml do
+      namespace Namespace
       element "maction"
 
       map_attribute "mathcolor", to: :mathcolor

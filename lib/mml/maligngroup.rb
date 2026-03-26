@@ -7,6 +7,7 @@ module Mml
     attribute :groupalign, :string
 
     xml do
+      namespace Namespace
       element "maligngroup"
 
       map_attribute "mathcolor", to: :mathcolor

@@ -6,6 +6,7 @@ module Mml
     attribute :mathbackground, :string
 
     xml do
+      namespace Namespace
       element "none"
 
       map_attribute "mathcolor", to: :mathcolor

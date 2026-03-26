@@ -11,6 +11,7 @@ module Mml
     attribute :width, :string
 
     xml do
+      namespace Namespace
       element "mpadded"
       mixed_content
 

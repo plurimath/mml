@@ -20,6 +20,7 @@ module Mml
     attribute :mathbackground, :string
 
     xml do
+      namespace Namespace
       element "mglyph"
 
       map_attribute "src", to: :src

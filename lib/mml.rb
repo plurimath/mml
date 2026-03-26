@@ -22,8 +22,7 @@ module Mml
   autoload :Maction, "mml/maction"
   autoload :Maligngroup, "mml/maligngroup"
   autoload :Malignmark, "mml/malignmark"
-  autoload :MathWithNamespace, "mml/math_with_namespace"
-  autoload :MathWithNilNamespace, "mml/math_with_nil_namespace"
+  autoload :Math, "mml/math"
   autoload :Menclose, "mml/menclose"
   autoload :Merror, "mml/merror"
   autoload :Mfenced, "mml/mfenced"
@@ -70,6 +69,8 @@ module Mml
     Configuration.config
   end
 
+  # TODO: We should do this lazily in lutaml-model, i.e. using include instead
+  # of import_model.
   def update_attributes
     Configuration::COMMON_ATTRIBUTES_CLASSES.each do |klass|
       const_get(klass).import_model(CommonAttributes)
@@ -77,13 +78,20 @@ module Mml
   end
 
   def parse(input, namespace_exist: true)
-    Configuration.adapter = DEFAULT_ADAPTER unless Configuration.adapter
+    Configuration.adapter ||= DEFAULT_ADAPTER
 
-    if namespace_exist
-      Mml::MathWithNamespace.from_xml(input)
-    else
-      Mml::MathWithNilNamespace.from_xml(input)
+    # TODO: If there is no namespace we should treat it as having an ex-vivo
+    # assigned namespace.
+    # For now, use Moxml to inject the namespace if it is missing, and then
+    # parse the XML into a MathML object
+
+    unless namespace_exist
+      input = Moxml.parse(input).tap do |doc|
+        doc.root["xmlns"] = Namespace.uri
+      end.to_xml
     end
+
+    Mml::Math.from_xml(input)
   end
 end
 

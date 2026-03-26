@@ -12,6 +12,7 @@ module Mml
     attribute :mtd_value, Mtd, collection: true
 
     xml do
+      namespace Namespace
       element "mtr"
       mixed_content
 

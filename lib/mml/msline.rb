@@ -11,6 +11,7 @@ module Mml
     attribute :mslinethickness, :string
 
     xml do
+      namespace Namespace
       element "msline"
 
       map_attribute "mathcolor", to: :mathcolor

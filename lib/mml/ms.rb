@@ -18,6 +18,7 @@ module Mml
     attribute :dir, :string
 
     xml do
+      namespace Namespace
       element "ms"
       mixed_content
 

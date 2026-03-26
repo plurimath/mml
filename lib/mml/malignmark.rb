@@ -7,6 +7,7 @@ module Mml
     attribute :edge, :string
 
     xml do
+      namespace Namespace
       element "malignmark"
 
       map_attribute "mathcolor", to: :mathcolor

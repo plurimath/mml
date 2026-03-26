@@ -6,6 +6,7 @@ module Mml
     attribute :mathbackground, :string
 
     xml do
+      namespace Namespace
       element "msqrt"
       mixed_content
 

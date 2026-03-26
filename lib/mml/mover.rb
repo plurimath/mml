@@ -8,6 +8,7 @@ module Mml
     attribute :align, :string
 
     xml do
+      namespace Namespace
       element "mover"
       mixed_content
 
