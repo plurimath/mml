@@ -53,10 +53,13 @@ require_relative "v3/math"
 
 module Mml
   module V3
-    def self.parse(input, namespace_exist: true, register: Configuration.register)
+    def self.parse(input, namespace_exist: true,
+                   register: Configuration.register)
       Configuration.adapter ||= DEFAULT_ADAPTER
 
-      return parse_with_no_namespace(input, register: register) unless namespace_exist
+      unless namespace_exist
+        return parse_with_no_namespace(input, register: register)
+      end
 
       Mml::V3::Math.from_xml(input, register: register)
     end

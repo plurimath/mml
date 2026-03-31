@@ -21,6 +21,8 @@ Layout/LineLength:
 # AllowedMethods: refine
 Metrics/BlockLength:
   Max: 27
+  Exclude:
+    - 'lib/mml/common_elements.rb'
 
 # Offense count: 3
 # Configuration parameters: Prefixes, AllowedPatterns.
