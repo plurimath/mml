@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Munder < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathbackground, :string
       attribute :accentunder, :string
       attribute :mathcolor, :string
@@ -21,5 +23,6 @@ module Mml
         map_content to: :content
       end
     end
+    Configuration.register.register_model(Munder, id: :munder)
   end
 end

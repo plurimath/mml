@@ -3,9 +3,8 @@
 module Mml
   module V4
     class Menclose < Mml::V3::Menclose
-      attribute :mathcolor, :string
-      attribute :mathbackground, :string
-      attribute :notation, :string
+      import_model CommonElements
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string
@@ -13,17 +12,12 @@ module Mml
 
       xml do
         namespace Namespace
-        element "menclose"
-        mixed_content
-
-        map_attribute "mathcolor", to: :mathcolor
-        map_attribute "mathbackground", to: :mathbackground
-        map_attribute "notation", to: :notation
         map_attribute "intent", to: :intent
         map_attribute "arg", to: :arg
         map_attribute "displaystyle", to: :displaystyle
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
+    Configuration.register.register_model(Menclose, id: :menclose)
   end
 end

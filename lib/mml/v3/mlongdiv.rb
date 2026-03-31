@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Mlongdiv < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathbackground, :string
       attribute :longdivstyle, :string
       attribute :mathcolor, :string
@@ -21,5 +23,6 @@ module Mml
         map_attribute "shift", to: :shift
       end
     end
+    Configuration.register.register_model(Mlongdiv, id: :mlongdiv)
   end
 end

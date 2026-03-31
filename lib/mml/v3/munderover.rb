@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Munderover < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :accent, :string
@@ -21,5 +23,6 @@ module Mml
         map_attribute "align", to: :align
       end
     end
+    Configuration.register.register_model(Munderover, id: :munderover)
   end
 end

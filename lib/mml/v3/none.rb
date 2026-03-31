@@ -14,5 +14,6 @@ module Mml
         map_attribute "mathbackground", to: :mathbackground
       end
     end
+    Configuration.register.register_model(None, id: :none)
   end
 end

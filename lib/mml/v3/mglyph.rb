@@ -42,5 +42,6 @@ module Mml
         map_attribute "mathbackground", to: :mathbackground
       end
     end
+    Configuration.register.register_model(Mglyph, id: :mglyph)
   end
 end

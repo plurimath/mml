@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Mover < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathbackground, :string
       attribute :mathcolor, :string
       attribute :accent, :string
@@ -19,5 +21,6 @@ module Mml
         map_attribute "align", to: :align
       end
     end
+    Configuration.register.register_model(Mover, id: :mover)
   end
 end

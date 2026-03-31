@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Msrow < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :position, :integer
@@ -17,5 +19,6 @@ module Mml
         map_attribute "position", to: :position
       end
     end
+    Configuration.register.register_model(Msrow, id: :msrow)
   end
 end

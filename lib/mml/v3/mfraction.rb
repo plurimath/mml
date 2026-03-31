@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Mfraction < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :linethickness, :string
@@ -23,5 +25,6 @@ module Mml
         map_attribute "bevelled", to: :bevelled
       end
     end
+    Configuration.register.register_model(Mfraction, id: :mfraction)
   end
 end

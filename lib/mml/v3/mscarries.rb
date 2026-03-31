@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Mscarries < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :scriptsizemultiplier, :integer
       attribute :mathbackground, :string
       attribute :mathcolor, :string
@@ -23,5 +25,6 @@ module Mml
         map_attribute "crossout", to: :crossout
       end
     end
+    Configuration.register.register_model(Mscarries, id: :mscarries)
   end
 end

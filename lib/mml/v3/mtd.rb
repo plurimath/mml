@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Mtd < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :rowalign, :string
@@ -19,5 +21,6 @@ module Mml
         map_attribute "columnalign", to: :columnalign
       end
     end
+    Configuration.register.register_model(Mtd, id: :mtd)
   end
 end

@@ -18,5 +18,6 @@ module Mml
         map_attribute "selection", to: :selection
       end
     end
+    Configuration.register.register_model(Maction, id: :maction)
   end
 end

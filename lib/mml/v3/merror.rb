@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Merror < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathbackground, :string
       attribute :mathcolor, :string
 
@@ -15,5 +17,6 @@ module Mml
         map_attribute "mathbackground", to: :mathbackground
       end
     end
+    Configuration.register.register_model(Merror, id: :merror)
   end
 end

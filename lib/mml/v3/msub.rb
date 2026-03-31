@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Msub < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathbackground, :string
       attribute :subscriptshift, :string
       attribute :mathcolor, :string
@@ -17,5 +19,6 @@ module Mml
         map_attribute "mathcolor", to: :mathcolor
       end
     end
+    Configuration.register.register_model(Msub, id: :msub)
   end
 end

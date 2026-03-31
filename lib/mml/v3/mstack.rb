@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Mstack < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :align, :string
@@ -23,5 +25,6 @@ module Mml
         map_attribute "charspacing", to: :charspacing
       end
     end
+    Configuration.register.register_model(Mstack, id: :mstack)
   end
 end

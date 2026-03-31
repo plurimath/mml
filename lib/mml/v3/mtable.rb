@@ -2,8 +2,6 @@
 
 module Mml
   module V3
-    autoload(:Mlabeledtr, "mml/v3/mlabeledtr")
-    autoload(:Mtr, "mml/v3/mtr")
     class Mtable < Lutaml::Model::Serializable
       attribute :mathcolor, :string
       attribute :mathbackground, :string
@@ -25,8 +23,8 @@ module Mml
       attribute :displaystyle, :string
       attribute :side, :string
       attribute :minlabelspacing, :string
-      attribute :mlabeledtr_value, Mlabeledtr, collection: true
-      attribute :mtr_value, Mtr, collection: true
+      attribute :mlabeledtr_value, :mlabeledtr, collection: true
+      attribute :mtr_value, :mtr, collection: true
 
       xml do
         namespace Namespace
@@ -57,5 +55,6 @@ module Mml
         map_element "mtr", to: :mtr_value
       end
     end
+    Configuration.register.register_model(Mtable, id: :mtable)
   end
 end

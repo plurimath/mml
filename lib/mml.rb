@@ -8,7 +8,7 @@ module Mml
 
   module_function
 
-  def parse(input, namespace_exist: true, version: 3)
+  def parse(input, namespace_exist: true, version: 3, register: Configuration.register)
     case version
     when 3 then Mml::V3.parse(input, namespace_exist: namespace_exist)
     when 4 then Mml::V4.parse(input, namespace_exist: namespace_exist)

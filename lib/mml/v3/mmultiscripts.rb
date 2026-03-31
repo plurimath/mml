@@ -2,14 +2,14 @@
 
 module Mml
   module V3
-    autoload(:Mprescripts, "mml/v3/mprescripts")
-
     class Mmultiscripts < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :subscriptshift, :string
       attribute :superscriptshift, :string
-      attribute :mprescripts_value, Mprescripts
+      attribute :mprescripts_value, :mprescripts
 
       xml do
         namespace Namespace
@@ -23,5 +23,6 @@ module Mml
         map_element "mprescripts", to: :mprescripts_value
       end
     end
+    Configuration.register.register_model(Mmultiscripts, id: :mmultiscripts)
   end
 end

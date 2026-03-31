@@ -2,7 +2,7 @@
 
 module Mml
   module V4
-    class A < Lutaml::Model::Serializable
+    class A < CommonElements
       attribute :href, :string
       attribute :hreflang, :string
       attribute :mathcolor, :string
@@ -27,5 +27,6 @@ module Mml
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
+    Configuration.register.register_model(A, id: :a)
   end
 end
