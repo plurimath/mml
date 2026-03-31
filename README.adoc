@@ -5,181 +5,269 @@
 
 == Purpose
 
-Mml provides MathML 3 XML parsing and serialization for Ruby. It maps the full
-MathML element set into Ruby model classes using the
+Mml provides MathML 3 and MathML 4 XML parsing and serialization for Ruby. It maps
+the full MathML element set into Ruby model classes using the
 https://github.com/lutaml/lutaml-model[lutaml-model] framework and is used by
 https://github.com/plurimath/plurimath[Plurimath] for mathematical formula
 representation.
 
 Key features:
 
-* **MathML 3 element support**: 43 elements including presentation markup,
-  tables, scripts, fractions, and more
-* **Namespace handling**: Default `xmlns`, prefixed `mml:`, and namespace-less
-  input
-* **Round-trip fidelity**: Parse XML to an object graph, modify, and serialize
-  back
+* **Dual MathML version support**: Separate class hierarchies for MathML 3 and
+  MathML 4 with explicit version selection
+* **Round-trip fidelity**: Parse XML to an object graph, modify, and serialize back
+* **Namespace handling**: Default `xmlns`, prefixed `mml:`, and namespace-less input
 * **Opal support**: Runs in the browser via Ruby-to-JavaScript compilation
 
 == Installation
-
-Add to your application's Gemfile:
 
 [source,ruby]
 ----
 gem 'mml'
 ----
 
-Then execute:
-
 [source,bash]
 ----
 $ bundle install
-----
-
-Or install directly:
-
-[source,bash]
-----
+# or
 $ gem install mml
 ----
 
 == Quick start
 
-=== Parse with a namespace (compliant)
-
-`Mml.parse` expects a namespace by default (`namespace_exist: true`). It accepts
-both default and prefixed forms:
-
 [source,ruby]
 ----
 require "mml"
 
-# Default namespace
+# Parse MathML (defaults to MathML 3)
 math = Mml.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>')
 
-# Prefixed namespace
-math = Mml.parse('<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>x</mml:mi></mml:math>')
-----
-
-=== Parse without namespace (non-compliant)
-
-Some XML schemas embed MathML without a namespace declaration, which is
-non-compliant but common in practice. Pass `namespace_exist: false` to handle
-this — the namespace is injected internally before parsing:
-
-[source,ruby]
-----
-math = Mml.parse("<math><mi>x</mi></math>", namespace_exist: false)
-----
-
-=== Serialize to XML
-
-[source,ruby]
-----
-# Default namespace (default)
+# Serialize back to XML
 math.to_xml
 # => "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi></math>"
 
-# Prefixed namespace
-math.to_xml(prefix: true)
-# => "<mml:math xmlns:mml=\"http://www.w3.org/1998/Math/MathML\"><mml:mi>x</mml:mi></mml:math>"
-
-# Omit XML declaration
-math.to_xml(declaration: false)
+# Parse with explicit version
+math4 = Mml.parse(input, version: 4)
 ----
 
-== Building MathML with the API
+== MathML version architecture
 
-=== Leaf elements
+Mml maintains two parallel class hierarchies under `Mml::V3` and `Mml::V4`.
+Both versions share the same namespace URI (`http://www.w3.org/1998/Math/MathML`)
+for backward compatibility.
 
-Leaf elements (`Mi`, `Mn`, `Mo`, `Ms`, `Mtext`) hold text content in the `value`
-attribute:
+[source]
+----
+                   ┌───────────────────────────────────────────┐
+                   │                   Mml                     │
+                   │  (aliases Mml::V3 for backward compat)    │
+                   └────────────────────┬──────────────────────┘
+                                        │
+                    ┌───────────────────┴────────────────────┐
+                    │                                        │
+               ┌────┴────┐                              ┌────┴────┐
+               │ Mml::V3 │                              │ Mml::V4 │
+               └────┬────┘                              └────┬────┘
+                    │                                        │
+    ┌───────────────┼─────────────────────┐  ┌───────────────┼───────────────┐
+    │  ┌────────────┴───────────────┐     │  │  ┌────────────┴────────────┐  │
+    │  │ Element classes            │     │  │  │ Element classes         │  │
+    │  │ (Mi, Mn, Mo, Mrow, ...)    │     │  │  │ (Mi, Mn, Mo, Mrow, ...) │  │
+    │  │                            │     │  │  │ + intent, arg,          │  │
+    │  │ Inherits from              │     │  │  │   displaystyle,         │  │
+    │  │ Lutaml::Model::Serializable│     │  │  │   scriptlevel           │  │
+    │  └────────────┬───────────────┘     │  │  │  + <a> element          │  │
+    │               │                     │  │  └────────────┬────────────┘  │
+    │  ┌────────────┴────────────┐        │  │  ┌────────────┴────────────┐  │
+    │  │ CommonAttributes        │        │  │  │ CommonAttributes        │  │
+    │  │ (child element mixin)   │        │  │  │ (v4 version)            │  │
+    │  └─────────────────────────┘        │  |  └─────────────────────────┘  |
+    └─────────────────────────────────────┘  └───────────────────────────────┘
+                                           │
+                        ┌──────────────────┴──────────────────────┐
+                        │         Lutaml::Model::Serializable     │
+                        │         (XML mapping framework)         │
+                        └─────────────────────────────────────────┘
+----
+
+=== Version selection
 
 [source,ruby]
 ----
-# An identifier: <mi>x</mi>
+Mml.parse(input)              # Default: MathML 3 (Mml::V3)
+Mml.parse(input, version: 3)  # Explicit MathML 3
+Mml.parse(input, version: 4)  # MathML 4 with intent/arg attributes
+Mml::V4.parse(input)          # Direct v4 parsing (no default fallback)
+----
+
+=== Key differences between MathML 3 and MathML 4
+
+[cols="1,2",options="header"]
+|===
+|Feature |MathML 4 additions
+|Universal attributes |`intent`, `arg`, `displaystyle`, `scriptlevel` available on all presentation elements
+|New element |`<a>` hyperlink element with `href`, `hreflang`
+|Deprecated (not serialized) a|
+* `fontfamily`, `fontweight`, `fontstyle`, `fontsize`, `color`, `background` on `mstyle`, `mglyph`, `mspace`
+* `groupalign` on `mtable`, `mtr`, `mlabeledtr`
+* `fence`, `separator` on `mo`
+|Deprecated (recognized but hidden) |`<mlabeledtr>`, `<none>` removed from `CommonAttributes` but classes still exist
+|===
+
+=== Migration from MathML 3 to MathML 4
+
+==== For gem users (upgrading parsing)
+
+If you currently parse MathML and want to use MathML 4 features:
+
+[source,ruby]
+----
+# Change this:
+math = Mml.parse(input)
+
+# To this:
+math = Mml.parse(input, version: 4)
+----
+
+==== For gem users (upgrading serialized output)
+
+If you serialize MathML 4 documents and want to ensure compatibility:
+
+[source,ruby]
+----
+# MathML 4 serialization removes deprecated attributes from XML output
+math = Mml.parse(input, version: 4)
+math.to_xml  # No fontfamily, fontweight, color, groupalign, etc. in output
+----
+
+==== For gem extenders (adding custom elements)
+
+Custom elements registered via `Configuration.custom_models` are version-specific:
+
+[source,ruby]
+----
+# Register a custom element for MathML 4 only
+Mml::V4::Configuration.custom_models = { Mi => MyCustomMiV4 }
+----
+
+CommonAttributes is version-specific. Elements that exist only in v4 (like `<a>`)
+are automatically handled:
+
+[source,ruby]
+----
+# The <a> element is only in v4 CommonAttributes
+Mml::V4::Mrow.new(a_value: [Mml::V4::A.new(href: "https://...")])
+----
+
+== Parsing and serialization
+
+=== Parsing
+
+[source,ruby]
+----
+# Default namespace
+Mml.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>')
+
+# Prefixed namespace
+Mml.parse('<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>x</mml:mi></mml:math>')
+
+# No namespace (namespace injected internally)
+Mml.parse("<math><mi>x</mi></math>", namespace_exist: false)
+----
+
+=== Serialization
+
+[source,ruby]
+----
+math.to_xml
+# => "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi></math>"
+
+math.to_xml(prefix: true)
+# => "<mml:math xmlns:mml=\"http://www.w3.org/1998/Math/MathML\"><mml:mi>x</mml:mi></mml:math>"
+
+math.to_xml(declaration: false)
+# => "<math xmlns=\"...\"><mi>x</mi></math>"
+----
+
+=== Round-trip (parse, modify, serialize)
+
+[source,ruby]
+----
+math = Mml.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>')
+math.display = "block"
+math.to_xml
+# => "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><mi>x</mi></math>"
+----
+
+== Element reference
+
+=== Element types
+
+*Token elements*: `mi`, `mn`, `mo`, `ms`, `mtext`, `mspace`, `mglyph`
+
+*General layout*: `mrow`, `mfrac`, `msqrt`, `mroot`, `mstyle`, `merror`, `mpadded`, `mphantom`, `mfenced`, `menclose`, `maction`
+
+*Script elements*: `msub`, `msup`, `msubsup`, `munder`, `mover`, `munderover`, `mmultiscripts`, `mprescripts`
+
+*Table elements*: `mtable`, `mtr`, `mtd`
+
+*Row and stack elements*: `mstack`, `msrow`, `mscarries`, `mscarry`, `msline`, `msgroup`, `mlongdiv`
+
+*Semantic elements*: `mfraction`, `semantics`
+
+*v4 only*: `a` (hyperlink)
+
+*Deprecated*: `mlabeledtr`, `none` (classes exist but hidden from CommonAttributes in v4)
+
+=== Token elements (leaf nodes)
+
+Token elements hold text content in the `value` attribute:
+
+[source,ruby]
+----
 Mml::Mi.new(value: "x")
-
-# A number: <mn>42</mn>
 Mml::Mn.new(value: "42")
-
-# An operator: <mo>+</mo>
 Mml::Mo.new(value: "+")
-
-# With attributes: <mi mathvariant="bold">x</mi>
-Mml::Mi.new(value: "x", mathvariant: "bold")
+Mml::Ms.new(value: "text")
+Mml::Mtext.new(value: "label")
+Mml::Mspace.new(width: "1em")
+Mml::Mglyph.new(alt: "symbol")
 ----
 
 === Container elements
 
-Container elements hold child elements via collection attributes named
-`#{tag}_value`. The supported child types come from the `CommonAttributes` model
-mixed into container classes.
+Container elements hold child elements via `#{tag}_value` collection attributes:
 
 [source,ruby]
 ----
-# <mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow>
 Mml::Mrow.new(
   mi_value: [Mml::Mi.new(value: "x")],
   mo_value: [Mml::Mo.new(value: "+")],
   mn_value: [Mml::Mn.new(value: "1")],
 )
+# => <mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow>
 ----
 
-=== Composing complex expressions
+=== Composing expressions
 
-Build an expression tree by nesting elements, then wrap in `Mml::Math`:
+Build an expression tree by nesting elements:
 
 [source,ruby]
 ----
-# <math xmlns="http://www.w3.org/1998/Math/MathML">
-#   <mfrac><mi>a</mi><mi>b</mi></mfrac>
-# </math>
-math = Mml::Math.new(
+Mml::Math.new(
   mfrac_value: [
     Mml::Mfrac.new(
       mi_value: [Mml::Mi.new(value: "a"), Mml::Mi.new(value: "b")],
     ),
   ],
 )
-
-math.to_xml
-----
-
-=== Fractions, subscripts, and superscripts
-
-[source,ruby]
-----
-# <msup><mi>x</mi><mn>2</mn></msup>  —  x²
-Mml::Msup.new(mi_value: [Mml::Mi.new(value: "x")],
-              mn_value: [Mml::Mn.new(value: "2")])
-
-# <msub><mi>a</mi><mn>1</mn></msup>  —  a₁
-Mml::Msub.new(mi_value: [Mml::Mi.new(value: "a")],
-              mn_value: [Mml::Mn.new(value: "1")])
-
-# <msubsup><mi>b</mi><mn>1</mn><mn>2</mn></msubsup>  —  b₁²
-Mml::Msubsup.new(mi_value: [Mml::Mi.new(value: "b")],
-                 mn_value: [Mml::Mn.new(value: "1"),
-                            Mml::Mn.new(value: "2")])
-
-# <mfrac linethickness="0"><mi>a</mi><mi>b</mi></mfrac>  —  a/b
-Mml::Mfrac.new(
-  linethickness: "0",
-  mi_value: [Mml::Mi.new(value: "a"), Mml::Mi.new(value: "b")],
-)
+# => <math><mfrac><mi>a</mi><mi>b</mi></mfrac></math>
 ----
 
 === Tables
 
-`Mtable` uses typed `mtr_value` and `mlabeledtr_value` attributes for its rows:
-
 [source,ruby]
 ----
-# <mtable>
-#   <mtr><mtd><mi>a</mi></mtd><mtd><mi>b</mi></mtd></mtr>
-# </mtable>
 Mml::Mtable.new(
   mtr_value: [
     Mml::Mtr.new(
@@ -192,111 +280,75 @@ Mml::Mtable.new(
 )
 ----
 
-=== Parsing, modifying, and re-serializing
-
-The object graph is fully mutable — parse, modify attributes or children, then
-serialize back:
+=== Hyperlinks (MathML 4 only)
 
 [source,ruby]
 ----
-math = Mml.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>')
-
-# Modify the root element's display attribute
-math.display = "block"
-
-# Serialize with the changes
-math.to_xml
-# => "<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">...</math>"
+Mml::V4::A.new(
+  href: "https://example.com",
+  hreflang: "en",
+  mi_value: [Mml::V4::Mi.new(value: "click")]
+)
+# => <a href="https://example.com" hreflang="en"><mi>click</mi></a>
 ----
 
-== Architecture
+== Internal architecture
 
-Mml follows a data mapper pattern where each MathML element is a Ruby class
-under the `Mml::` namespace, inheriting from `Lutaml::Model::Serializable`.
+=== Element class patterns
 
-=== Element classes
+All element classes inherit from `Lutaml::Model::Serializable`:
 
-Two element patterns:
-
-* *Leaf elements* (`Mi`, `Mn`, `Mo`, `Ms`, `Mtext`, `Mspace`): hold text content
-  via `map_content to: :value`
-* *Container elements* (`Math`, `Mrow`, `Mfrac`, `Mtable`, `Msubsup`): hold
-  child elements via `mixed_content`
+* *Leaf elements*: use `map_content to: :value` for text content
+* *Container elements*: use `mixed_content` for child elements
 
 [source,ruby]
 ----
-# Leaf element — text content
-module Mml
-  class Mi < Lutaml::Model::Serializable
-    attribute :value, :string
-
-    xml do
-      namespace Namespace
-      element "mi"
-      map_content to: :value
-    end
+# Leaf — text content
+class Mi < Lutaml::Model::Serializable
+  attribute :value, :string
+  xml do
+    element "mi"
+    map_content to: :value
   end
 end
 
-# Container element — child elements
-module Mml
-  class Mrow < Lutaml::Model::Serializable
-    xml do
-      namespace Namespace
-      element "mrow"
-      mixed_content
-    end
+# Container — child elements
+class Mrow < Lutaml::Model::Serializable
+  xml do
+    element "mrow"
+    mixed_content
   end
 end
 ----
 
 === CommonAttributes
 
-Container elements that can hold arbitrary MathML children use a shared
-`CommonAttributes` model.
-
-The classes that receive it are listed in
+Container elements that accept arbitrary MathML children import `CommonAttributes`,
+which defines `#{tag}_value` collection attributes for all supported child elements.
+The list of classes that receive this mixin is in
 `Configuration::COMMON_ATTRIBUTES_CLASSES`.
 
 === Namespace
 
-All elements declare `namespace Namespace` using the MathML namespace URI
-(`http://www.w3.org/1998/Math/MathML`) with prefix `mml`. The `Mml.parse`
-method handles three input forms:
+All elements use the MathML namespace URI (`http://www.w3.org/1998/Math/MathML`).
+Three input forms are supported:
 
 * Default namespace: `<math xmlns="http://www.w3.org/1998/Math/MathML">`
 * Prefixed: `<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML">`
-* No namespace: handled by injecting the namespace before parsing
+* No namespace: namespace is injected before parsing when `namespace_exist: false`
 
-=== Configuration
+== Configuration
 
 [source,ruby]
 ----
-# Switch XML adapter
+# Switch XML adapter (default: :ox, also supports :nokogiri)
 Mml::Configuration.adapter = :nokogiri
 
 # Register custom model replacements
 Mml::Configuration.custom_models = { Mi => MyCustomMi }
 ----
 
-== Supported elements
-
-Mml supports the following MathML 3 presentation elements:
-
-`math`, `mi`, `mn`, `mo`, `ms`, `mtext`, `mspace`, `mglyph`
-`mrow`, `mfrac`, `msqrt`, `mroot`, `mstyle`, `merror`, `mpadded`,
-`mphantom`, `mfenced`, `menclose`, `maction`
-`msub`, `msup`, `msubsup`, `munder`, `mover`, `munderover`,
-`mmultiscripts`, `mprescripts`
-`mtable`, `mtr`, `mtd`, `mlabeledtr`
-`mstack`, `msrow`, `mscarries`, `mscarry`, `msline`, `msgroup`, `mlongdiv`
-`mfraction`, `semantics`, `none`
-
 == Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then run
-`rake` to run the tests and linter. You can also run `bin/console` for an
-interactive prompt.
 
 [source,bash]
 ----
