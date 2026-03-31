@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "mml"
+require "mml/v4"
 require "rspec/matchers"
 
 RSpec.configure do |config|
