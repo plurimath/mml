@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
-module Mml::V3
-  class Math < Lutaml::Model::Serializable
-    attribute :display, :string
+module Mml
+  module V3
+    class Math < Lutaml::Model::Serializable
+      attribute :display, :string
 
-    xml do
-      namespace Namespace
-      element "math"
-      mixed_content
+      xml do
+        namespace Namespace
+        element "math"
+        mixed_content
 
-      map_attribute :display, to: :display
+        map_attribute :display, to: :display
+      end
     end
-  end
 
-  # For backward compatibility, we keep MathWithNamespace as an alias to Math.
-  MathWithNamespace = Math
+    # For backward compatibility, we keep MathWithNamespace as an alias to Math.
+    MathWithNamespace = Math
+  end
 end

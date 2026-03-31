@@ -1,19 +1,21 @@
 # frozen_string_literal: true
 
-module Mml::V3
-  class Msrow < Lutaml::Model::Serializable
-    attribute :mathcolor, :string
-    attribute :mathbackground, :string
-    attribute :position, :integer
+module Mml
+  module V3
+    class Msrow < Lutaml::Model::Serializable
+      attribute :mathcolor, :string
+      attribute :mathbackground, :string
+      attribute :position, :integer
 
-    xml do
-      namespace Namespace
-      element "msrow"
-      mixed_content
+      xml do
+        namespace Namespace
+        element "msrow"
+        mixed_content
 
-      map_attribute "mathcolor", to: :mathcolor
-      map_attribute "mathbackground", to: :mathbackground
-      map_attribute "position", to: :position
+        map_attribute "mathcolor", to: :mathcolor
+        map_attribute "mathbackground", to: :mathbackground
+        map_attribute "position", to: :position
+      end
     end
   end
 end
