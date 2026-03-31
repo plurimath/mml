@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Mscarry < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :location, :string
@@ -19,5 +21,6 @@ module Mml
         map_attribute "crossout", to: :crossout
       end
     end
+    Configuration.register.register_model(Mscarry, id: :mscarry)
   end
 end

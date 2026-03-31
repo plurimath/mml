@@ -3,6 +3,8 @@
 module Mml
   module V4
     class Math < Mml::V3::Math
+      import_model CommonElements
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string
@@ -20,6 +22,7 @@ module Mml
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
+    Configuration.register.register_model(Math, id: :math)
 
     # For backward compatibility, we keep MathWithNamespace as an alias to Math.
     MathWithNamespace = Math

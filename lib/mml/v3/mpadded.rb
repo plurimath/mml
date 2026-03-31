@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Mpadded < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathbackground, :string
       attribute :mathcolor, :string
       attribute :voffset, :string
@@ -25,5 +27,6 @@ module Mml
         map_attribute "width", to: :width
       end
     end
+    Configuration.register.register_model(Mpadded, id: :mpadded)
   end
 end

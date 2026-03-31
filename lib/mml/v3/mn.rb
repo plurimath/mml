@@ -34,5 +34,6 @@ module Mml
         map_attribute "background", to: :background
       end
     end
+    Configuration.register.register_model(Mn, id: :mn)
   end
 end

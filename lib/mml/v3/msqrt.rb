@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Msqrt < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
 
@@ -15,5 +17,6 @@ module Mml
         map_attribute "mathbackground", to: :mathbackground
       end
     end
+    Configuration.register.register_model(Msqrt, id: :msqrt)
   end
 end

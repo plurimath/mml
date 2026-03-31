@@ -2,10 +2,10 @@
 
 module Mml
   module V3
-    autoload(:Mi, "mml/v3/mi")
-
     class Semantics < Lutaml::Model::Serializable
-      attribute :annotation, Mi, collection: true
+      import_model CommonElements
+
+      attribute :annotation, :mi, collection: true
 
       xml do
         namespace Namespace
@@ -15,5 +15,6 @@ module Mml
         map_element :annotation, to: :annotation
       end
     end
+    Configuration.register.register_model(Semantics, id: :semantics)
   end
 end

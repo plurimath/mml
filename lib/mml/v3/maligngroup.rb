@@ -16,5 +16,6 @@ module Mml
         map_attribute "groupalign", to: :groupalign
       end
     end
+    Configuration.register.register_model(Maligngroup, id: :maligngroup)
   end
 end

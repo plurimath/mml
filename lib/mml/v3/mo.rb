@@ -82,5 +82,6 @@ module Mml
       end
       # rubocop:enable Metrics/BlockLength
     end
+    Configuration.register.register_model(Mo, id: :mo)
   end
 end

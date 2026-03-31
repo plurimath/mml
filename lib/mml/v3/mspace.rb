@@ -54,5 +54,6 @@ module Mml
         map_attribute "indentshiftlast", to: :indentshiftlast
       end
     end
+    Configuration.register.register_model(Mspace, id: :mspace)
   end
 end

@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Menclose < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :notation, :string
@@ -17,5 +19,6 @@ module Mml
         map_attribute "notation", to: :notation
       end
     end
+    Configuration.register.register_model(Menclose, id: :menclose)
   end
 end

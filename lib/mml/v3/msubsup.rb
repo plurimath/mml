@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Msubsup < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :subscriptshift, :string
@@ -19,5 +21,6 @@ module Mml
         map_attribute "superscriptshift", to: :superscriptshift
       end
     end
+    Configuration.register.register_model(Msubsup, id: :msubsup)
   end
 end

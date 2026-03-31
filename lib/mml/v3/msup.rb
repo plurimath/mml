@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Msup < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :superscriptshift, :string
@@ -17,5 +19,6 @@ module Mml
         map_attribute "superscriptshift", to: :superscriptshift
       end
     end
+    Configuration.register.register_model(Msup, id: :msup)
   end
 end

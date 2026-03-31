@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Ms < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathbackground, :string
       attribute :mathvariant, :string
       attribute :fontfamily, :string
@@ -39,5 +41,6 @@ module Mml
         map_attribute "dir", to: :dir
       end
     end
+    Configuration.register.register_model(Ms, id: :ms)
   end
 end

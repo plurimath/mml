@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Msgroup < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :mathcolor, :string
       attribute :mathbackground, :string
       attribute :position, :integer
@@ -21,5 +23,6 @@ module Mml
         map_attribute "shift", to: :shift
       end
     end
+    Configuration.register.register_model(Msgroup, id: :msgroup)
   end
 end

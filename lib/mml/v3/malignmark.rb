@@ -16,5 +16,6 @@ module Mml
         map_attribute "edge", to: :edge
       end
     end
+    Configuration.register.register_model(Malignmark, id: :malignmark)
   end
 end

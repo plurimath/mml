@@ -3,6 +3,8 @@
 module Mml
   module V3
     class Math < Lutaml::Model::Serializable
+      import_model CommonElements
+
       attribute :display, :string
 
       xml do
@@ -13,6 +15,8 @@ module Mml
         map_attribute :display, to: :display
       end
     end
+
+    Configuration.register.register_model(Math, id: :math)
 
     # For backward compatibility, we keep MathWithNamespace as an alias to Math.
     MathWithNamespace = Math
