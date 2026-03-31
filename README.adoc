@@ -39,15 +39,16 @@ $ gem install mml
 ----
 require "mml"
 
-# Parse MathML (defaults to MathML 3)
-math = Mml.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>')
+# Parse MathML with explicit version
+math = Mml.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>', version: 3)
+math4 = Mml.parse(input, version: 4)
 
 # Serialize back to XML
 math.to_xml
-# => "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi></math>"
 
-# Parse with explicit version
-math4 = Mml.parse(input, version: 4)
+# Or use versioned modules directly
+Mml::V3::Math.from_xml(input)
+Mml::V4::Math.from_xml(input)
 ----
 
 == MathML version architecture
@@ -60,7 +61,7 @@ for backward compatibility.
 ----
                    ┌───────────────────────────────────────────┐
                    │                   Mml                     │
-                   │  (aliases Mml::V3 for backward compat)    │
+                   │  parse() delegates to V3 or V4            │
                    └────────────────────┬──────────────────────┘
                                         │
                     ┌───────────────────┴────────────────────┐
@@ -97,7 +98,8 @@ for backward compatibility.
 Mml.parse(input)              # Default: MathML 3 (Mml::V3)
 Mml.parse(input, version: 3)  # Explicit MathML 3
 Mml.parse(input, version: 4)  # MathML 4 with intent/arg attributes
-Mml::V4.parse(input)          # Direct v4 parsing (no default fallback)
+Mml::V3.parse(input)          # Direct v3 parsing
+Mml::V4.parse(input)          # Direct v4 parsing
 ----
 
 === Key differences between MathML 3 and MathML 4
@@ -114,49 +116,60 @@ Mml::V4.parse(input)          # Direct v4 parsing (no default fallback)
 |Deprecated (recognized but hidden) |`<mlabeledtr>`, `<none>` removed from `CommonAttributes` but classes still exist
 |===
 
-=== Migration from MathML 3 to MathML 4
+=== Migration from previous versions
 
-==== For gem users (upgrading parsing)
+==== require and configuration
 
-If you currently parse MathML and want to use MathML 4 features:
-
-[source,ruby]
-----
-# Change this:
-math = Mml.parse(input)
-
-# To this:
-math = Mml.parse(input, version: 4)
-----
-
-==== For gem users (upgrading serialized output)
-
-If you serialize MathML 4 documents and want to ensure compatibility:
+The `Mml` module no longer aliases versioned constants. Use the explicit version
+namespace:
 
 [source,ruby]
 ----
-# MathML 4 serialization removes deprecated attributes from XML output
-math = Mml.parse(input, version: 4)
-math.to_xml  # No fontfamily, fontweight, color, groupalign, etc. in output
+# Before (no longer supported)
+require "mml/configuration"
+Mml::Configuration.adapter = :nokogiri
+Mml::Configuration.custom_models = { Mi => MyCustomMi }
+Mml::Math.new(...)
+
+# After — explicit version
+require "mml"
+Mml::V3::Configuration.adapter = :nokogiri
+Mml::V3::Configuration.custom_models = { Mi => MyCustomMi }
+Mml::V3::Math.new(...)
+
+# Or for MathML 4
+Mml::V4::Configuration.adapter = :nokogiri
+Mml::V4::Configuration.custom_models = { Mi => MyCustomMi }
+Mml::V4::Math.new(...)
 ----
 
-==== For gem extenders (adding custom elements)
+==== Element class references
 
-Custom elements registered via `Configuration.custom_models` are version-specific:
+All element classes live under their version namespace:
 
 [source,ruby]
 ----
-# Register a custom element for MathML 4 only
-Mml::V4::Configuration.custom_models = { Mi => MyCustomMiV4 }
+# Before (no longer supported)
+Mml::Mi.new(value: "x")
+Mml::Mrow.new(mi_value: [...])
+
+# After
+Mml::V3::Mi.new(value: "x")
+Mml::V3::Mrow.new(mi_value: [...])
+
+# Or for MathML 4
+Mml::V4::Mi.new(value: "x", intent: "$x")
+Mml::V4::Mrow.new(mi_value: [...])
 ----
 
-CommonAttributes is version-specific. Elements that exist only in v4 (like `<a>`)
-are automatically handled:
+==== Parsing
+
+`Mml.parse` still works with a `version:` keyword, defaulting to version 3:
 
 [source,ruby]
 ----
-# The <a> element is only in v4 CommonAttributes
-Mml::V4::Mrow.new(a_value: [Mml::V4::A.new(href: "https://...")])
+Mml.parse(input)              # unchanged — defaults to MathML 3
+Mml.parse(input, version: 4)  # use MathML 4
 ----
 
 == Parsing and serialization
@@ -166,13 +179,16 @@ Mml::V4::Mrow.new(a_value: [Mml::V4::A.new(href: "https://...")])
 [source,ruby]
 ----
 # Default namespace
-Mml.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>')
+Mml::V3.parse('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>')
 
 # Prefixed namespace
-Mml.parse('<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>x</mml:mi></mml:math>')
+Mml::V3.parse('<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML"><mml:mi>x</mml:mi></mml:math>')
 
 # No namespace (namespace injected internally)
-Mml.parse("<math><mi>x</mi></math>", namespace_exist: false)
+Mml::V3.parse("<math><mi>x</mi></math>", namespace_exist: false)
+
+# MathML 4
+Mml::V4.parse(input)
 ----
 
 === Serialization
@@ -225,13 +241,13 @@ Token elements hold text content in the `value` attribute:
 
 [source,ruby]
 ----
-Mml::Mi.new(value: "x")
-Mml::Mn.new(value: "42")
-Mml::Mo.new(value: "+")
-Mml::Ms.new(value: "text")
-Mml::Mtext.new(value: "label")
-Mml::Mspace.new(width: "1em")
-Mml::Mglyph.new(alt: "symbol")
+Mml::V3::Mi.new(value: "x")
+Mml::V3::Mn.new(value: "42")
+Mml::V3::Mo.new(value: "+")
+Mml::V3::Ms.new(value: "text")
+Mml::V3::Mtext.new(value: "label")
+Mml::V3::Mspace.new(width: "1em")
+Mml::V3::Mglyph.new(alt: "symbol")
 ----
 
 === Container elements
@@ -240,10 +256,10 @@ Container elements hold child elements via `#{tag}_value` collection attributes:
 
 [source,ruby]
 ----
-Mml::Mrow.new(
-  mi_value: [Mml::Mi.new(value: "x")],
-  mo_value: [Mml::Mo.new(value: "+")],
-  mn_value: [Mml::Mn.new(value: "1")],
+Mml::V3::Mrow.new(
+  mi_value: [Mml::V3::Mi.new(value: "x")],
+  mo_value: [Mml::V3::Mo.new(value: "+")],
+  mn_value: [Mml::V3::Mn.new(value: "1")],
 )
 # => <mrow><mi>x</mi><mo>+</mo><mn>1</mn></mrow>
 ----
@@ -254,10 +270,10 @@ Build an expression tree by nesting elements:
 
 [source,ruby]
 ----
-Mml::Math.new(
+Mml::V3::Math.new(
   mfrac_value: [
-    Mml::Mfrac.new(
-      mi_value: [Mml::Mi.new(value: "a"), Mml::Mi.new(value: "b")],
+    Mml::V3::Mfrac.new(
+      mi_value: [Mml::V3::Mi.new(value: "a"), Mml::V3::Mi.new(value: "b")],
     ),
   ],
 )
@@ -268,12 +284,12 @@ Mml::Math.new(
 
 [source,ruby]
 ----
-Mml::Mtable.new(
+Mml::V3::Mtable.new(
   mtr_value: [
-    Mml::Mtr.new(
+    Mml::V3::Mtr.new(
       mtd_value: [
-        Mml::Mtd.new(mi_value: [Mml::Mi.new(value: "a")]),
-        Mml::Mtd.new(mi_value: [Mml::Mi.new(value: "b")]),
+        Mml::V3::Mtd.new(mi_value: [Mml::V3::Mi.new(value: "a")]),
+        Mml::V3::Mtd.new(mi_value: [Mml::V3::Mi.new(value: "b")]),
       ],
     ),
   ],
@@ -339,13 +355,17 @@ Three input forms are supported:
 
 == Configuration
 
+Configuration is version-specific. Use the namespace matching your target version:
+
 [source,ruby]
 ----
 # Switch XML adapter (default: :ox, also supports :nokogiri)
-Mml::Configuration.adapter = :nokogiri
+Mml::V3::Configuration.adapter = :nokogiri
+Mml::V4::Configuration.adapter = :nokogiri
 
 # Register custom model replacements
-Mml::Configuration.custom_models = { Mi => MyCustomMi }
+Mml::V3::Configuration.custom_models = { Mi => MyCustomMi }
+Mml::V4::Configuration.custom_models = { Mi => MyCustomMi }
 ----
 
 == Development

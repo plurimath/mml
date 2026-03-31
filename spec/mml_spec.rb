@@ -5,15 +5,15 @@ require "spec_helper"
 RSpec.describe Mml do
   context "class loading" do
     it "loads all common attribute classes" do
-      Mml::Configuration::COMMON_ATTRIBUTES_CLASSES.each do |class_name|
-        klass = described_class.const_get(class_name)
+      Mml::V3::Configuration::COMMON_ATTRIBUTES_CLASSES.each do |class_name|
+        klass = Mml::V3.const_get(class_name)
         expect(klass).to be_a(Class)
       end
     end
 
     it "loads all supported tag classes" do
-      Mml::Configuration::SUPPORTED_TAGS.each do |tag|
-        klass = described_class.const_get(tag.to_s.capitalize)
+      Mml::V3::Configuration::SUPPORTED_TAGS.each do |tag|
+        klass = Mml::V3.const_get(tag.to_s.capitalize)
         expect(klass).to be_a(Class)
       end
     end
