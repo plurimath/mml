@@ -5,7 +5,7 @@ module Mml
     class Math < Mml::V3::Math
       attribute :intent, :string
       attribute :arg, :string
-      attribute :displaystyle, :string
+      attribute :displaystyle, :string, default: "true"
       attribute :scriptlevel, :integer
 
       xml do
@@ -16,7 +16,7 @@ module Mml
         map_attribute :display, to: :display
         map_attribute "intent", to: :intent
         map_attribute "arg", to: :arg
-        map_attribute "displaystyle", to: :displaystyle
+        map_attribute "displaystyle", to: :displaystyle, render_default: true
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
