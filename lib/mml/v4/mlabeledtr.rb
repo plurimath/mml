@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Mlabeledtr < Mml::V3::Mlabeledtr
+    class Mlabeledtr < Lutaml::Model::Serializable
+      include Base::Mlabeledtr
+
       attribute :intent, :string
       attribute :arg, :string
 

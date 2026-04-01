@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mscarries < Mml::V3::Mscarries
-      import_model CommonElements
+    class Mscarries < CommonElements
+      include Base::Mscarries
 
       attribute :intent, :string
       attribute :arg, :string

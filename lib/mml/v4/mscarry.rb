@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mscarry < Mml::V3::Mscarry
-      import_model CommonElements
+    class Mscarry < CommonElements
+      include Base::Mscarry
 
       attribute :intent, :string
       attribute :arg, :string

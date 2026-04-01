@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mover < Mml::V3::Mover
-      import_model CommonElements
+    class Mover < CommonElements
+      include Base::Mover
 
       attribute :intent, :string
       attribute :arg, :string

@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Mtext < Mml::V3::Mtext
+    class Mtext < Lutaml::Model::Serializable
+      include Base::Mtext
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string

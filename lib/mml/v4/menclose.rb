@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Menclose < Mml::V3::Menclose
-      import_model CommonElements
+    class Menclose < CommonElements
+      include Base::Menclose
 
       attribute :intent, :string
       attribute :arg, :string

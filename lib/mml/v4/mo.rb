@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Mo < Mml::V3::Mo
+    class Mo < Lutaml::Model::Serializable
+      include Base::Mo
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string

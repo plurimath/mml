@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Mprescripts < Mml::V3::Mprescripts
+    class Mprescripts < Lutaml::Model::Serializable
+      include Base::Mprescripts
+
       attribute :intent, :string
       attribute :arg, :string
 

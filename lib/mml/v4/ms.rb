@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Ms < Mml::V3::Ms
-      import_model CommonElements
+    class Ms < CommonElements
+      include Base::Ms
 
       attribute :intent, :string
       attribute :arg, :string

@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mphantom < Mml::V3::Mphantom
-      import_model CommonElements
+    class Mphantom < CommonElements
+      include Base::Mphantom
 
       attribute :intent, :string
       attribute :arg, :string

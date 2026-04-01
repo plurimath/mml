@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Munder < Mml::V3::Munder
-      import_model CommonElements
+    class Munder < CommonElements
+      include Base::Munder
 
       attribute :intent, :string
       attribute :arg, :string

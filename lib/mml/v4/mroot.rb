@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mroot < Mml::V3::Mroot
-      import_model CommonElements
+    class Mroot < CommonElements
+      include Base::Mroot
 
       attribute :intent, :string
       attribute :arg, :string

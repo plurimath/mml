@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mfrac < Mml::V3::Mfrac
-      import_model CommonElements
+    class Mfrac < CommonElements
+      include Base::Mfrac
 
       attribute :intent, :string
       attribute :arg, :string

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../common_elements"
-
 module Mml
   module V4
     class CommonElements < Mml::CommonElements

@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Munderover < Mml::V3::Munderover
-      import_model CommonElements
+    class Munderover < CommonElements
+      include Base::Munderover
 
       attribute :intent, :string
       attribute :arg, :string

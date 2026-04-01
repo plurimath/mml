@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mstyle < Mml::V3::Mstyle
-      import_model CommonElements
+    class Mstyle < CommonElements
+      include Base::Mstyle
 
       attribute :intent, :string
       attribute :arg, :string

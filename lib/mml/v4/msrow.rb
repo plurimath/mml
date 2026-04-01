@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Msrow < Mml::V3::Msrow
-      import_model CommonElements
+    class Msrow < CommonElements
+      include Base::Msrow
 
       attribute :intent, :string
       attribute :arg, :string

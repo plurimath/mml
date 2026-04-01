@@ -18,14 +18,6 @@ module Mml
         @register = custom_register
       end
 
-      def config
-        @config ||= {}
-      end
-
-      def config=(config)
-        self.config.merge!(config)
-      end
-
       def adapter
         Lutaml::Model::Config.xml_adapter
       end

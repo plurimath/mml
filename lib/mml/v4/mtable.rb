@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Mtable < Mml::V3::Mtable
+    class Mtable < Lutaml::Model::Serializable
+      include Base::Mtable
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :scriptlevel, :integer

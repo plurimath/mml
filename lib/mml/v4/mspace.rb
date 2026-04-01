@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Mspace < Mml::V3::Mspace
+    class Mspace < Lutaml::Model::Serializable
+      include Base::Mspace
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string

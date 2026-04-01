@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Merror < Mml::V3::Merror
-      import_model CommonElements
+    class Merror < CommonElements
+      include Base::Merror
 
       attribute :intent, :string
       attribute :arg, :string
