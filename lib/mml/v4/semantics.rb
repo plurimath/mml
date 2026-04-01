@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Semantics < Mml::V3::Semantics
-      import_model CommonElements
+    class Semantics < CommonElements
+      include Base::Semantics
 
       attribute :displaystyle, :string
       attribute :scriptlevel, :integer

@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Msqrt < Mml::V3::Msqrt
-      import_model CommonElements
+    class Msqrt < CommonElements
+      include Base::Msqrt
 
       attribute :intent, :string
       attribute :arg, :string

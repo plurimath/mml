@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Msubsup < Mml::V3::Msubsup
-      import_model CommonElements
+    class Msubsup < CommonElements
+      include Base::Msubsup
 
       attribute :intent, :string
       attribute :arg, :string

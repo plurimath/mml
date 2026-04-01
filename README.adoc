@@ -80,7 +80,7 @@ for backward compatibility.
     │  └────────────┬───────────────┘     │  │  │  + <a> element          │  │
     │               │                     │  │  └────────────┬────────────┘  │
     │  ┌────────────┴────────────┐        │  │  ┌────────────┴────────────┐  │
-    │  │ CommonAttributes        │        │  │  │ CommonAttributes        │  │
+    │  │ CommonElements        │        │  │  │ CommonElements        │  │
     │  │ (child element mixin)   │        │  │  │ (v4 version)            │  │
     │  └─────────────────────────┘        │  |  └─────────────────────────┘  |
     └─────────────────────────────────────┘  └───────────────────────────────┘
@@ -113,7 +113,7 @@ Mml::V4.parse(input)          # Direct v4 parsing
 * `fontfamily`, `fontweight`, `fontstyle`, `fontsize`, `color`, `background` on `mstyle`, `mglyph`, `mspace`
 * `groupalign` on `mtable`, `mtr`, `mlabeledtr`
 * `fence`, `separator` on `mo`
-|Deprecated (recognized but hidden) |`<mlabeledtr>`, `<none>` removed from `CommonAttributes` but classes still exist
+|Deprecated (recognized but hidden) |`<mlabeledtr>`, `<none>` removed from `CommonElements` but classes still exist
 |===
 
 === Migration from previous versions
@@ -128,18 +128,18 @@ namespace:
 # Before (no longer supported)
 require "mml/configuration"
 Mml::Configuration.adapter = :nokogiri
-Mml::Configuration.custom_models = { Mi => MyCustomMi }
+Mml::Configuration.register.register_model(MyCustomMi, id: :mi)
 Mml::Math.new(...)
 
 # After — explicit version
 require "mml"
 Mml::V3::Configuration.adapter = :nokogiri
-Mml::V3::Configuration.custom_models = { Mi => MyCustomMi }
+Mml::V3::Configuration.register.register_model(MyCustomMi, id: :mi)
 Mml::V3::Math.new(...)
 
 # Or for MathML 4
 Mml::V4::Configuration.adapter = :nokogiri
-Mml::V4::Configuration.custom_models = { Mi => MyCustomMi }
+Mml::V4::Configuration.register.register_model(MyCustomMi, id: :mi)
 Mml::V4::Math.new(...)
 ----
 
@@ -233,7 +233,7 @@ math.to_xml
 
 *v4 only*: `a` (hyperlink)
 
-*Deprecated*: `mlabeledtr`, `none` (classes exist but hidden from CommonAttributes in v4)
+*Deprecated*: `mlabeledtr`, `none` (classes exist but hidden from CommonElements in v4)
 
 === Token elements (leaf nodes)
 
@@ -312,37 +312,66 @@ Mml::V4::A.new(
 
 === Element class patterns
 
-All element classes inherit from `Lutaml::Model::Serializable`:
+Shared attributes and mappings live in `Base::` modules (`lib/mml/base/`).
+V3 and V4 classes include these modules independently — no cross-version inheritance.
 
-* *Leaf elements*: use `map_content to: :value` for text content
-* *Container elements*: use `mixed_content` for child elements
+* *Leaf elements*: inherit `Lutaml::Model::Serializable`, include `Base::ElementName`
+* *Container elements*: inherit `CommonElements`, include `Base::ElementName`
+
+Each element self-registers in its version's `Configuration.register`.
 
 [source,ruby]
 ----
-# Leaf — text content
-class Mi < Lutaml::Model::Serializable
-  attribute :value, :string
-  xml do
-    element "mi"
-    map_content to: :value
+# Shared attributes (lib/mml/base/mi.rb)
+module Base::Mi
+  def self.included(klass)
+    klass.class_eval do
+      attribute :value, :string
+      xml do
+        element "mi"
+        map_content to: :value
+      end
+    end
   end
 end
 
-# Container — child elements
-class Mrow < Lutaml::Model::Serializable
-  xml do
-    element "mrow"
-    mixed_content
-  end
+# V3 leaf
+class V3::Mi < Lutaml::Model::Serializable
+  include Base::Mi
+end
+
+# V4 leaf — adds V4-only attributes
+class V4::Mi < Lutaml::Model::Serializable
+  include Base::Mi
+  attribute :intent, :string
+end
+
+# V3 container
+class V3::Mrow < CommonElements
+  include Base::Mrow
 end
 ----
 
-=== CommonAttributes
+=== CommonElements
 
-Container elements that accept arbitrary MathML children import `CommonAttributes`,
-which defines `#{tag}_value` collection attributes for all supported child elements.
-The list of classes that receive this mixin is in
-`Configuration::COMMON_ATTRIBUTES_CLASSES`.
+Container elements inherit `CommonElements`, which defines `#{tag}_value` collection
+attributes for all supported child elements. Attribute types use symbols (e.g., `:mi`,
+`:mfrac`) resolved at parse time through `Lutaml::Model::Register`.
+
+V4's `CommonElements` extends the base with the `<a>` hyperlink element.
+
+=== Register and type resolution
+
+When calling `from_xml` directly (outside of `Mml.parse` or `Mml::V3.parse`), pass
+the version-specific register for correct type resolution:
+
+[source,ruby]
+----
+Mml::V3::Math.from_xml(input, register: Mml::V3::Configuration.register)
+Mml::V4::Math.from_xml(input, register: Mml::V4::Configuration.register)
+----
+
+The `parse` methods handle this automatically.
 
 === Namespace
 
@@ -355,17 +384,18 @@ Three input forms are supported:
 
 == Configuration
 
-Configuration is version-specific. Use the namespace matching your target version:
-
 [source,ruby]
 ----
-# Switch XML adapter (default: :ox, also supports :nokogiri)
+# Switch XML adapter (default: :ox, :oga on Opal)
 Mml::V3::Configuration.adapter = :nokogiri
-Mml::V4::Configuration.adapter = :nokogiri
 
-# Register custom model replacements
-Mml::V3::Configuration.custom_models = { Mi => MyCustomMi }
-Mml::V4::Configuration.custom_models = { Mi => MyCustomMi }
+# Access the version-specific register
+Mml::V3::Configuration.register
+Mml::V4::Configuration.register
+
+# Assign a custom register
+custom = Lutaml::Model::Register.new(:custom, fallback: [])
+Mml::V3::Configuration.register = custom
 ----
 
 == Development

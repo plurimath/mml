@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Maligngroup < Mml::V3::Maligngroup
+    class Maligngroup < Lutaml::Model::Serializable
+      include Base::Maligngroup
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string

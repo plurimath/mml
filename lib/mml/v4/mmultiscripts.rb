@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mmultiscripts < Mml::V3::Mmultiscripts
-      import_model CommonElements
+    class Mmultiscripts < CommonElements
+      include Base::Mmultiscripts
 
       attribute :intent, :string
       attribute :arg, :string

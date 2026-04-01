@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class None < Mml::V3::None
+    class None < Lutaml::Model::Serializable
+      include Base::None
+
       attribute :intent, :string
       attribute :arg, :string
 

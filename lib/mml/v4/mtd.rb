@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mtd < Mml::V3::Mtd
-      import_model CommonElements
+    class Mtd < CommonElements
+      include Base::Mtd
 
       attribute :intent, :string
       attribute :arg, :string

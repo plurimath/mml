@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Msub < Mml::V3::Msub
-      import_model CommonElements
+    class Msub < CommonElements
+      include Base::Msub
 
       attribute :intent, :string
       attribute :arg, :string

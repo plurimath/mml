@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mstack < Mml::V3::Mstack
-      import_model CommonElements
+    class Mstack < CommonElements
+      include Base::Mstack
 
       attribute :intent, :string
       attribute :arg, :string

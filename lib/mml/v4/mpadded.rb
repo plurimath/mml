@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mpadded < Mml::V3::Mpadded
-      import_model CommonElements
+    class Mpadded < CommonElements
+      include Base::Mpadded
 
       attribute :intent, :string
       attribute :arg, :string

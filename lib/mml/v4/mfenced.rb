@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mfenced < Mml::V3::Mfenced
-      import_model CommonElements
+    class Mfenced < CommonElements
+      include Base::Mfenced
 
       attribute :intent, :string
       attribute :arg, :string

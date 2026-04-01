@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Msline < Mml::V3::Msline
+    class Msline < Lutaml::Model::Serializable
+      include Base::Msline
+
       attribute :intent, :string
       attribute :arg, :string
 

@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Math < Mml::V3::Math
-      import_model CommonElements
+    class Math < CommonElements
+      include Base::Math
 
       attribute :intent, :string
       attribute :arg, :string
@@ -12,10 +12,6 @@ module Mml
 
       xml do
         namespace Namespace
-        element "math"
-        mixed_content
-
-        map_attribute :display, to: :display
         map_attribute "intent", to: :intent
         map_attribute "arg", to: :arg
         map_attribute "displaystyle", to: :displaystyle
@@ -24,7 +20,6 @@ module Mml
     end
     Configuration.register.register_model(Math, id: :math)
 
-    # For backward compatibility, we keep MathWithNamespace as an alias to Math.
     MathWithNamespace = Math
   end
 end

@@ -2,22 +2,8 @@
 
 module Mml
   module V3
-    class Msup < Lutaml::Model::Serializable
-      import_model CommonElements
-
-      attribute :mathcolor, :string
-      attribute :mathbackground, :string
-      attribute :superscriptshift, :string
-
-      xml do
-        namespace Namespace
-        element "msup"
-        mixed_content
-
-        map_attribute "mathcolor", to: :mathcolor
-        map_attribute "mathbackground", to: :mathbackground
-        map_attribute "superscriptshift", to: :superscriptshift
-      end
+    class Msup < CommonElements
+      include Base::Msup
     end
     Configuration.register.register_model(Msup, id: :msup)
   end

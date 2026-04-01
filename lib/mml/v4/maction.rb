@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Maction < Mml::V3::Maction
+    class Maction < Lutaml::Model::Serializable
+      include Base::Maction
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string

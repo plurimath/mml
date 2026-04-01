@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mlongdiv < Mml::V3::Mlongdiv
-      import_model CommonElements
+    class Mlongdiv < CommonElements
+      include Base::Mlongdiv
 
       attribute :intent, :string
       attribute :arg, :string

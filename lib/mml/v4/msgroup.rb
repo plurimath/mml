@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Msgroup < Mml::V3::Msgroup
-      import_model CommonElements
+    class Msgroup < CommonElements
+      include Base::Msgroup
 
       attribute :intent, :string
       attribute :arg, :string

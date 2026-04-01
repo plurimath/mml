@@ -2,7 +2,7 @@
 
 require "lutaml/model"
 
-Moxml::Config.default_adapter = DEFAULT_ADAPTER
+Moxml::Config.default_adapter = Mml::DEFAULT_ADAPTER
 
 require_relative "v3/configuration"
 require_relative "v3/namespace"
@@ -56,20 +56,17 @@ module Mml
     def self.parse(input, namespace_exist: true,
                    register: Configuration.register)
       Configuration.adapter ||= DEFAULT_ADAPTER
+      xml = input
+      xml = parse_with_no_namespace(input, register: register) unless namespace_exist
 
-      unless namespace_exist
-        return parse_with_no_namespace(input, register: register)
-      end
-
-      Mml::V3::Math.from_xml(input, register: register)
+      klass = register.get_class(:math)
+      klass.from_xml(xml, register: register)
     end
 
     def self.parse_with_no_namespace(input, register: Configuration.register)
       with_ns = Moxml.new(DEFAULT_ADAPTER).parse(input).tap do |doc|
         doc.root.add_namespace(nil, Namespace.uri)
       end.to_xml
-
-      Mml::V3::Math.from_xml(with_ns, register: register)
     end
   end
 end

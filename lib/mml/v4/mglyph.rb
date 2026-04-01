@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Mglyph < Mml::V3::Mglyph
+    class Mglyph < Lutaml::Model::Serializable
+      include Base::Mglyph
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string

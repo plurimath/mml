@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Malignmark < Mml::V3::Malignmark
+    class Malignmark < Lutaml::Model::Serializable
+      include Base::Malignmark
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string

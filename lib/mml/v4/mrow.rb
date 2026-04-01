@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mrow < Mml::V3::Mrow
-      import_model CommonElements
+    class Mrow < CommonElements
+      include Base::Mrow
 
       attribute :arg, :string
       attribute :displaystyle, :string

@@ -2,29 +2,8 @@
 
 module Mml
   module V3
-    class Mfenced < Lutaml::Model::Serializable
-      import_model CommonElements
-
-      attribute :mathbackground, :string
-      attribute :separators, :string
-      attribute :mathcolor, :string
-      attribute :content, :string
-      attribute :close, :string
-      attribute :open, :string
-
-      xml do
-        namespace Namespace
-        element "mfenced"
-        mixed_content
-
-        map_content to: :content
-
-        map_attribute "mathbackground", to: :mathbackground
-        map_attribute "separators", to: :separators
-        map_attribute "mathcolor", to: :mathcolor
-        map_attribute "close", to: :close
-        map_attribute "open", to: :open
-      end
+    class Mfenced < CommonElements
+      include Base::Mfenced
     end
     Configuration.register.register_model(Mfenced, id: :mfenced)
   end

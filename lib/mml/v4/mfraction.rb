@@ -2,8 +2,8 @@
 
 module Mml
   module V4
-    class Mfraction < Mml::V3::Mfraction
-      import_model CommonElements
+    class Mfraction < CommonElements
+      include Base::Mfraction
 
       attribute :intent, :string
       attribute :arg, :string

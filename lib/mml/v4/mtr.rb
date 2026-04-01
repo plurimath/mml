@@ -2,7 +2,9 @@
 
 module Mml
   module V4
-    class Mtr < Mml::V3::Mtr
+    class Mtr < Lutaml::Model::Serializable
+      include Base::Mtr
+
       attribute :intent, :string
       attribute :arg, :string
       attribute :displaystyle, :string
