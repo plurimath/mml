@@ -13,6 +13,7 @@ module Mml
           attribute :mathvariant, :string
           attribute :mathsize, :string
           attribute :dir, :string
+          # Deprecated in MathML 4
           attribute :fontfamily, :string
           attribute :fontweight, :string
           attribute :fontstyle, :string
@@ -60,6 +61,7 @@ module Mml
             map_attribute "largeop", to: :largeop
             map_attribute "stretchy", to: :stretchy
             map_attribute "mathsize", to: :mathsize
+            # Deprecated in MathML 4
             map_attribute "fontsize", to: :fontsize
             map_attribute "linebreak", to: :linebreak
             map_attribute "fontstyle", to: :fontstyle

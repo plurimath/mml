@@ -10,6 +10,7 @@ module Mml
           attribute :alt, :string
           attribute :src, :string
           attribute :width, :string
+          # Deprecated in MathML 4
           attribute :index, :integer
           attribute :height, :string
           attribute :valign, :string
@@ -31,6 +32,7 @@ module Mml
 
             map_attribute "src", to: :src
             map_attribute "alt", to: :alt
+            # Deprecated in MathML 4
             map_attribute "index", to: :index
             map_attribute "width", to: :width
             map_attribute "height", to: :height

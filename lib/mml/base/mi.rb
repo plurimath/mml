@@ -15,6 +15,7 @@ module Mml
           attribute :mathvariant, :string
           attribute :mathbackground, :string
 
+          # Deprecated in MathML 4
           attribute :fontsize, :string
           attribute :fontstyle, :string
           attribute :background, :string
@@ -33,6 +34,7 @@ module Mml
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "mathbackground", to: :mathbackground
 
+            # Deprecated in MathML 4
             map_attribute "fontsize", to: :fontsize
             map_attribute "fontstyle", to: :fontstyle
             map_attribute "background", to: :background

@@ -24,6 +24,7 @@ module Mml
           attribute :indentalignlast, :string
           attribute :indentshiftlast, :string
 
+          # Deprecated in MathML 4
           attribute :fontfamily, :string
           attribute :fontweight, :string
           attribute :fontstyle, :string
@@ -52,6 +53,7 @@ module Mml
             map_attribute "indentalignlast", to: :indentalignlast
             map_attribute "indentshiftlast", to: :indentshiftlast
 
+            # Deprecated in MathML 4
             map_attribute "fontfamily", to: :fontfamily
             map_attribute "fontweight", to: :fontweight
             map_attribute "fontstyle", to: :fontstyle

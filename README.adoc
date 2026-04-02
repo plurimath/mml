@@ -109,11 +109,13 @@ Mml::V4.parse(input)          # Direct v4 parsing
 |Feature |MathML 4 additions
 |Universal attributes |`intent`, `arg`, `displaystyle`, `scriptlevel` available on all presentation elements
 |New element |`<a>` hyperlink element with `href`, `hreflang`
-|Deprecated (not serialized) a|
-* `fontfamily`, `fontweight`, `fontstyle`, `fontsize`, `color`, `background` on `mstyle`, `mglyph`, `mspace`
-* `groupalign` on `mtable`, `mtr`, `mlabeledtr`
-* `fence`, `separator` on `mo`
-|Deprecated (recognized but hidden) |`<mlabeledtr>`, `<none>` removed from `CommonElements` but classes still exist
+|Deprecated in MathML 4 (still recognized for backward compatibility) a|
+* `fontfamily`, `fontweight`, `fontstyle`, `fontsize`, `color`, `background` on token elements, `mstyle`, `mglyph`, `mspace`
+* `mode`, `macros` on `math`
+* `index` on `mglyph`
+
+See https://github.com/w3c/mathml/issues/5[w3c/mathml#5] and
+https://github.com/w3c/mathml/issues/303[w3c/mathml#303] for details.
 |===
 
 === Migration from previous versions
