@@ -9,6 +9,7 @@ module Mml
         klass.class_eval do
           attribute :mathbackground, :string
           attribute :mathvariant, :string
+          # Deprecated in MathML 4
           attribute :fontfamily, :string
           attribute :background, :string
           attribute :fontweight, :string
@@ -30,6 +31,7 @@ module Mml
             map_content to: :value
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "mathvariant", to: :mathvariant
+            # Deprecated in MathML 4
             map_attribute "fontfamily", to: :fontfamily
             map_attribute "fontweight", to: :fontweight
             map_attribute "background", to: :background

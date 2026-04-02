@@ -97,6 +97,7 @@ module Mml
           attribute :fence, :string
           attribute :groupalign, :string
           attribute :separator, :string
+          # Deprecated in MathML 4
           attribute :fontfamily, :string
           attribute :fontweight, :string
           attribute :fontstyle, :string
@@ -201,6 +202,7 @@ module Mml
             map_attribute "fence", to: :fence
             map_attribute "groupalign", to: :groupalign
             map_attribute "separator", to: :separator
+            # Deprecated in MathML 4
             map_attribute "fontfamily", to: :fontfamily
             map_attribute "fontweight", to: :fontweight
             map_attribute "fontstyle", to: :fontstyle
