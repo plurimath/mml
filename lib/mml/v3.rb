@@ -57,14 +57,14 @@ module Mml
                    register: Configuration.register)
       Configuration.adapter ||= DEFAULT_ADAPTER
       xml = input
-      xml = parse_with_no_namespace(input, register: register) unless namespace_exist
+      xml = parse_with_no_namespace(input) unless namespace_exist
 
       klass = register.get_class(:math)
       klass.from_xml(xml, register: register)
     end
 
-    def self.parse_with_no_namespace(input, register: Configuration.register)
-      with_ns = Moxml.new(DEFAULT_ADAPTER).parse(input).tap do |doc|
+    def self.parse_with_no_namespace(input)
+      Moxml.new(DEFAULT_ADAPTER).parse(input).tap do |doc|
         doc.root.add_namespace(nil, Namespace.uri)
       end.to_xml
     end

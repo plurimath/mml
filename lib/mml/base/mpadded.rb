@@ -3,8 +3,8 @@
 module Mml
   module Base
     module Mpadded
-      # NOTE: Constants in class_eval resolve in the module's lexical scope.
-      # Use fully qualified names (e.g., Mml::Namespace) instead of bare constants.
+      # NOTE: class_eval resolves constants in module's lexical scope.
+      # Use fully qualified names (e.g., Mml::Namespace).
       def self.included(klass)
         klass.class_eval do
           attribute :mathbackground, :string

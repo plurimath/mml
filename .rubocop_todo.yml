@@ -16,13 +16,21 @@ Layout/LineLength:
     - 'spec/mml_spec.rb'
     - 'spec/spec_helper.rb'
 
-# Offense count: 1
-# Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns, inherit_mode.
-# AllowedMethods: refine
+# Base modules use self.included with class_eval containing all attribute
+# declarations and xml mappings — inherently long methods and blocks.
+Metrics/AbcSize:
+  Exclude:
+    - 'lib/mml/base/**/*'
+
 Metrics/BlockLength:
   Max: 27
   Exclude:
     - 'lib/mml/common_elements.rb'
+    - 'lib/mml/base/**/*'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/mml/base/**/*'
 
 # Offense count: 3
 # Configuration parameters: Prefixes, AllowedPatterns.
