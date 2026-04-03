@@ -5,6 +5,6 @@ module Mml
     class Mscarries < CommonElements
       include Base::Mscarries
     end
-    Configuration.register.register_model(Mscarries, id: :mscarries)
+    Configuration.register_model(Mscarries, id: :mscarries)
   end
 end

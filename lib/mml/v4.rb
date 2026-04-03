@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "lutaml/model"
+require_relative "versioned_parser"
 Moxml::Config.default_adapter = Mml::DEFAULT_ADAPTER
 
 require_relative "v4/configuration"
@@ -53,20 +54,6 @@ require_relative "v4/math"
 
 module Mml
   module V4
-    def self.parse(input, namespace_exist: true,
-                   register: Configuration.register)
-      Configuration.adapter ||= DEFAULT_ADAPTER
-      xml = input
-      xml = parse_with_no_namespace(input) unless namespace_exist
-
-      klass = register.get_class(:math)
-      klass.from_xml(xml, register: register)
-    end
-
-    def self.parse_with_no_namespace(input)
-      Moxml.new(DEFAULT_ADAPTER).parse(input).tap do |doc|
-        doc.root.add_namespace(nil, Namespace.uri)
-      end.to_xml
-    end
+    extend Mml::VersionedParser
   end
 end

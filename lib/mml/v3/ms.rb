@@ -5,6 +5,6 @@ module Mml
     class Ms < CommonElements
       include Base::Ms
     end
-    Configuration.register.register_model(Ms, id: :ms)
+    Configuration.register_model(Ms, id: :ms)
   end
 end

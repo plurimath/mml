@@ -5,6 +5,6 @@ module Mml
     class Mspace < Lutaml::Model::Serializable
       include Base::Mspace
     end
-    Configuration.register.register_model(Mspace, id: :mspace)
+    Configuration.register_model(Mspace, id: :mspace)
   end
 end

@@ -5,6 +5,6 @@ module Mml
     class Malignmark < Lutaml::Model::Serializable
       include Base::Malignmark
     end
-    Configuration.register.register_model(Malignmark, id: :malignmark)
+    Configuration.register_model(Malignmark, id: :malignmark)
   end
 end

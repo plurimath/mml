@@ -5,6 +5,6 @@ module Mml
     class Semantics < CommonElements
       include Base::Semantics
     end
-    Configuration.register.register_model(Semantics, id: :semantics)
+    Configuration.register_model(Semantics, id: :semantics)
   end
 end

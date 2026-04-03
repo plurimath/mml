@@ -5,6 +5,6 @@ module Mml
     class Mphantom < CommonElements
       include Base::Mphantom
     end
-    Configuration.register.register_model(Mphantom, id: :mphantom)
+    Configuration.register_model(Mphantom, id: :mphantom)
   end
 end

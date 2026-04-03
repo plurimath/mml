@@ -18,6 +18,6 @@ module Mml
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
-    Configuration.register.register_model(Munderover, id: :munderover)
+    Configuration.register_model(Munderover, id: :munderover)
   end
 end

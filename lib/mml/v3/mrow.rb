@@ -5,6 +5,6 @@ module Mml
     class Mrow < CommonElements
       include Base::Mrow
     end
-    Configuration.register.register_model(Mrow, id: :mrow)
+    Configuration.register_model(Mrow, id: :mrow)
   end
 end

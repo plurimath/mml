@@ -14,6 +14,6 @@ module Mml
         map_attribute "arg", to: :arg
       end
     end
-    Configuration.register.register_model(Mstyle, id: :mstyle)
+    Configuration.register_model(Mstyle, id: :mstyle)
   end
 end

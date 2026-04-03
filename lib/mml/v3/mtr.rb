@@ -5,6 +5,6 @@ module Mml
     class Mtr < Lutaml::Model::Serializable
       include Base::Mtr
     end
-    Configuration.register.register_model(Mtr, id: :mtr)
+    Configuration.register_model(Mtr, id: :mtr)
   end
 end

@@ -5,6 +5,6 @@ module Mml
     class Mstyle < CommonElements
       include Base::Mstyle
     end
-    Configuration.register.register_model(Mstyle, id: :mstyle)
+    Configuration.register_model(Mstyle, id: :mstyle)
   end
 end

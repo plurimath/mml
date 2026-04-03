@@ -5,6 +5,6 @@ module Mml
     class Mfrac < CommonElements
       include Base::Mfrac
     end
-    Configuration.register.register_model(Mfrac, id: :mfrac)
+    Configuration.register_model(Mfrac, id: :mfrac)
   end
 end

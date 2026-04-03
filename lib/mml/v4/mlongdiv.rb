@@ -14,6 +14,6 @@ module Mml
         map_attribute "arg", to: :arg
       end
     end
-    Configuration.register.register_model(Mlongdiv, id: :mlongdiv)
+    Configuration.register_model(Mlongdiv, id: :mlongdiv)
   end
 end

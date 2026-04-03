@@ -18,6 +18,6 @@ module Mml
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
-    Configuration.register.register_model(Mfenced, id: :mfenced)
+    Configuration.register_model(Mfenced, id: :mfenced)
   end
 end

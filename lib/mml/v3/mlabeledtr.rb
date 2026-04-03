@@ -5,6 +5,6 @@ module Mml
     class Mlabeledtr < Lutaml::Model::Serializable
       include Base::Mlabeledtr
     end
-    Configuration.register.register_model(Mlabeledtr, id: :mlabeledtr)
+    Configuration.register_model(Mlabeledtr, id: :mlabeledtr)
   end
 end

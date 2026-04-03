@@ -5,6 +5,6 @@ module Mml
     class Mover < CommonElements
       include Base::Mover
     end
-    Configuration.register.register_model(Mover, id: :mover)
+    Configuration.register_model(Mover, id: :mover)
   end
 end

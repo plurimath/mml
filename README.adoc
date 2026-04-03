@@ -47,8 +47,8 @@ math4 = Mml.parse(input, version: 4)
 math.to_xml
 
 # Or use versioned modules directly
-Mml::V3::Math.from_xml(input)
-Mml::V4::Math.from_xml(input)
+Mml::V3.parse(input)
+Mml::V4.parse(input)
 ----
 
 == MathML version architecture
@@ -130,19 +130,29 @@ namespace:
 # Before (no longer supported)
 require "mml/configuration"
 Mml::Configuration.adapter = :nokogiri
-Mml::Configuration.register.register_model(MyCustomMi, id: :mi)
+Mml::Configuration.create_context(id: :custom_v3)
 Mml::Math.new(...)
 
 # After — explicit version
 require "mml"
 Mml::V3::Configuration.adapter = :nokogiri
-Mml::V3::Configuration.register.register_model(MyCustomMi, id: :mi)
-Mml::V3::Math.new(...)
+Mml::V3::Configuration.create_context(
+  id: :custom_v3,
+  substitutions: [
+    { from_type: Mml::V3::Mi, to_type: MyCustomMi }
+  ]
+)
+Mml::V3.parse(input, context: :custom_v3)
 
 # Or for MathML 4
 Mml::V4::Configuration.adapter = :nokogiri
-Mml::V4::Configuration.register.register_model(MyCustomMi, id: :mi)
-Mml::V4::Math.new(...)
+Mml::V4::Configuration.create_context(
+  id: :custom_v4,
+  substitutions: [
+    { from_type: Mml::V4::Mi, to_type: MyCustomMi }
+  ]
+)
+Mml::V4.parse(input, context: :custom_v4)
 ----
 
 ==== Element class references
@@ -259,6 +269,7 @@ Container elements hold child elements via `#{tag}_value` collection attributes:
 [source,ruby]
 ----
 Mml::V3::Mrow.new(
+  lutaml_register: Mml::V3::Configuration.context_id,
   mi_value: [Mml::V3::Mi.new(value: "x")],
   mo_value: [Mml::V3::Mo.new(value: "+")],
   mn_value: [Mml::V3::Mn.new(value: "1")],
@@ -273,8 +284,10 @@ Build an expression tree by nesting elements:
 [source,ruby]
 ----
 Mml::V3::Math.new(
+  lutaml_register: Mml::V3::Configuration.context_id,
   mfrac_value: [
     Mml::V3::Mfrac.new(
+      lutaml_register: Mml::V3::Configuration.context_id,
       mi_value: [Mml::V3::Mi.new(value: "a"), Mml::V3::Mi.new(value: "b")],
     ),
   ],
@@ -287,11 +300,19 @@ Mml::V3::Math.new(
 [source,ruby]
 ----
 Mml::V3::Mtable.new(
+  lutaml_register: Mml::V3::Configuration.context_id,
   mtr_value: [
     Mml::V3::Mtr.new(
+      lutaml_register: Mml::V3::Configuration.context_id,
       mtd_value: [
-        Mml::V3::Mtd.new(mi_value: [Mml::V3::Mi.new(value: "a")]),
-        Mml::V3::Mtd.new(mi_value: [Mml::V3::Mi.new(value: "b")]),
+        Mml::V3::Mtd.new(
+          lutaml_register: Mml::V3::Configuration.context_id,
+          mi_value: [Mml::V3::Mi.new(value: "a")]
+        ),
+        Mml::V3::Mtd.new(
+          lutaml_register: Mml::V3::Configuration.context_id,
+          mi_value: [Mml::V3::Mi.new(value: "b")]
+        ),
       ],
     ),
   ],
@@ -303,6 +324,7 @@ Mml::V3::Mtable.new(
 [source,ruby]
 ----
 Mml::V4::A.new(
+  lutaml_register: Mml::V4::Configuration.context_id,
   href: "https://example.com",
   hreflang: "en",
   mi_value: [Mml::V4::Mi.new(value: "click")]
@@ -320,7 +342,7 @@ V3 and V4 classes include these modules independently — no cross-version inher
 * *Leaf elements*: inherit `Lutaml::Model::Serializable`, include `Base::ElementName`
 * *Container elements*: inherit `CommonElements`, include `Base::ElementName`
 
-Each element self-registers in its version's `Configuration.register`.
+Each element self-registers in its version's built-in `GlobalContext` context.
 
 [source,ruby]
 ----
@@ -358,22 +380,39 @@ end
 
 Container elements inherit `CommonElements`, which defines `#{tag}_value` collection
 attributes for all supported child elements. Attribute types use symbols (e.g., `:mi`,
-`:mfrac`) resolved at parse time through `Lutaml::Model::Register`.
+`:mfrac`) resolved through `Lutaml::Model::GlobalContext`.
 
 V4's `CommonElements` extends the base with the `<a>` hyperlink element.
 
-=== Register and type resolution
+=== Context and type resolution
 
 When calling `from_xml` directly (outside of `Mml.parse` or `Mml::V3.parse`), pass
-the version-specific register for correct type resolution:
+the version-specific context id for correct type resolution.
+
+NOTE: `lutaml-model` still uses the keyword name `register:` in low-level APIs.
+In MML, the value passed to that keyword should be a context id.
 
 [source,ruby]
 ----
-Mml::V3::Math.from_xml(input, register: Mml::V3::Configuration.register)
-Mml::V4::Math.from_xml(input, register: Mml::V4::Configuration.register)
+Mml::V3::Math.from_xml(input, register: Mml::V3::Configuration.context_id)
+Mml::V4::Math.from_xml(input, register: Mml::V4::Configuration.context_id)
 ----
 
 The `parse` methods handle this automatically.
+
+When constructing container elements directly, also pass the context id on the
+instance via `lutaml_register:` so symbolic child types resolve in the right
+versioned context:
+
+[source,ruby]
+----
+math = Mml::V3::Math.new(
+  lutaml_register: Mml::V3::Configuration.context_id,
+  mi_value: [Mml::V3::Mi.new(value: "x")]
+)
+
+math.to_xml
+----
 
 === Namespace
 
@@ -391,14 +430,37 @@ Three input forms are supported:
 # Switch XML adapter (default: :ox, :oga on Opal)
 Mml::V3::Configuration.adapter = :nokogiri
 
-# Access the version-specific register
-Mml::V3::Configuration.register
-Mml::V4::Configuration.register
+# Access the built-in version-specific contexts
+Mml::V3::Configuration.context_id # => :mml_v3
+Mml::V4::Configuration.context_id # => :mml_v4
+Mml::V3::Configuration.context
+Mml::V4::Configuration.context
 
-# Assign a custom register
-custom = Lutaml::Model::Register.new(:custom, fallback: [])
-Mml::V3::Configuration.register = custom
+# Rebuild a built-in context after an explicit GlobalContext.reset!
+Mml::V3::Configuration.populate_context!
+Mml::V4::Configuration.populate_context!
+
+# Create a derived context with substitutions
+Mml::V3::Configuration.create_context(
+  id: :custom_v3,
+  substitutions: [
+    { from_type: Mml::V3::Mi, to_type: MyCustomMi }
+  ]
+)
+
+# Parse using the custom context
+Mml::V3.parse(input, context: :custom_v3)
+
+# Low-level APIs still use the upstream keyword name `register:`
+Mml::V3::Math.from_xml(input, register: :custom_v3)
 ----
+
+The `context:` keyword is the preferred MML API. The legacy `register:` keyword is
+still accepted temporarily in MML parse methods, but it emits a deprecation warning
+and is normalized to a context id internally.
+
+If you reset global contexts and need the built-in MML contexts restored
+explicitly, call `populate_context!` for the version(s) you want to restore.
 
 == Development
 

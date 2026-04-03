@@ -14,6 +14,6 @@ module Mml
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
-    Configuration.register.register_model(Semantics, id: :semantics)
+    Configuration.register_model(Semantics, id: :semantics)
   end
 end
