@@ -18,6 +18,6 @@ module Mml
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
-    Configuration.register.register_model(Msrow, id: :msrow)
+    Configuration.register_model(Msrow, id: :msrow)
   end
 end

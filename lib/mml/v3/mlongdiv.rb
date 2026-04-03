@@ -5,6 +5,6 @@ module Mml
     class Mlongdiv < CommonElements
       include Base::Mlongdiv
     end
-    Configuration.register.register_model(Mlongdiv, id: :mlongdiv)
+    Configuration.register_model(Mlongdiv, id: :mlongdiv)
   end
 end

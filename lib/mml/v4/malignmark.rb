@@ -18,6 +18,6 @@ module Mml
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
-    Configuration.register.register_model(Malignmark, id: :malignmark)
+    Configuration.register_model(Malignmark, id: :malignmark)
   end
 end

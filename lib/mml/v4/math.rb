@@ -18,7 +18,7 @@ module Mml
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
-    Configuration.register.register_model(Math, id: :math)
+    Configuration.register_model(Math, id: :math)
 
     MathWithNamespace = Math
   end

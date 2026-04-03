@@ -18,6 +18,6 @@ module Mml
         map_attribute "scriptlevel", to: :scriptlevel
       end
     end
-    Configuration.register.register_model(Msqrt, id: :msqrt)
+    Configuration.register_model(Msqrt, id: :msqrt)
   end
 end

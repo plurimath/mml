@@ -1,30 +1,13 @@
 # frozen_string_literal: true
 
+require_relative "../context_configuration"
+
 module Mml
   module V4
     module Configuration
-      module_function
+      extend Mml::ContextConfiguration
 
-      def register
-        @register ||= begin
-          reg = Lutaml::Model::Register.new(:mml_v4)
-          Lutaml::Model::GlobalRegister.register(reg)
-          reg
-        end
-      end
-
-      def register=(custom_register)
-        Lutaml::Model::GlobalRegister.register(custom_register)
-        @register = custom_register
-      end
-
-      def adapter
-        Lutaml::Model::Config.xml_adapter
-      end
-
-      def adapter=(adapter)
-        Lutaml::Model::Config.xml_adapter_type = adapter
-      end
+      CONTEXT_ID = :mml_v4
     end
   end
 end

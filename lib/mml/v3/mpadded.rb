@@ -5,6 +5,6 @@ module Mml
     class Mpadded < CommonElements
       include Base::Mpadded
     end
-    Configuration.register.register_model(Mpadded, id: :mpadded)
+    Configuration.register_model(Mpadded, id: :mpadded)
   end
 end

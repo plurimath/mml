@@ -5,6 +5,6 @@ module Mml
     class None < Lutaml::Model::Serializable
       include Base::None
     end
-    Configuration.register.register_model(None, id: :none)
+    Configuration.register_model(None, id: :none)
   end
 end

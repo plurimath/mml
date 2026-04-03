@@ -5,6 +5,6 @@ module Mml
     class Maction < Lutaml::Model::Serializable
       include Base::Maction
     end
-    Configuration.register.register_model(Maction, id: :maction)
+    Configuration.register_model(Maction, id: :maction)
   end
 end

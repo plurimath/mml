@@ -5,6 +5,6 @@ module Mml
     class Msline < Lutaml::Model::Serializable
       include Base::Msline
     end
-    Configuration.register.register_model(Msline, id: :msline)
+    Configuration.register_model(Msline, id: :msline)
   end
 end

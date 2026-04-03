@@ -5,6 +5,6 @@ module Mml
     class Mmultiscripts < CommonElements
       include Base::Mmultiscripts
     end
-    Configuration.register.register_model(Mmultiscripts, id: :mmultiscripts)
+    Configuration.register_model(Mmultiscripts, id: :mmultiscripts)
   end
 end

@@ -5,6 +5,6 @@ module Mml
     class Munder < CommonElements
       include Base::Munder
     end
-    Configuration.register.register_model(Munder, id: :munder)
+    Configuration.register_model(Munder, id: :munder)
   end
 end
