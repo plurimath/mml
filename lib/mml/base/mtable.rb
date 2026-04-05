@@ -23,13 +23,8 @@ module Mml
           attribute :framespacing, :string
           attribute :equalrows, :string
           attribute :equalcolumns, :string
-          attribute :displaystyle, :string
-          attribute :side, :string
-          attribute :minlabelspacing, :string
           attribute :mlabeledtr_value, :mlabeledtr, collection: true
           attribute :mtr_value, :mtr, collection: true
-
-          attribute :groupalign, :string
 
           xml do
             namespace Mml::Namespace
@@ -52,13 +47,8 @@ module Mml
             map_attribute "framespacing", to: :framespacing
             map_attribute "equalrows", to: :equalrows
             map_attribute "equalcolumns", to: :equalcolumns
-            map_attribute "displaystyle", to: :displaystyle
-            map_attribute "side", to: :side
-            map_attribute "minlabelspacing", to: :minlabelspacing
             map_element "mlabeledtr", to: :mlabeledtr_value
             map_element "mtr", to: :mtr_value
-
-            map_attribute "groupalign", to: :groupalign
           end
         end
       end

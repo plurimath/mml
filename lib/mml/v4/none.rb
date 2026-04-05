@@ -2,16 +2,14 @@
 
 module Mml
   module V4
+    # @deprecated V4 spec marks <none> as deprecated.
+    #   Use an empty <mrow> instead for MathML Core compatibility.
     class None < Lutaml::Model::Serializable
       include Base::None
-
-      attribute :intent, :string
-      attribute :arg, :string
+      include Base::V4Attributes
 
       xml do
         namespace Namespace
-        map_attribute "intent", to: :intent
-        map_attribute "arg", to: :arg
       end
     end
     Configuration.register_model(None, id: :none)

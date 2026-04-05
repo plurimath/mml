@@ -4,14 +4,10 @@ module Mml
   module V4
     class Msgroup < CommonElements
       include Base::Msgroup
-
-      attribute :intent, :string
-      attribute :arg, :string
+      include Base::V4Attributes
 
       xml do
         namespace Namespace
-        map_attribute "intent", to: :intent
-        map_attribute "arg", to: :arg
       end
     end
     Configuration.register_model(Msgroup, id: :msgroup)

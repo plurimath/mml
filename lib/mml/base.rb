@@ -43,5 +43,9 @@ module Mml
     autoload :Munderover, "#{__dir__}/base/munderover"
     autoload :None, "#{__dir__}/base/none"
     autoload :Semantics, "#{__dir__}/base/semantics"
+    autoload :V4Attributes, "#{__dir__}/base/v4_attributes"
+    autoload :DeprecatedFontAttributes,
+             "#{__dir__}/base/deprecated_font_attributes"
+    autoload :V3Only, "#{__dir__}/base/v3_only"
   end
 end

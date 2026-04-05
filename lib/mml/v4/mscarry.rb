@@ -4,14 +4,10 @@ module Mml
   module V4
     class Mscarry < CommonElements
       include Base::Mscarry
-
-      attribute :intent, :string
-      attribute :arg, :string
+      include Base::V4Attributes
 
       xml do
         namespace Namespace
-        map_attribute "intent", to: :intent
-        map_attribute "arg", to: :arg
       end
     end
     Configuration.register_model(Mscarry, id: :mscarry)
