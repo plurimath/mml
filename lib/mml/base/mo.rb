@@ -13,12 +13,6 @@ module Mml
           attribute :mathvariant, :string
           attribute :mathsize, :string
           attribute :dir, :string
-          # Deprecated in MathML 4
-          attribute :fontfamily, :string
-          attribute :fontweight, :string
-          attribute :fontstyle, :string
-          attribute :fontsize, :string
-          attribute :background, :string
           attribute :form, :string
           attribute :lspace, :string
           attribute :rspace, :string
@@ -41,10 +35,6 @@ module Mml
           attribute :indentalignlast, :string
           attribute :indentshiftlast, :string
 
-          attribute :color, :string
-          attribute :fence, :string
-          attribute :separator, :string
-
           # rubocop:disable Metrics/BlockLength
           xml do
             namespace Mml::Namespace
@@ -61,15 +51,9 @@ module Mml
             map_attribute "largeop", to: :largeop
             map_attribute "stretchy", to: :stretchy
             map_attribute "mathsize", to: :mathsize
-            # Deprecated in MathML 4
-            map_attribute "fontsize", to: :fontsize
             map_attribute "linebreak", to: :linebreak
-            map_attribute "fontstyle", to: :fontstyle
             map_attribute "symmetric", to: :symmetric
             map_attribute "mathcolor", to: :mathcolor
-            map_attribute "fontfamily", to: :fontfamily
-            map_attribute "fontweight", to: :fontweight
-            map_attribute "background", to: :background
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "lineleading", to: :lineleading
             map_attribute "indentalign", to: :indentalign
@@ -83,10 +67,6 @@ module Mml
             map_attribute "indentalignfirst", to: :indentalignfirst
             map_attribute "indentshiftfirst", to: :indentshiftfirst
             map_attribute "linebreakmultchar", to: :linebreakmultchar
-
-            map_attribute "color", to: :color
-            map_attribute "fence", to: :fence
-            map_attribute "separator", to: :separator
           end
           # rubocop:enable Metrics/BlockLength
         end

@@ -4,14 +4,10 @@ module Mml
   module V4
     class Semantics < CommonElements
       include Base::Semantics
-
-      attribute :displaystyle, :string
-      attribute :scriptlevel, :integer
+      include Base::V4Attributes
 
       xml do
         namespace Namespace
-        map_attribute "displaystyle", to: :displaystyle
-        map_attribute "scriptlevel", to: :scriptlevel
       end
     end
     Configuration.register_model(Semantics, id: :semantics)

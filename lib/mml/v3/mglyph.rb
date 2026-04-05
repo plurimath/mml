@@ -4,6 +4,7 @@ module Mml
   module V3
     class Mglyph < Lutaml::Model::Serializable
       include Base::Mglyph
+      include Base::DeprecatedFontAttributes
     end
     Configuration.register_model(Mglyph, id: :mglyph)
   end

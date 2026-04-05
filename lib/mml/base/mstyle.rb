@@ -9,8 +9,6 @@ module Mml
         klass.class_eval do
           attribute :mathcolor, :string
           attribute :mathbackground, :string
-          attribute :scriptlevel, :integer
-          attribute :displaystyle, :string
           attribute :scriptsizemultiplier, :integer
           attribute :scriptminsize, :string
           attribute :infixlinebreakstyle, :string
@@ -78,7 +76,6 @@ module Mml
           attribute :selection, :integer
           attribute :separators, :string
           attribute :shift, :integer
-          attribute :side, :string
           attribute :stackalign, :string
           attribute :stretchy, :string
           attribute :subscriptshift, :string
@@ -94,18 +91,6 @@ module Mml
           attribute :verythickmathspace, :string
           attribute :veryverythickmathspace, :string
 
-          attribute :fence, :string
-          attribute :groupalign, :string
-          attribute :separator, :string
-          # Deprecated in MathML 4
-          attribute :fontfamily, :string
-          attribute :fontweight, :string
-          attribute :fontstyle, :string
-          attribute :fontsize, :string
-          attribute :color, :string
-          attribute :background, :string
-          attribute :minlabelspacing, :string
-
           # rubocop:disable Metrics/BlockLength
           xml do
             namespace Mml::Namespace
@@ -114,8 +99,6 @@ module Mml
 
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground
-            map_attribute "scriptlevel", to: :scriptlevel
-            map_attribute "displaystyle", to: :displaystyle
             map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier
             map_attribute "scriptminsize", to: :scriptminsize
             map_attribute "infixlinebreakstyle", to: :infixlinebreakstyle
@@ -183,7 +166,6 @@ module Mml
             map_attribute "selection", to: :selection
             map_attribute "separators", to: :separators
             map_attribute "shift", to: :shift
-            map_attribute "side", to: :side
             map_attribute "stackalign", to: :stackalign
             map_attribute "stretchy", to: :stretchy
             map_attribute "subscriptshift", to: :subscriptshift
@@ -198,18 +180,6 @@ module Mml
             map_attribute "thickmathspace", to: :thickmathspace
             map_attribute "verythickmathspace", to: :verythickmathspace
             map_attribute "veryverythickmathspace", to: :veryverythickmathspace
-
-            map_attribute "fence", to: :fence
-            map_attribute "groupalign", to: :groupalign
-            map_attribute "separator", to: :separator
-            # Deprecated in MathML 4
-            map_attribute "fontfamily", to: :fontfamily
-            map_attribute "fontweight", to: :fontweight
-            map_attribute "fontstyle", to: :fontstyle
-            map_attribute "fontsize", to: :fontsize
-            map_attribute "color", to: :color
-            map_attribute "background", to: :background
-            map_attribute "minlabelspacing", to: :minlabelspacing
           end
           # rubocop:enable Metrics/BlockLength
         end

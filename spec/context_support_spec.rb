@@ -2,6 +2,7 @@
 
 require "spec_helper"
 
+# rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations, RSpec/DescribeClass
 RSpec.describe "Mml context support" do
   let(:v3_xml) do
     '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>'
@@ -41,10 +42,11 @@ RSpec.describe "Mml context support" do
     math = Mml::V3.parse(v3_xml, context: :custom_v3_substitution)
 
     expect(math.mi_value.first).to be_a(CustomV3Mi)
-    expect(math.to_xml(register: :custom_v3_substitution)).to be_xml_equivalent_to(v3_xml)
+    expect(math.to_xml(register: :custom_v3_substitution))
+      .to be_xml_equivalent_to(v3_xml)
   end
 
-  it "supports substitutions in custom v4 contexts through the top-level parser" do
+  it "supports substitutions in custom v4 contexts via top-level parser" do
     stub_const("CustomV4Mi", Class.new(Mml::V4::Mi))
     Mml::V4::Configuration.create_context(
       id: :custom_v4_substitution,
@@ -57,9 +59,11 @@ RSpec.describe "Mml context support" do
 
     expect(math).to be_a(Mml::V4::Math)
     expect(math.mfrac_value.first.mi_value.first).to be_a(CustomV4Mi)
-    expect(math.to_xml(register: :custom_v4_substitution)).to be_xml_equivalent_to(v4_xml)
+    expect(math.to_xml(register: :custom_v4_substitution))
+      .to be_xml_equivalent_to(v4_xml)
   end
 
+  # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
   it "warns and accepts register context ids" do
     Mml::V3::Configuration.create_context(id: :compat_v3)
 
@@ -68,7 +72,9 @@ RSpec.describe "Mml context support" do
       expect(math.mi_value.first).to be_a(Mml::V3::Mi)
     end.to output(/`register` is deprecated/).to_stderr
   end
+  # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
 
+  # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
   it "warns and accepts legacy register objects" do
     stub_const("LegacyRegisterMi", Class.new(Mml::V3::Mi))
     Mml::V3::Configuration.context
@@ -79,11 +85,13 @@ RSpec.describe "Mml context support" do
     )
     legacy_register.register_model(LegacyRegisterMi, id: :mi)
 
+    math = nil
     expect do
       math = Mml::V3.parse(v3_xml, register: legacy_register)
-      expect(math.mi_value.first).to be_a(LegacyRegisterMi)
     end.to output(/`register` is deprecated/).to_stderr
+    expect(math.mi_value.first).to be_a(LegacyRegisterMi)
   end
+  # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
 
   it "raises when both context and register are provided" do
     expect do
@@ -94,11 +102,13 @@ RSpec.describe "Mml context support" do
   it "does not stamp classes with a global register fallback" do
     Mml::V3::Configuration.context
 
-    expect(Mml::V3::Math.instance_variable_defined?(:@register)).to be(false)
-    expect(Mml::V3::Mi.instance_variable_defined?(:@register)).to be(false)
+    math_has_register = Mml::V3::Math.instance_variable_defined?(:@register)
+    mi_has_register = Mml::V3::Mi.instance_variable_defined?(:@register)
+    expect([math_has_register, mi_has_register]).to all(be(false))
   end
 
-  it "supports direct v3 object construction and serialization with an explicit context" do
+  # rubocop:disable RSpec/ExampleLength
+  it "supports direct v3 object construction with explicit context" do
     Mml::V3::Configuration.context
     math = Mml::V3::Math.new(
       lutaml_register: Mml::V3::Configuration.context_id,
@@ -108,7 +118,8 @@ RSpec.describe "Mml context support" do
     expect(math.to_xml).to be_xml_equivalent_to(v3_xml)
   end
 
-  it "supports direct v4 object construction and serialization with an explicit context" do
+  # rubocop:disable RSpec/ExampleLength
+  it "supports direct v4 object construction with explicit context" do
     Mml::V4::Configuration.context
     math = Mml::V4::Math.new(
       lutaml_register: Mml::V4::Configuration.context_id,
@@ -118,3 +129,4 @@ RSpec.describe "Mml context support" do
     expect(math.to_xml).to be_xml_equivalent_to(v3_xml)
   end
 end
+# rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations, RSpec/DescribeClass

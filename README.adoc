@@ -332,6 +332,35 @@ Mml::V4::A.new(
 # => <a href="https://example.com" hreflang="en"><mi>click</mi></a>
 ----
 
+== MathML V4 Compliance
+
+This implementation has been audited against the
+https://www.w3.org/TR/MathML4/[MathML 4 W3C Recommendation].
+
+=== Universal V4 Attributes
+
+All MathML 4 presentation elements include `intent`, `arg`, `displaystyle`,
+`scriptlevel`, `mathcolor`, and `mathbackground` via the shared
+`Base::V4Attributes` module.
+
+=== Legacy Schema Support
+
+For backwards compatibility with existing MathML content, this gem supports
+both the strict V4 schema and the legacy schema:
+
+[cols="1,2",options="header"]
+|===
+|Feature |Status
+|Universal V4 attributes (`intent`, `arg`, `displaystyle`, `scriptlevel`) |Full support
+|`mathcolor`, `mathbackground` on all presentation elements |Full support
+|`<a>` hyperlink element |Full support
+|Deprecated font attributes (`fontfamily`, `fontweight`, etc.) |Legacy support (V3 + V4 legacy schema)
+|`fence`, `separator` on `<mo>` |Legacy support (removed from default V4 schema)
+|`none` element |Deprecated in V4 (empty `<mrow>` recommended)
+|`mlabeledtr` element |Legacy support (removed from default V4 schema)
+|===
+
+
 == Internal architecture
 
 === Element class patterns
