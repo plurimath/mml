@@ -66,6 +66,35 @@ module Mml
       Lutaml::Model::Config.xml_adapter_type = adapter
     end
 
+    # Convenience API for setting up model substitutions.
+    # Creates a derived context with the given substitutions.
+    #
+    # @param models [Hash] A hash mapping original classes to substitute classes
+    #   e.g., { Mml::V4::Mover => Overset }
+    #
+    # @example
+    #   Mml::V4::Configuration.custom_models = { Mml::V4::Mover => Overset }
+    #   math = Mml::V4.parse(xml, context: :custom_models)
+    def custom_models=(models)
+      substitutions = models.map do |from_type, to_type|
+        { from_type: from_type, to_type: to_type }
+      end
+      create_context(id: :custom_models, substitutions: substitutions)
+      @default_context_id = :custom_models
+    end
+
+    def custom_models
+      registered_substitutions ||= {}
+    end
+
+    def default_context_id
+      @default_context_id || context_id
+    end
+
+    def clear_custom_models
+      @default_context_id = nil
+    end
+
     private
 
     def populate_base_context

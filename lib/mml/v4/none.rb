@@ -12,6 +12,5 @@ module Mml
         namespace Namespace
       end
     end
-    Configuration.register_model(None, id: :none)
   end
 end

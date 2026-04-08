@@ -2,7 +2,7 @@
 
 module Mml
   module V3
-    class Maction < Lutaml::Model::Serializable
+    class Maction < CommonElements
       include Base::Maction
     end
     Configuration.register_model(Maction, id: :maction)

@@ -1,0 +1,9 @@
+[submodule "spec/fixtures/mml2-testsuite"]
+	path = spec/fixtures/mml2-testsuite
+	url = https://github.com/plurimath/mml2-testsuite.git
+[submodule "spec/fixtures/mml3-testsuite"]
+	path = spec/fixtures/mml3-testsuite
+	url = https://github.com/plurimath/mml3-testsuite.git
+[submodule "spec/fixtures/mmlcore-testsuite"]
+	path = spec/fixtures/mmlcore-testsuite
+	url = https://github.com/plurimath/mmlcore-testsuite.git

@@ -4,12 +4,12 @@ module Mml
   module V4
     class Mi < Lutaml::Model::Serializable
       include Base::Mi
+      include Base::V3Common
       include Base::V4Attributes
 
       xml do
         namespace Namespace
       end
     end
-    Configuration.register_model(Mi, id: :mi)
   end
 end

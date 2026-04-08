@@ -10,6 +10,5 @@ module Mml
         namespace Namespace
       end
     end
-    Configuration.register_model(Mtd, id: :mtd)
   end
 end

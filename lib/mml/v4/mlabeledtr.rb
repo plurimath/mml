@@ -12,6 +12,5 @@ module Mml
         namespace Namespace
       end
     end
-    Configuration.register_model(Mlabeledtr, id: :mlabeledtr)
   end
 end

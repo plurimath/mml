@@ -52,6 +52,28 @@ require_relative "v3/none"
 require_relative "v3/semantics"
 require_relative "v3/math"
 
+# Content elements - must be eagerly loaded for Configuration.register_model
+require_relative "v3/apply"
+require_relative "v3/ci"
+require_relative "v3/cn"
+require_relative "v3/csymbol"
+require_relative "v3/annotation_xml"
+require_relative "v3/annotation"
+require_relative "v3/constructs"
+require_relative "v3/bind"
+require_relative "v3/arith"
+require_relative "v3/logic"
+require_relative "v3/relations"
+require_relative "v3/sets"
+require_relative "v3/calculus"
+require_relative "v3/vector_calculus"
+require_relative "v3/functions"
+require_relative "v3/elementary_functions"
+require_relative "v3/constants"
+require_relative "v3/linear_algebra"
+require_relative "v3/statistics"
+require_relative "v3/deprecated_content"
+
 module Mml
   module V3
     extend Mml::VersionedParser

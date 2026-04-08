@@ -2,7 +2,7 @@
 
 module Mml
   module V4
-    class Maction < Lutaml::Model::Serializable
+    class Maction < CommonElements
       include Base::Maction
       include Base::V4Attributes
 
@@ -10,6 +10,5 @@ module Mml
         namespace Namespace
       end
     end
-    Configuration.register_model(Maction, id: :maction)
   end
 end

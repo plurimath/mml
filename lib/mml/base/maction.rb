@@ -15,6 +15,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "maction"
+            mixed_content
 
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground

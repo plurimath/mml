@@ -1,0 +1,296 @@
+#!/bin/bash
+
+SOURCE=xml
+HSTYLE=style/html
+PSTYLE=style/pdf
+W3CMATH=../..
+
+# echo validate source
+# rxp -sxV $SOURCE/mathml-spec.xml
+# echo make html version
+#
+# saxon $SOURCE/mathml-spec.xml $HSTYLE/mmldiff.xsl show.diff.markup=0  
+#
+# echo make diff marked html version
+# saxon ../spec/xml/mathml-spec.xml $HSTYLE/mmldiff.xsl 
+# exit
+
+
+echo validate sources
+rxp -sxV $SOURCE/mathml-spec.xml
+
+echo ""
+echo ""
+echo make standard html version
+saxon $SOURCE/mathml-spec.xml $HSTYLE/mmldiff.xsl show.diff.markup=0  
+
+
+echo make diff marked html version
+saxon ../spec/xml/mathml-spec.xml $HSTYLE/mmldiff.xsl 
+
+echo make xhtml stylesheets
+echo "  " mmldiff
+saxon -o $HSTYLE/xmmldiff.xsl $HSTYLE/mmldiff.xsl $HSTYLE/html2xhtml.xsl system-dtd=mathml.dtd stylesheet.pi="/Math/XSL/mathml.xsl"
+echo "  " mmlspec
+saxon -o $HSTYLE/xmmlspec.xsl $HSTYLE/mmlspec.xsl $HSTYLE/html2xhtml.xsl system-dtd=mathml.dtd  stylesheet.pi="/Math/XSL/mathml.xsl"
+echo "  " slices
+saxon -o $HSTYLE/xslices.xsl $HSTYLE/slices.xsl $HSTYLE/html2xhtml.xsl system-dtd=mathml.dtd 
+echo "  " slices-common
+saxon -o $HSTYLE/xslices-common.xsl $HSTYLE/slices-common.xsl $HSTYLE/html2xhtml.xsl system-dtd=mathml.dtd 
+echo "  " xmlspec
+saxon -o $HSTYLE/xxmlspec.xsl $HSTYLE/xmlspec.xsl $HSTYLE/html2xhtml.xsl system-dtd=mathml.dtd 
+
+
+echo make xhtml version
+saxon $SOURCE/mathml-spec.xml $HSTYLE/mathmlx.xsl 
+
+#echo ""
+#echo ""
+#echo Chapter 6 Tables
+#saxon ../../characters/unicode.xml $HSTYLE/mml6.xsl status=REC
+#
+#echo "Chapter 6 diff marked (byalpha) Tables"
+#saxon ../../characters/unicode.xml $HSTYLE/mml6.xsl diff=1 ext="-d.html" status=REC
+#
+#echo xhtml mml6 stylesheet
+#saxon -o $HSTYLE/xmml6.xsl $HSTYLE/mml6.xsl $HSTYLE/html2xhtml.xsl system-dtd=mathml.dtd stylesheet.pi="/Math/XSL/mathml.xsl" status=REC
+#
+#echo Chapter 6 xhtml Tables
+#saxon ../../characters/unicode.xml $HSTYLE/xmml6.xsl ext=.xml 
+
+echo ""
+echo ""
+echo validate generated xhtml+mathml
+for i in *.xml ;do echo -n $i ""; rxp -sxV $i ;done
+
+echo ""
+echo validate html
+for i in *.html
+do
+echo -n $i ""
+
+nsgmls  -s -E4  $i
+done
+
+
+#echo ""
+#mv images.tex images.old
+#saxon  -o images.tex $SOURCE/mathml-spec.xml $HSTYLE/images.xsl
+#if (cmp images.tex images.old)
+#then
+#echo images same
+#else
+#echo images differ
+#latex images.tex
+#echo ""
+#echo ""
+#echo running generated images script
+#bash images.sh
+#fi
+
+
+echo ""
+echo PDF
+echo generate TeX files
+saxon  $SOURCE/mathml-spec.xml $PSTYLE/mathmlspec.xsl
+
+if test ! -f w3c_home.png 
+then
+echo copy W3C logo
+cp $SOURCE/../image/w3c_home.png .
+fi
+
+if test ! -f braids.png 
+then
+echo copy braids
+cp $SOURCE/../image/braids.png .
+fi
+
+if test ! -f intersect.png 
+then
+echo copy intersect
+cp $SOURCE/../image/intersect.png .
+fi
+
+# use nested if rather than while to limit looping
+echo generate mathml-p.pdf
+pdflatex \\batchmode \\input mathml-p.tex
+if (grep -i rerun mathml-p.log)
+  then
+  pdflatex \\batchmode \\input mathml-p.tex
+  if (grep -i rerun mathml-p.log)
+    then 
+    pdflatex \\batchmode \\input mathml-p.tex
+    if (grep -i rerun mathml-p.log)
+      then
+      pdflatex \\batchmode \\input mathml-p.tex
+    fi
+  fi
+fi
+
+echo generate mathml-s.pdf
+pdflatex \\batchmode \\input mathml-s.tex
+if (grep -i rerun mathml-s.log)
+  then
+  pdflatex \\batchmode \\input mathml-s.tex
+  if (grep -i rerun mathml-s.log)
+    then 
+    pdflatex \\batchmode \\input mathml-s.tex
+    if (grep -i rerun mathml-s.log)
+      then
+      pdflatex \\batchmode \\input mathml-s.tex
+    fi
+  fi
+fi
+
+
+
+echo grep latex warnings
+grep "^\!" mathml-?.log
+grep -i warning mathml-?.log | grep -v bookmarks | grep -v "Font Warning"
+grep -i rerun mathml-?.log
+
+
+echo ""
+echo make directories for zip files
+
+
+mkdir mathml-html 2> /dev/null
+
+
+if test ! -d mathml-html/image
+then
+echo cp image
+cp -r image mathml-html
+else
+echo "(not) assuming mathml-html/image up to date"
+cp -r image mathml-html
+fi
+
+
+cp $SOURCE/../image/w3c_home.png mathml-html/image
+cp $HSTYLE/base.css mathml-html
+
+if test ! -d mathml-html/glyphs
+then
+echo cp glyphs
+cp -r glyphs mathml-html
+else
+echo "(not) assuming mathml-html/glyphs up to date"
+cp -r glyphs mathml-html
+fi
+
+echo cp dtd and xsl
+cp $W3CMATH/DTD/mathml2/xhtml-math11-f.dtd mathml-html
+cp $W3CMATH/XSL/*.xsl mathml-html
+
+echo sed xml
+sed  \
+   -e "s@/Math/DTD/mathml2/@@" \
+   mathml.dtd > mathml-html/mathml.dtd
+
+for i in *.xml
+do
+sed \
+  -e "s@/Math/XSL/mathml.xsl@mathml.xsl@" \
+  -e "s@http://www.w3.org/StyleSheets/TR.*css@base.css@" \
+  -e "s@http://www.w3.org/Icons/w3c_home@image/w3c_home.png@" \
+  $i > mathml-html/$i
+done
+
+echo sed html 
+
+for i in *.html
+do
+sed \
+  -e "s@http://www.w3.org/StyleSheets/TR.*css@base.css@" \
+  -e "s@http://www.w3.org/Icons/w3c_home@image/w3c_home.png@" \
+  $i > mathml-html/$i
+done
+
+
+mkdir mathml-source 2> /dev/null
+mkdir mathml-source/xml  2> /dev/null
+mkdir mathml-source/pubtext 2> /dev/null
+mkdir mathml-source/style 2> /dev/null
+mkdir mathml-source/style/html 2> /dev/null
+mkdir mathml-source/style/pdf 2> /dev/null
+
+
+cp $SOURCE/{changes.xml,fundamentals.xml,operator-dict.xml,\
+character-set.xml,glossary.xml,parsing.xml,\
+content-element-def.xml,interface.xml,presentation-markup.xml,\
+content-markup.xml,introduction.xml,references.xml,\
+contributors.xml,mathml-css-sample.xml,\
+mathml-dom.xml,validation-grammar.xml,\
+dom-bindings.xml,mathml-spec.xml,\
+dom-intro.xml,mixing.xml} \
+mathml-source/xml
+
+cp $SOURCE/../pubtext/{mathmlspec.dtd,xmlspec.dtd} mathml-source/pubtext
+
+cp $HSTYLE/{mmldiff.xsl,html2xhtml.xsl,mmlspec.xsl,slices.xsl,slices-common.xsl,xmlspec.xsl,mml6.xsl,images.xsl} mathml-source/style/html
+cp $PSTYLE/mathmlspec.xsl mathml-source/style/pdf
+
+
+echo sed run
+sed \
+  -e "s@=@=@" \
+  -e "s/exit/exit/" \
+  run > mathml-source/run
+
+
+echo readme.txt
+echo "
+The sources for the MathML specification
+the file  "run" in this directory is a bash shell script
+which details the commands required to generate the MathML
+specificaton. It does not use any advanced bash features and
+could be easily modified to other environments such as the
+windows command line.
+
+It requires:
+
+An XML validator
+rxp is used in the script
+this is not used for production but just to check the input
+and generated output is valid.
+
+An SGML Parser
+nsgmls is used in the script.
+Again this is not used for production, but just to check that all
+generated HTML is valid.
+
+
+The unicode.xml and its dtd, charlist.dtd, available from
+http://www.w3.org/Math/characters
+These are used as the source for the character tables in chapter 6.
+In addition, to generate the diff-marked version of byalpha.html
+showing differences from the MathML 2.0 rec, you will need the version
+of unicode.xml distributed in the XML source zip file linked from that
+recommendation.
+
+
+An XSLT system.
+The free java implementation saxon is used in the script.
+
+pdflatex to generate the PDF versions of the specification.
+The documents use the rapport3 LaTeX class file which should be part
+of most TeX distributions but is available from TeX archives as part of
+the ntgclass distribution. It also uses several commonly available
+package files, hyperref, url,ae,pslatex.
+
+" > mathml-source/readme.txt
+
+echo ""
+echo mathml-source.zip
+zip -qr mathml-source.zip mathml-source
+
+echo mathml-html.zip
+zip -qr mathml-html.zip mathml-html
+
+
+
+
+echo ""
+echo run ends here

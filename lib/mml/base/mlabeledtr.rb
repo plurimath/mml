@@ -14,8 +14,6 @@ module Mml
           attribute :id, :string
           attribute :mtd_value, :mtd, collection: true
 
-          attribute :groupalign, :string
-
           xml do
             namespace Mml::Namespace
             element "mlabeledtr"
@@ -27,8 +25,6 @@ module Mml
             map_attribute "rowalign", to: :rowalign
             map_attribute "id", to: :id
             map_element "mtd", to: :mtd_value
-
-            map_attribute "groupalign", to: :groupalign
           end
         end
       end

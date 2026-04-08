@@ -43,9 +43,19 @@ module Mml
     autoload :Munderover, "#{__dir__}/base/munderover"
     autoload :None, "#{__dir__}/base/none"
     autoload :Semantics, "#{__dir__}/base/semantics"
+    autoload :UniversalPresentationAttributes,
+             "#{__dir__}/base/universal_presentation_attributes"
+    autoload :V3Common, "#{__dir__}/base/v3_common"
+    autoload :V3PresentationAttributes,
+             "#{__dir__}/base/v3_presentation_attributes"
+    autoload :V4OnlyAttributes,
+             "#{__dir__}/base/universal_presentation_attributes"
     autoload :V4Attributes, "#{__dir__}/base/v4_attributes"
     autoload :DeprecatedFontAttributes,
              "#{__dir__}/base/deprecated_font_attributes"
     autoload :V3Only, "#{__dir__}/base/v3_only"
+    autoload :Content, "#{__dir__}/base/content_loader"
+    autoload :Declare, "#{__dir__}/base/content/declare"
+    autoload :Share, "#{__dir__}/base/content/share"
   end
 end

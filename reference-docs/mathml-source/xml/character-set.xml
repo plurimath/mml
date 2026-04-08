@@ -1,0 +1,1011 @@
+<div1 id="chars" role="chapter6"><head>Characters, Entities and Fonts</head>
+<!-- $Id: character-set.xml,v 1.74 2003/09/15 13:50:10 davidc Exp $ -->
+
+<div2 id="chars_intro"><head>Introduction</head>
+
+<p>
+Notation and symbols have proved very important for
+mathematics. Mathematics has grown in part because <phrase diff="del"> of the
+succinctness and suggestiveness of its evolving notation</phrase>
+<phrase diff="add">its notation continually changes toward being succinct and 
+suggestive</phrase>. There
+have been many new signs <phrase diff="chg">developed</phrase> for use in mathematical
+notation, and mathematicians have not held back from making use
+of many symbols originally <phrase diff="chg">introduced</phrase> elsewhere. The result is
+that mathematics makes use of a very large collection of
+symbols.  It is difficult to write mathematics fluently if these
+characters are not available for use<phrase diff="del"> in coding</phrase>. It is difficult
+to read mathematics if corresponding glyphs are not available
+for presentation on specific display devices.
+</p>
+
+<p diff="del">
+This situation posed a problem for the first W3C Math Working Group
+when it was brought into existence.  It did not fall naturally within
+the purview of developing a specification enabling mathematics to be
+used with HTML and producing a DTD for <phrase diff="chg">the Working
+Group</phrase> to worry about more than
+the entities allowed in the DTD. However, as experience has shown, a
+long list of entities with no means to display them is of little use,
+and a cause of frequent frustrations in trying to use a standard. On
+the other hand, a large collection of glyphs and fonts representing
+characters without a standard way to refer to them is not of much use
+either.
+</p>
+
+<p>
+The W3C Math Working Group therefore took on directly the task of
+specifying part of the full mechanism needed to proceed from
+notation to final presentation, and started collaboration with
+organizations undertaking specification of the rest.
+</p>
+
+<p>
+This chapter of the MathML specification contains a listing of character names for
+use <phrase diff="chg">with</phrase> MathML, recommendations for their use, and
+warnings to pay attention to the correct form of the corresponding code points
+given in the UCS (Universal Character Set) as codified in Unicode and ISO 10646
+[see <bibref ref="Unicode"/> and the <loc href="http://www.unicode.org/">Unicode
+Web site</loc>].  For simplicity we shall refer to this character set by the short
+name Unicode.  Though Unicode changes from time to time so that it is specified
+exactly by using version numbers, unless this brings clarity on some point we
+shall not use them.  <phrase diff="chg">The specification of MathML 2.0
+<bibref diff="add" ref="MathML2"/> used to make use of some characters that were
+not part of Unicode 3.0 but which had been proposed to the Unicode Technical
+Committee (UTC), and thus for inclusion in ISO 10646.  They have been included in
+the revisions Unicode 3.1 and 3.2.  As of the publication of the MathML 2.0 (Second Edition) the current version is Unicode 4.0.</phrase> (For more detail about this see
+<specref ref="chars_char-status"/>.)</p>
+
+<p>
+<phrase diff="chg">
+While a long process of review and adoption by UTC and ISO/IEC of the
+characters of special interest to mathematics and MathML is now</phrase>
+complete <phrase diff="del">(<loc
+href="http://www.unicode.org/unicode/alloc/Pipeline.html">Unicode Work
+in Progress</loc>)</phrase> there remains the possibility of some further
+modification of the lists of characters accepted<phrase diff="del">, of the code
+assignments for those adopted, or of the names given them by Unicode</phrase>.
+To make sure any possible corrections to relevant standards are taken
+into account, and for the latest character tables and font information,
+see the <loc href="http://www.w3.org/Math/">W3C Math Working Group
+home page</loc> and the <loc href="http://www.unicode.org/">Unicode
+site</loc> <phrase diff="add">(see, for instance, <loc
+href="http://www.unicode.org/unicode/alloc/Pipeline.html">Unicode Work
+in Progress</loc>)</phrase>.
+</p>
+
+</div2>
+
+
+<div2 id="chars_mathmlchars"><head>MathML Characters</head>
+
+<p>
+A MathML token element <specref ref="presm_tokel"/>, and <specref
+ref="contm_tokenel"/> takes as content a sequence of <emph>MathML
+Characters</emph>.  MathML Characters are defined to be either
+Unicode characters legal in XML documents or <el>mglyph</el> elements. 
+The latter are used to represent
+characters that do not have a Unicode encoding, as described in
+<specref ref="presm_mglyph"/>. 
+<phrase diff="chg"> Because the Unicode UCS provided
+approximately one thousand special alphabetic characters for the use
+of mathematics with Unicode 3.1, and  over 900 further
+special symbols in Unicode 3.2, the need for 
+<el>mglyph</el> should be rare. </phrase>
+</p>
+
+<div3 id="chars_unicodechars"><head>Unicode Character Data</head>
+
+<p>
+As always in XML, any character allowed by XML may be used in MathML
+in an XML document.  The legal characters have the hexadecimal code
+numbers 09 (tab = U+0009), 0A (line feed = U+000A), 0D (carriage
+return = U+000D), 20-D7FF (U+0020..U+D7FF), E000-FFFD
+(U+E000..U+FFFD), and 10000-10FFFF (U+010000..U+10FFFF). The
+<phrase diff="chg">notation, just introduced in parentheses,</phrase> 
+beginning with U+ is <phrase diff="chg">that</phrase> recommended by Unicode
+for referring to Unicode characters [see <bibref ref="Unicode"/>, page
+xxviii]. The exclusions above code number D7FF are of the blocks used
+in surrogate pairs, and the two characters guaranteed not to be
+Unicode characters at all.  U+FFFE is excluded to allow determination
+of byte order in certain encodings.
+</p>
+
+<p>
+There are essentially three different ways of encoding character data.
+
+<ulist>
+<item>
+  <p>
+  Using characters directly: For example, an A may be entered as 'A'
+  from a keyboard (character <phrase diff="chg">U+0041</phrase>).  This option is only available
+  if the character encoding specified for the XML document includes
+  the character.  Most commonly used encodings will have 'A' in the
+  ASCII position.  In many encodings, characters may need more than
+  one byte.  Note that if the document is, for example, encoded in
+  Latin-1 (ISO-8859-1) then <emph>only</emph> the characters in that
+  encoding are available directly.  <phrase diff="del">Unfortunately, most mathematical
+  symbols may not be encoded as character data in this way.</phrase>
+<phrase diff="add">Using UTF-8 or UTF-16, the only two encodings that 
+all XML processors are required to accept, mathematical symbols can 
+be encoded as character data.</phrase>
+  </p>
+</item>
+
+<item>
+<p>
+Using numeric XML character references: Using this notation, 'A' may be
+represented as &amp;<phrase diff="chg">#65;</phrase> (decimal) or  &amp;#x41; (hex).
+Note that the numbers always refer to the Unicode encoding (and not to
+the character encoding used in the XML file). By using <phrase diff="chg">character</phrase>
+references it is always possible to access the entire Unicode range.
+For a general XML vocabulary, there is a disadvantage to this approach:
+character references may not be used in XML element or attribute
+names.  However, this is not an issue for MathML, as all element names in
+MathML are restricted to ASCII characters.
+</p>
+</item>
+
+<item>
+<p>
+Using entity references: The MathML DTD defines internal entities that
+expand to character data. Thus for example the entity reference
+&amp;eacute; may be used rather than the character reference
+"&amp;#xE9; or, if, for example, the document is encoded in
+ISO-8859-1, the character &#xE9;. An XML fragment that uses an entity
+reference which is not defined in a DTD is not well-formed; therefore
+it will be rejected by an XML parser. For this reason
+<emph>every</emph> fragment using entity references <emph>must</emph>
+use a DOCTYPE declaration which specifies the MathML DTD, or a DTD
+that at least declares any entity reference used in the MathML
+instance.  The need to use a DOCTYPE complicates inclusion of MathML in
+some documents. However, entity references are very useful for small
+illustrative examples, and are used in most examples in this document.
+</p>
+
+<p diff="del">
+For this reason entity references are perhaps not optimal for use in
+generated MathML, however they are very useful for small illustrative
+examples, as used in this document.
+</p>
+</item>
+ 
+</ulist>
+</p>
+
+</div3>
+
+<div3 id="chars_mglyph"><head>Special Characters Not in Unicode</head>
+
+<p>
+For special purposes, one may need to use a character which is not in
+Unicode<phrase diff="del">, even with the expected additions</phrase>. 
+In these cases
+one may use the <intref ref="presm_mglyph"><el>mglyph</el></intref>
+element for direct access to a glyph from some font and creation of
+a MathML <phrase diff="chg">substitute for the corresponding character</phrase>.
+All MathML token elements that accept character data also accept an
+<el>mglyph</el> in their content.
+</p>
+
+<p>
+Beware, however, that the font chosen may not be available to all
+MathML processors.
+</p>
+</div3>
+
+<div3 id="chars_BMP-SMP"><head>Mathematical Alphanumeric Symbols
+Characters</head>
+
+<p>
+A noticeable feature of mathematical and scientific writing is the use
+of single letters to denote variables and constants in a given
+context.  The increasing complexity of science has led to the use of
+certain common alphabet and font variations to provide enough special
+symbols of this letter-like type.  These denotations are in fact
+<emph>not</emph> letters that may be used to make up words with
+recognized meanings, but individual carriers of semantics themselves.
+Writing a string of such symbols is usually interpreted in terms of
+some composition law, for instance, multiplication.  Many letter-like
+symbols may be quickly interpreted by specialists in a given area as
+of a certain mathematical type: for instance, bold symbols, whether
+based on Latin or Greek letters, as vectors in physics or engineering,
+or fraktur symbols as Lie algebras in part of pure mathematics.  Again,
+in given areas of science, some constants are recognizable letter
+forms.  When you look carefully at the range of letter-like
+mathematical symbols in common use today, as the STIX project
+supported by major scientific and technical publishers did, you come
+up with perhaps surprisingly many.  A proposal to facilitate
+mathematical publishing by inclusion of mathematical alphabetic
+symbols in the UCS was made, and has been favorably handled.
+</p>
+
+<p>
+The <phrase diff="chg">additional</phrase> Mathematical Alphanumeric Symbols 
+<phrase diff="chg">provided</phrase> in Unicode 3.1 have
+<phrase diff="del">provisional </phrase>code points in <emph>Plane 1</emph>, that is, in the first
+plane with Unicode values higher than 2<sup>16</sup>.  This plane of
+characters is also known as the Secondary Multilingual Plane (SMP),
+in contrast to the Basic Multilingual Plane (BMP) which <phrase diff="chg">
+was originally the entire extent of Unicode</phrase>.  Support for Plane 1 characters in currently
+deployed software is not always reliable, and in particular support
+for these Mathematical Alphanumeric Symbol characters is not likely to be
+widespread until after <phrase diff="chg">public fonts covering the characters
+adopted for mathematics are available</phrase>.
+</p>
+
+<p>
+As discussed in <specref ref="presm_commatt"/>, MathML offers an
+alternative mechanism to specify mathematical alphabetic 
+characters<phrase diff="chg">.  This alternative spans the gap between the
+specification of Unicode 3.1 and its associated deployment in software and
+fonts.</phrase>
+Namely, one uses the <att>mathvariant</att>
+attribute on the surrounding token element, which will most commonly
+be <el>mi</el>.  In this section we detail the
+correspondence that a MathML processor should apply between certain
+characters in <emph>Plane 0</emph> (BMP) of Unicode, modified by the
+<att>mathvariant</att> attribute, and the Plane 1
+Mathematical Alphanumeric Symbol characters.
+</p>
+
+
+<p>The basic idea of the correspondence is fairly simple.
+For example, a Mathematical Fraktur alphabet is <phrase diff="chg">
+in Plane 1</phrase>, and
+the code point for Mathematical Fraktur A is 
+<phrase diff="chg">U+1D504</phrase>.
+Thus using these <phrase diff="del">proposed</phrase> characters, a typical example might be
+<eg role="mathml">
+<![CDATA[<mi>&#x1D504;</mi>]]>
+</eg>
+However, an alternative, equivalent markup would be to use
+the standard A and modify the identifier using the
+<att>mathvariant</att> attribute, as follows:
+<eg role="mathml">
+<![CDATA[<mi mathvariant="fraktur">A</mi>]]>
+</eg>
+</p>
+
+<p>
+The exact correspondence between a mathematical alphabetic character
+and an unstyled character is complicated by the fact that certain
+characters that were already present in Unicode are not in the
+'expected' sequence.
+</p>
+
+<p>
+The detailed correspondence is shown in the tables given in
+<specref ref="chars_letter-like-tables"/>.
+</p>
+
+
+<p>
+Mathematical Alphanumeric Symbol characters should not be used for styled text.
+For example, Mathematical Fraktur A must not be used to just select
+a blackletter font for an uppercase A. Doing this sort of thing
+would create problems for searching, restyling (e.g. for accessibility), 
+and many other kinds of processing.
+</p>
+</div3>
+
+<div3 id="chars_nonmark"><head>Non-Marking Characters</head>
+
+
+<p>
+Some characters, although important for the quality of print or
+alternative rendering, do not have glyph marks that correspond
+directly <phrase diff="add">to them</phrase>.  They are called here non-marking characters.<phrase diff="del">Below we have
+a table of those adopted for the purposes of MathML.</phrase>
+Their roles are
+discussed in <specref ref="presm"/> and <specref ref="contm"/><phrase diff="del">,
+respectively.  The values of the spaces given are
+recommendations. Some of these characters are among those with new
+Unicode values, and some are given as combinations of Unicode
+characters employing the new special mathematics modifier character
+(U0FE00). The correspondence between the spacing amounts mentioned
+below and those in the Unicode descriptions is not exact, but the
+matches are good</phrase>.</p>
+
+<p>In MathML 2 control of page composition, such as line-breaking, is
+effected by the use of the proper attributes on the <el>mspace</el> element.</p>
+
+<p diff="chg">The characters below are not simple spacers.  They are
+especially important new additions to the UCS because they provide
+textual clues which can increase the quality of print rendering,
+permit correct audio rendering, and allow the unique recovery of
+mathematical semantics from text which is visually ambiguous.</p>
+
+<p>
+<table id="chars_table-white">
+<thead>
+<tr>
+<td>Character name</td>
+<td>Unicode</td>
+<td>Description</td>
+</tr>
+</thead>
+<tbody>
+<tr  diff="del">
+<td><kw role="entity">Tab</kw></td>
+<td>00009</td>
+<td>tabulator stop; horizontal tabulation</td>
+</tr>
+<tr  diff="del">
+<td><kw role="entity">NewLine</kw></td>
+<td>0000A</td>
+<td>force a line break; line feed</td>
+</tr>
+<tr  diff="del">
+<td><kw role="entity">Space</kw></td>
+<td>00020</td>
+<td>one em of space in the current font</td>
+</tr>
+<tr  diff="del">
+<td><kw role="entity">NonBreakingSpace</kw></td>
+<td>000A0</td>
+<td>space that is not a legal breakpoint</td>
+</tr>
+<tr  diff="del">
+<td><kw role="entity">ZeroWidthSpace</kw></td>
+<td>0200B</td>
+<td>space of no width at all</td>
+</tr>
+<tr  diff="del">
+<td><kw role="entity">VeryThinSpace</kw></td>
+<td>0200A</td>
+<td>space of width 1/18 em</td>
+</tr>
+<tr  diff="del">
+<td><kw role="entity">ThinSpace</kw></td>
+<td>02009</td>
+<td>space of width 3/18 em</td>
+</tr>
+<tr  diff="del">
+<td><kw role="entity">MediumSpace</kw></td>
+<td>02005</td>
+<td>space of width 4/18 em</td>
+</tr>
+<tr  diff="del">
+<td><kw role="entity">ThickSpace</kw></td>
+<td>02009-0200A-0200A</td>
+<td>space of width 5/18 em</td>
+</tr>
+<tr diff="del">
+<td><kw role="entity">NegativeVeryThinSpace</kw></td>
+<td>0200A-0FE00</td>
+<td>space of width -1/18 em</td>
+</tr>
+<tr diff="del">
+<td><kw role="entity">NegativeThinSpace</kw></td>
+<td>02009-0FE00</td>
+<td>space of width -3/18 em</td>
+</tr>
+<tr diff="del">
+<td><kw role="entity">NegativeMediumSpace</kw></td>
+<td>0205F-0FE00</td>
+<td>space of width -4/18 em</td>
+</tr>
+<tr diff="del">
+<td><kw role="entity">NegativeThickSpace</kw></td>
+<td>02005-0FE00</td>
+<td>space of width -5/18 em</td>
+</tr>
+<tr>
+<td><kw role="entity">InvisibleTimes</kw></td>
+<td>02062</td>
+<td>marks multiplication when it is understood without a mark
+(<specref ref="presm_mo"/></td>
+</tr>
+<tr>
+<td><kw role="entity">InvisibleComma</kw></td>
+<td>02063</td>
+<td>used as a separator, e.g., in indices (<specref ref="presm_mo"/></td>
+</tr>
+<tr>
+<td><kw role="entity">ApplyFunction</kw></td>
+<td>02061</td>
+<td>character showing function application in presentation tagging
+(<specref ref="presm_mo"/></td>
+</tr>
+</tbody>
+</table>
+</p>
+
+</div3>
+</div2>
+
+
+<div2><head>Character Symbol Listings</head>
+
+<p>The Universal Character Set (UCS) of Unicode and ISO 10646
+continues to evolve, see <specref ref="chars_char-status"/>.  
+<phrase diff="add">At the time of writing the standard is Unicode 4.0.</phrase>
+<phrase diff="del">A small
+number of the changes recently introduced, relative to those resulting
+from the needs of Asian languages, are those designed exactly to
+facilitate the use of Unicode by the 'equation-writing' community.
+This specification is written on the assumption that the code
+assignments suggested to ISO/IEC JTC1/SC2/WG2 by the UTC will be
+confirmed as they are in public draft forms of Unicode 3.1 and 3.2.</phrase>
+<phrase diff="chg">As before, we can only reiterate that for latest developments on
+details of character standards as far as they influence mathematical
+formalism the  <loc href="http://www.w3.org/Math/">home page of the
+W3C Math Activity</loc> should be consulted.</phrase></p>
+
+<p>The characters are given with entity names as well as Unicode
+numbers.  To facilitate comprehension of a fairly large list of names,
+which totals over 2000 in this case, we offer more than one way to find
+to a given character.  A corresponding full set of entity declarations
+is in the DTD in <specref ref="parsing"/>. For discussion of entity
+declarations see that appendix.
+</p>
+
+<p>
+The characters are listed by name, and sample glyphs provided for all
+of them.  Each character name is accompanied by a code for a character
+grouping chosen from a list given below, a short verbal description,
+and a Unicode hex code drawn from ISO 10646<phrase diff="del">, now extended in
+accordance with the proposal forwarded by the UTC to ISO/IEC WG2 in
+March 2000</phrase>.
+</p>
+
+<p>The character listings by alphabetical and Unicode order in
+<specref ref="chars_entity_tables"/> are in harmony with the ISO
+character sets given, in that if some part of a set is included then
+the entire set is included.
+</p>
+
+<div3 id="chars_special"><head>Special Constants</head>
+
+<p> To begin we list separately a few of the special characters which
+MathML has introduced.  These <phrase diff="chg">now have</phrase>
+Unicode values.  Rather like the non-marking <phrase
+diff="chg">characters</phrase> above, they provide very useful
+capabilities in the context of machinable mathematics.<phrase diff="del">  It might be
+imagined there could also be entries below for <kw
+role="entity">true</kw>, <kw role="entity">false</kw> and <kw
+role="entity">NotANumber</kw>, but these do not yet have Unicode
+points assigned.  They can be introduced by the character extension
+mechanisms provided by the <el>mglyph</el> and <el>csymbol</el> elements.</phrase>
+
+<table>
+<thead>
+<tr>
+<td>Entity name</td>
+<td>Unicode</td>
+<td>Description</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><kw role="entity">CapitalDifferentialD</kw></td>
+<td>02145</td>
+<td>D for use in differentials, e.g. within integrals</td>
+</tr>
+<tr>
+<td><kw role="entity">DifferentialD</kw></td>
+<td>02146</td>
+<td>d for use in differentials, e.g. within integrals</td>
+</tr>
+<tr>
+<td><kw role="entity">ExponentialE</kw></td>
+<td>02147</td>
+<td>e for use for the exponential base of the natural logarithms</td>
+</tr>
+<tr><td><kw role="entity">ImaginaryI</kw></td>
+<td>02148</td>
+<td>i for use as a square root of -1</td>
+</tr>
+</tbody>
+</table>
+</p>
+</div3>
+
+
+<div3 id="chars_byxxx"><head>Character Tables (ASCII format)</head>
+
+<p>The first table offered is a very large ASCII listing of characters
+considered particularly relevant to mathematics.  This is given in
+<loc href="bycodes.html" diff="chg">Unicode order</loc>.
+Most, but not all, of these characters have MathML names
+defined via entity declarations in the DTD.  Those that do not are
+usually symbols which seem mathematically peripheral, such as dingbats,
+machine graphics or technical symbols.
+</p>
+
+<p>
+A second table lists those characters that do have MathML entity
+names, <loc href="byalpha.html">ordered alphabetically</loc>, with
+a lower-case letter preceding its upper-case counterpart.
+</p>
+
+</div3>
+
+<div3 id="chars_16x16-tables"><head>Tables arranged by Unicode block</head>
+<p>
+The tables in this section detail Unicode code points (displayed with
+256 code points per table) that have mathematically significant
+characters. The sample glyph images link to the <loc
+href="bycodes.html">table of characters ordered by Unicode</loc> given
+in the previous section.<phrase diff="del"> As shown in the key for each table, the
+status of each character (for example in Unicode 3.0 or in the
+proposed additions) is indicated by a CSS class on the table cell
+(which by default is indicated by varying the background color).</phrase>  The
+names of the blocks are those of the Unicode blocks included in the
+numerical range given; bracketing indicates <phrase diff="add">glyphs
+for</phrase> characters of that type are not shown in these tables.</p>
+
+<table id="chars_table-unicode-block">
+<thead>
+<tr>
+<td>Block Range</td>
+<td>Description</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><loc href="000.html">00000 - 000FF</loc></td>
+<td>Controls and Basic Latin, and Latin-1 Supplement</td>
+</tr>
+<tr>
+<td><loc href="001.html">00100 - 001FF</loc></td>
+<td>Latin Extended-A, Latin Extended-B</td>
+</tr>
+<tr>
+<td><loc href="002.html">00200 - 002FF</loc></td>
+<td>IPA Extensions, Spacing Modifier Letters</td>
+</tr>
+<tr>
+<td><loc href="003.html">00300 - 003FF</loc></td>
+<td>Combining Diacritical Marks, Greek [and Coptic]
+</td>
+</tr>
+<tr>
+<td><loc href="004.html">00400 - 004FF</loc></td>
+<td>Cyrillic</td>
+</tr>
+<!--
+<tr>
+<td><loc href="005.html">00500 - 005FF</loc></td>
+<td>Cyrillic Supplement, [Armenian, Hebrew]</td>
+</tr>
+-->
+<tr>
+<td><loc href="020.html">02000 - 020FF</loc></td>
+<td>General Punctuation, Superscripts and Subscripts, Currency Symbols,
+Combining Diacritical Marks for Symbols</td>
+</tr>
+<tr>
+<td><loc href="021.html">02100 - 021FF</loc></td>
+<td>Letter-like Symbols, Number Forms, Arrows</td>
+</tr>
+<tr>
+<td><loc href="022.html">02200 - 022FF</loc></td>
+<td>Mathematical Operators</td>
+</tr>
+<tr>
+<td><loc href="023.html">02300 - 023FF</loc></td>
+<td>Miscellaneous
+Technical</td>
+</tr>
+<tr>
+<td><loc href="024.html">02400 - 024FF</loc></td>
+<td>Control Pictures, Optical Character Recognition, Enclosed Alphanumerics</td>
+</tr>
+<tr>
+<td><loc href="025.html">02500 - 025FF</loc></td>
+<td>Box Drawing, Block Elements, Geometric Shapes</td>
+</tr>
+<tr>
+<td><loc href="026.html">02600 - 026FF</loc></td>
+<td>Miscellaneous Symbols  </td>
+</tr>
+<tr>
+<td><loc href="027.html">02700 - 027FF</loc></td>
+<td>Dingbats</td>
+</tr>
+<tr>
+<td><loc href="029.html">02900 - 029FF</loc></td>
+<td>Supplemental Arrows,  Miscellaneous Mathematical Symbols</td>
+</tr>
+<tr>
+<td><loc href="02A.html">02A00 - 02AFF</loc></td>
+<td>Supplemental Mathematical Operators</td>
+</tr>
+<tr>
+<td><loc href="030.html">03000 - 030FF</loc></td>
+<td>CJK Symbols and Punctuation, [Hiragana, Katakana]</td>
+</tr>
+<tr>
+<td><loc href="0FB.html">0FB00 - 0FBFF</loc></td>
+<td>Alphabetic Presentation Forms </td>
+</tr>
+<tr>
+<td><loc href="0FE.html">0FE00 - 0FEFF</loc></td>
+<td>[Combining Half Marks, CJK Compatibility Forms, Small Form Variants,
+Arabic Presentation Forms-B]</td>
+</tr>
+<tr>
+<td><loc href="1D4.html">1D400 - 1D4FF</loc></td>
+<td>Mathematical Styled Latin (Bold, Italic, Bold Italic, Script,
+Bold Script begins)
+</td>
+</tr>
+<tr>
+<td><loc href="1D5.html">1D500 - 1D5FF</loc></td>
+<td>Mathematical Styled Latin (Bold Script ends, Fraktur, Double-struck,
+Bold Fraktur, Sans-serif, Sans-serif Bold begins)
+</td>
+</tr>
+<tr>
+<td><loc href="1D6.html">1D600 - 1D6FF</loc></td>
+<td>Mathematical Styled Latin (Sans-serif Bold ends, Sans-serif Italic,
+Sans-serif Bold Italic, Monospace, Bold), Mathematical Styled Greek (Bold, Italic begins)</td>
+</tr>
+<tr>
+<td><loc href="1D7.html">1D700 - 1D7FF</loc></td>
+<td>Mathematical Styled Greek (Italic continued, Bold Italic,
+Sans-serif Bold), Mathematical Styled Digits </td>
+</tr>
+</tbody>
+</table>
+</div3>
+
+<div3 id="chars_math-negated-tables"><head>Negated
+Mathematical Characters</head>
+
+<p>
+In addition to the Unicode Characters so far listed, one may use the
+combining characters <phrase diff="chg">U+0338</phrase> (/), 
+<phrase diff="chg">U+20D2</phrase> (|) and <phrase diff="chg">U+20E5</phrase> (\) to produce
+negated or <phrase diff="chg">canceled</phrase> forms of characters. A combining character
+should be placed immediately after its 'base' character, with no
+intervening markup or space, just as is the case for combining accents.
+</p>
+
+<p>
+In principle, the negation characters may be applied to any Unicode
+character, although fonts designed for mathematics typically have some
+negated glyphs ready composed. A MathML renderer should be able to use
+these pre-composed glyphs in these cases.  A compound character code
+either represents a UCS character that is already available, as in the
+case of <phrase diff="chg">U+003D+00338</phrase> which amounts to 
+<phrase diff="chg">U+2260</phrase>, or it does not as is the
+case for <phrase diff="chg">U+2202+0338</phrase>. The common cases of 
+negations, <phrase diff="chg">of the latter  type</phrase>,
+that have been identified are listed in the table
+</p>
+
+<ulist>
+<item><p><loc href="cancellations.html">cancellations</loc></p></item>
+</ulist>
+
+<p>
+Note that it is the policy of the W3C and of Unicode that if a single
+character is already defined for what can be achieved with a combining
+character, that character must be used instead of the decomposed form.
+It is also intended that no new single characters representing what
+can be done by with existing compositions will be introduced. 
+<phrase diff="add">For further information on these matters see
+the Unicode Standard Annex 15, Unicode Normalization Forms 
+<bibref ref="UAX15"/>, especially
+the discussion of Normalization Form C.</phrase>
+</p>
+
+
+</div3>
+
+<div3 id="chars_math-variant-tables"><head>Variant
+Mathematical Characters</head>
+
+<p>
+Unicode attempts to avoid having several character codes for simple
+font variants.  For a code point to be assigned there should be
+more than a nuance in glyphs to be recorded.  To record 
+variants worth noting there is a special character <phrase diff="chg">in</phrase>
+Unicode 3.2, U+FE00 (VARIATION SELECTOR-1), which
+acts as a postfix modifier.  However the legally allowed
+combinations with this variation selector are restricted to a
+list recorded as part of Unicode. The  VARIATION SELECTOR-1
+character may only be applied to the characters listed here.
+The resulting combination is not regarded by Unicode as a separate
+character, but a variation on the base character. Unicode aware systems
+may render the combination as the base if the available fonts do not
+support the variant glyph shape.
+</p>
+
+<ulist>
+<item><p><loc href="variants.html">variants</loc></p></item>
+</ulist>
+
+</div3>
+
+<div3 id="chars_letter-like-tables"><head>Mathematical Alphanumeric Symbols</head>
+<p>
+Here we list the special mathematical alphabets.  Note that the names
+for these alphabetic runs should be regarded as conventions resulting
+from recent tradition in the typesetting of mathematical formulas,
+rather than as fixing exactly and forever the styles which are to be
+used.  Of course, they do correspond to the styles presently most
+common.  But, for instance, there may be font variations in the glyphs
+from double-struck, open-face or blackboard bold fonts, all of which
+would naturally be used for the characters in the range here labelled
+Double-struck.  Similar considerations would apply to appellations
+such as fraktur and gothic, or script and calligraphic.
+</p>
+
+<p>
+As discussed above, the use of these characters is formally equivalent
+to the use of characters in Plane 0, together with a suitable value
+for the <att>mathvariant</att> attribute.  The
+correspondence is given in the character tables. Most of these
+characters come from the <phrase diff="del">proposed</phrase> additions to Plane 1, however a few
+characters (such as the double-struck letters N, P, Z, Q, R, C, H
+representing common number sets) were already present in Unicode 3.0
+and retain their original positions. These characters are highlighted
+in the tables.
+</p>
+
+<ulist>
+<item><p><loc href="bold.html">Bold</loc></p></item>
+<item><p><loc href="italic.html">Italic</loc></p></item>
+<item><p><loc href="bold-italic.html">Bold Italic</loc></p></item>
+<item><p><loc href="double-struck.html">Double-struck</loc></p></item>
+<item><p><loc href="script.html">Script</loc></p></item>
+<item><p><loc href="bold-script.html">Bold Script</loc></p></item>
+<item><p><loc href="fraktur.html">Fraktur</loc></p></item>
+<item><p><loc href="bold-fraktur.html">Bold Fraktur</loc></p></item>
+<item><p><loc href="sans-serif.html">Sans-serif</loc></p></item>
+<item><p><loc href="bold-sans-serif.html">Bold Sans-serif</loc></p></item>
+<item><p><loc href="sans-serif-italic.html">Sans-serif Italic</loc></p></item>
+<item><p><loc href="sans-serif-bold-italic.html">Sans-serif Bold Italic</loc></p></item>
+<item><p><loc href="monospace.html">Monospace</loc></p></item>
+</ulist>
+</div3>
+
+
+<div3 id="chars_entity_tables"><head>MathML Character Names</head>
+<p>
+This section corresponds closely with the entity definitions in the DTD
+described in <specref ref="parsing"/>. All of the entity sets except the
+last correspond to entity sets defined by ISO 8879 or ISO 9573-13.
+</p>
+<table>
+<thead>
+<tr>
+<td>ISO Handle</td>
+<td>Description</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><loc href="isoamsa.html">ISOAMSA</loc></td>
+<td> Added Mathematical Symbols: Arrows</td>
+</tr>
+<tr>
+<td><loc href="isoamsb.html">ISOAMSB</loc></td>
+<td>Added Mathematical Symbols: Binary Operators</td>
+</tr>
+<tr>
+<td><loc href="isoamsc.html">ISOAMSC</loc></td>
+<td>Added Mathematical Symbols: Delimiters</td>
+</tr>
+<tr>
+<td><loc href="isoamsn.html">ISOAMSN</loc></td>
+<td>Added Mathematical Symbols: Negated Relations</td>
+</tr>
+<tr>
+<td><loc href="isoamso.html">ISOAMSO</loc></td>
+<td>Added Mathematical Symbols: Ordinary</td>
+</tr>
+<tr>
+<td><loc href="isoamsr.html">ISOAMSR</loc></td>
+<td>Added Mathematical Symbols: Relations</td>
+</tr>
+<tr>
+<td><loc href="isobox.html">ISOBOX</loc></td>
+<td>Box and Line Drawing</td>
+</tr>
+<tr>
+<td><loc href="isocyr1.html">ISOCYR1</loc></td>
+<td>Cyrillic-1</td>
+</tr>
+<tr>
+<td><loc href="isocyr2.html">ISOCYR2</loc></td>
+<td>Cyrillic-2</td>
+</tr>
+<tr>
+<td><loc href="isodia.html">ISODIA</loc></td>
+<td>Diacritical Marks</td>
+</tr>
+<tr>
+<td><loc href="isogrk3.html">ISOGRK3</loc></td>
+<td>Greek-3</td>
+</tr>
+<tr>
+<td><loc href="isolat1.html">ISOLAT1</loc></td>
+<td>Latin-1</td>
+</tr>
+<tr>
+<td><loc href="isolat2.html">ISOLAT2</loc></td>
+<td>Latin-2</td>
+</tr>
+<tr>
+<td><loc href="isomfrk.html">ISOMFRK</loc></td>
+<td>Mathematical Fraktur</td>
+</tr>
+<tr>
+<td><loc href="isomopf.html">ISOMOPF</loc></td>
+<td>Mathematical Openface (Double-struck)</td>
+</tr>
+<tr>
+<td><loc href="isomscr.html">ISOMSCR</loc></td>
+<td>Mathematical Script</td>
+</tr>
+<tr>
+<td><loc href="isonum.html">ISONUM</loc></td>
+<td>Numeric and Special Graphic</td>
+</tr>
+<tr>
+<td><loc href="isopub.html">ISOPUB</loc></td>
+<td>Publishing</td>
+</tr>
+<tr>
+<td><loc href="isotech.html">ISOTECH</loc></td>
+<td>General Technical</td>
+</tr>
+<tr>
+<td><loc href="mmlextra.html">MMLEXTRA</loc></td>
+<td>Extra Names added by MathML</td>
+</tr>
+</tbody>
+</table>
+</div3>
+
+</div2>
+
+<div2><head>Differences from Characters in MathML 1</head>
+
+<div3><head>Coverage</head>
+<p>
+We have excluded a very few other characters that may have appeared in
+the corresponding lists in MathML 1.  Those characters thus
+<emph>lost</emph> will be found to be used very infrequently in the
+experience of mathematical publishers, or simply to be completely
+unacceptable for inclusion in Unicode.  However MathML 2 does provide
+the <el>mglyph</el> element to accommodate new
+characters that authors may wish to introduce.
+</p>
+</div3>
+
+<div3><head>Fewer Non-marking Characters </head>
+ 
+<p>It used to be in MathML 1.0 that there were a number more
+non-marking character entities listed.  These were concerned with
+composition control, such as line-breaking. In MathML 2 such control
+is effected by the use of the proper attributes on the <el>mspace</el> element. 
+</p>
+</div3>
+
+<div3><head>ISO Tables</head>
+
+<p>
+The character listings by alphabetical and Unicode order in <specref
+ref="chars_entity_tables"/> have now been brought more into line with
+the corresponding ISO character sets than was the case in MathML 1.0,
+in that if some part of a set is included then the entire set is
+included. In addition, the group ISOCHEM has been dropped as more
+properly the concern of chemists.  All the ISO mathematical alphabets
+are listed, since there are now Unicode characters to point to,
+in particular the bold Greek of ISOGRK3.  These changes have also been
+reflected in the entity declarations in the DTD in <specref
+ref="parsing"/>.
+</p>
+</div3>
+<div3 id="chars_char-status">
+<head>Status of Character Encodings</head>
+
+<p>A significant change 
+<phrase diff="chg">after MathML 1.0 occurred in</phrase> the movement toward
+adoption of more characters for mathematics in the UCS
+ and availability of public fonts for mathematics.  The
+encoding of characters in the UCS is done
+jointly by the Unicode Technical Committee and by ISO/IEC
+JTC1/SC2/WG2.  The process of encoding takes quite some time from the
+deliberation of first proposals to the final approval.
+The characters mentioned in this chapter and listed in the associated
+tables <phrase diff="chg">have been though the</phrase> various stages 
+of this approval process.<phrase diff="del">  This section
+gives detailed information about the stages relevant to this
+specification and gives an overview of the characters affected.  The
+lists, as well as other places that discuss characters, mention 
+<phrase>any cases </phrase>when
+characters are not fully approved or show this graphically.
+Updates on the status of the characters will be provided by updates
+to this specification, by errata to this
+specification, and by notices on the 
+<loc href="http://www.w3.org/Math/">W3C Math home page</loc>.
+The final word on all Unicode matters is naturally to be found
+at <loc href="http://www.unicode.org/">the Unicode Consortium</loc>.</phrase></p>
+
+<p>
+<phrase diff="chg">At the time of the preparation of the MathML 2.0
+specification <bibref diff="add" ref="MathML2"/> the characters relevant to mathematics fell </phrase>
+into three categories:
+<phrase diff="chg">fully</phrase> accepted characters, characters in final (JTC1) ISO/IEC ballot,
+and characters before the final ISO/IEC ballot.
+</p>
+<ulist>
+<item>
+<p>
+Fully accepted characters <phrase diff="chg">included </phrase>a large number of Latin, Greek, and
+Cyrillic letters, a large number of Mathematical Operators and
+symbols, including arrows, and so on.  Fully accepted characters
+<phrase diff="chg">were</phrase> exactly those that are 
+<phrase diff="chg">in</phrase> both Unicode 3.0 <bibref
+ref="Unicode"/> and ISO/IEC 10646-1:2000 <bibref 
+ref="ISOIEC10646-1"/>, which are identical code point by code point.  
+<phrase diff="del">Fully
+accepted characters are not specially marked or mentioned in this
+specification; they do not pose any unusual implementation problems
+other than possibly finding fonts to display them</phrase>  Those of obvious
+special interest to mathematics <phrase diff="chg">numbered</phrase> over 
+1,500, depending on how you count.
+</p>
+</item>
+
+<item>
+<p diff="chg">
+In April 2001, the Mathematical Alphanumeric Symbols came up for a final ballot
+together with a large number of ideographs and other
+characters not directly relevant for mathematics.  There were just
+about 1,000 of these.   The additions were published as ISO/IEC 10646-2, 
+and became part of Unicode 3.1.
+</p>
+
+<p diff="del">
+While acceptance of this ballot seems more likely than rejection,
+implementers and users of MathML have to be aware that until the final
+acceptance, they are using the code points of characters in final
+ballot at their own risk. Entities (see <specref
+ref="chars_entity_tables"/>) and the <att>mathvariant</att> attribute (see <specref
+ref="presm_commatt"/>) can be used to avoid that risk.
+</p>
+</item>
+
+<item>
+<p diff="chg">
+Characters relevant to MathML that were before final ballot made up a long list
+of operators and symbols, including some special constants and
+non-marking characters (see <specref ref="chars_nonmark"/> and
+<specref ref="chars_special"/>).  They numbered about 590 in all. 
+With some small technical improvements and compromises the proposed additions
+accepted were published as an amendment to [ISO/IEC
+10646-1], and became part of Unicode 3.2.
+</p>
+
+<p diff="chg">
+Even with the good will shown to the mathematical community by the 
+Unicode process a small number of characters of special interest
+to some may not yet have been included.  The obvious solution of
+avoiding their use may not satisfy all.  For these characters the
+Unicode mechanism involving Private Use Area codes could be deployed,
+in spite of all the dangers of confusion and collisions of conventions 
+this brings with it. However, this is the situation for which 
+<intref ref="presm_mglyph"><el>mglyph</el></intref>
+was introduced. The use of <intref ref="presm_mglyph"><el>mglyph</el></intref>
+is recommended to refer to symbols not included in Unicode.</p>
+</item>
+</ulist>
+	
+</div3>
+
+</div2>
+
+</div1>
+
+
+
+
+

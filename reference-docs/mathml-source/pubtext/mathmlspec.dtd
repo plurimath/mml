@@ -1,0 +1,150 @@
+
+
+  
+<!--
+#2000-03-19: Nico Poppelier: Added intref to local.ref.class.
+-->
+
+<!ENTITY % local.ref.class      "|intref">
+
+<!ENTITY % attribute.element "IGNORE">
+<!ENTITY % attribute.attlist "IGNORE">
+
+<!ENTITY % label.element "IGNORE">
+<!ENTITY % eg.element "IGNORE">
+<!ENTITY % div3.element "IGNORE">
+
+<!ENTITY % sub.element "IGNORE">
+<!ENTITY % sup.element "IGNORE">
+
+<!-- errata link markup -->
+
+<!ENTITY % header.mdl
+        "title, subtitle?, version?, w3c-designation, w3c-doctype,
+        pubdate, notice*, publoc, altlocs?, ((prevlocs, (latestloc,latestloc?)?) |
+        (latestloc,latestloc?, prevlocs?))?, authlist, 
+        errataloc?,
+        translationloc?,
+        copyright?,
+        ((status, abstract) | (abstract, status)), pubstmt?,
+        sourcedesc?, langusage, revisiondesc">
+
+<!ELEMENT latestrecloc (loc)>
+<!ELEMENT errataloc (loc)>
+<!ELEMENT translationloc (loc)>
+
+<!-- Include xmlspec version 2.2 (xmlspec.dtd,v 1.5 2002/08/15 13:12:11 NormanWalsh Exp)-->
+
+<!ENTITY % xmlspec SYSTEM "xmlspec.dtd">
+%xmlspec;
+
+<!ELEMENT div3 (head, (%div.mix;)*, (div4|MMLdefinition)*)>
+
+<!ELEMENT label (%label.pcd.mix;|%ref.class;)*>
+<!ELEMENT eg (%eg.pcd.mix;|%ref.class;|%tech.class;)*>
+
+
+
+<!--
+#1999-10-10: Nico Poppelier: Added sup, sub as in HTML.
+-->
+
+<!--    sup and sub as in HTML -->
+<!ELEMENT sup (%p.pcd.mix;)*>
+<!ELEMENT sub (%p.pcd.mix;)*>
+
+
+<!--    since attribute:
+        Provides the version in which the element was introduced. -->
+<!ENTITY % idl-since.att
+        'since                  CDATA           #IMPLIED'>
+
+
+<!--    version attribute:
+        Provides the version in which the element was modified. -->
+<!ENTITY % idl-version.att
+        'version                CDATA           #IMPLIED'>
+
+
+<!ELEMENT attribute (descr, setraises?, getraises?)>
+<!ATTLIST attribute
+        %common.att;
+        %idl-name.att;
+        %idl-type.att;
+        %idl-since.att;
+        %idl-version.att;
+        readonly        (yes
+                        |no)            "no">
+<!ELEMENT setraises (exception*)>
+<!ATTLIST setraises  %common.att;>
+
+<!ELEMENT getraises (exception*)>
+<!ATTLIST getraises  %common.att;>
+
+
+
+<!--
+#2000-03-19: Nico Poppelier: Added intref, which functions the
+same way as specref, but *with* content.
+-->
+<!--    intref: Reference to a div, olist item, prod, or issue
+        in the present document. -->
+<!ELEMENT intref (%p.pcd.mix;)*>
+<!--    ref attribute:
+        The purpose of a specref element is to link to a div, item
+        in an olist, or production in the current spec. -->
+<!ATTLIST intref
+        %common.att;
+        %ref-req.att;>
+
+
+<!ATTLIST graphic %cellvalign.att;>
+<!-- dpc added MMLdefinition -->
+
+<!ELEMENT MMLdefinition (name, description, classification,
+   MMLattribute*, (signature | property | MMLexample)*)>
+<!ATTLIST MMLdefinition %common.att;>
+
+<!ELEMENT  description (p)*>
+<!ATTLIST description %common.att; >
+
+<!ELEMENT  signature (#PCDATA)>
+<!ATTLIST signature %common.att; >
+
+<!ELEMENT  classification (#PCDATA)>
+<!ATTLIST classification %common.att; >
+
+<!ELEMENT  property (#PCDATA|description|phrase)*>
+<!ATTLIST property %common.att; >
+
+<!ELEMENT  MMLexample (#PCDATA|description|phrase)*>
+<!ATTLIST MMLexample %common.att; >
+
+<!ELEMENT  MMLattribute (attname,attvalue,attdefault)>
+<!ELEMENT attname  (#PCDATA)>
+<!ELEMENT attvalue  (#PCDATA|phrase)*>
+<!ELEMENT attdefault  (#PCDATA)>
+
+
+
+<!-- simple entities -->
+<!ENTITY aring         "&#229;">
+<!ENTITY copy          "&#169;">
+<!ENTITY eacute        "&#233;">
+<!ENTITY middot        "&#183;">
+<!ENTITY ndash         "-"> <!-- should really be x2013 -->
+<!ENTITY reg           "&#174;">
+<!ENTITY times         "&#215;">
+<!ENTITY TeX           "T<sub>E</sub>X">
+<!ENTITY uuml          "&#252;">
+
+
+<!-- entities for linking                                   -->
+<!ENTITY css.url    "http://www.w3.org/Style/CSS"             >
+<!ENTITY css2.url   "http://www.w3.org/TR/REC-CSS2"           >
+<!ENTITY dom1.url   "http://www.w3.org/TR/REC-DOM-Level-1"    >
+<!ENTITY dom2.url   "http://www.w3.org/TR/DOM-Level-2"    >
+<!ENTITY xml.url    "http://www.w3.org/TR/REC-xml"            >
+
+
+

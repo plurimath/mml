@@ -7,7 +7,6 @@ module Mml
       # Use fully qualified names (e.g., Mml::Namespace).
       def self.included(klass)
         klass.class_eval do
-          attribute :dir, :string
           attribute :value, :string
           attribute :mathsize, :string
           attribute :mathcolor, :string
@@ -19,7 +18,6 @@ module Mml
             element "mi"
 
             map_content to: :value
-            map_attribute "dir", to: :dir
             map_attribute "mathsize", to: :mathsize
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathvariant", to: :mathvariant

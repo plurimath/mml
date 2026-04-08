@@ -1,6 +1,6 @@
-<math xmlns="http://www.w3.org/1998/Math/MathML" intent="math:fraction">
-  <mfrac>
-    <mi>1</mi>
-    <mi>2</mi>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mfrac intent="division(@赤裸, @分母)">
+    <mi intent="numerator">1</mi>
+    <mi intent="denominator">2</mi>
   </mfrac>
 </math>

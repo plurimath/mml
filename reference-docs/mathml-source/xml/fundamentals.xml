@@ -1,0 +1,1646 @@
+<div1 id="fund" role="chapter2"><head>MathML Fundamentals</head>
+<!-- $Id: fundamentals.xml,v 1.60 2003/09/08 13:04:48 davidc Exp $ -->
+
+<div2 id="fund_overview"><head>MathML Overview</head>
+
+<p>This chapter introduces the basic ideas of MathML.  The first section
+describes the overall design of MathML.  The second section presents a
+number of motivating examples, to give the reader something concrete to
+refer to while reading subsequent chapters of the MathML specification.
+The final section describes basic features of the MathML syntax and
+grammar, which apply to all MathML markup. In particular, <specref
+ref="fund_syntax"/> should be read <emph>before</emph> <specref
+ref="presm"/>, <specref ref="contm"/> and <specref ref="mixing"/>.</p>
+
+<p>A fundamental challenge in defining a markup language for mathematics on
+the Web is reconciling the need to encode both the presentation of a
+mathematical notation and the content of the mathematical idea or object
+which it represents.</p>
+
+<p>The relationship between a mathematical notation and a mathematical idea
+is subtle and deep. On a formal level, the results of mathematical logic
+raise unsettling questions about the correspondence between systems of
+symbolic logic and the phenomena they model. At a more intuitive level,
+anyone who uses mathematical notation knows the difference that a good
+choice of notation can make; the symbolic structure of the notation
+suggests the logical structure.  For example, the Leibniz notation for
+derivatives <quote>suggests</quote> the chain rule of calculus through the
+symbolic cancellation of fractions: <graphic role="inline"
+source="image/f2001.gif" alt="\frac{d f}{d x}\frac{d x}{d t}=\frac{d f}{d
+t}"/>.</p>
+
+<p>Mathematicians and teachers intuitively understand this very well; part
+of their expertise lies in choosing notation that emphasizes key aspects of
+a problem while hiding or diminishing extraneous aspects.  It is
+commonplace in mathematics and science to write one thing when strictly
+technically something else is meant, because long experience shows this
+actually communicates the idea better at some higher level than rigorous
+detail.</p>
+
+<p>In many other settings, though, mathematical notation is used to encode
+the full, precise meaning of a mathematical object.  Mathematical notation
+is capable of prodigious rigor, and when used carefully, it can be
+virtually free of ambiguity. Moreover, it is precisely this lack of
+ambiguity which makes it possible to describe mathematical objects so that
+they can be used by software applications such as computer algebra systems
+and voice renderers.  In situations where such inter-application
+communication is of paramount importance, the nuances of visual
+presentation generally play a minimal role.</p>
+
+<p>MathML allows authors to encode both the notation which represents a
+mathematical object and the mathematical structure of the object
+itself. Moreover, authors can mix both kinds of encoding in order to
+specify both the presentation and content of a mathematical idea. The
+remainder of this section gives a basic overview of how MathML can be used
+in each of these ways.</p>
+
+<div3><head>Taxonomy of MathML Elements</head>
+
+<p>All MathML elements fall into one of three categories: presentation
+elements, content elements and interface elements.  Each of these categories
+is described in detail in <specref ref="presm"/>, <specref ref="contm"/>
+and <specref ref="interf"/>, respectively.</p>
+
+<p>Presentation elements describe mathematical notation's visually oriented
+two-dimensional structure.  Typical examples are the 
+<intref ref="presm_mrow"><el>mrow</el></intref>
+ element, which is usually employed to indicate a
+horizontal row of pieces of expressions, and the 
+<intref ref="presm_msup"><el>msup</el></intref> element, which is used to mark up a base
+expression and a superscript to it.  As a general rule, each presentation
+element corresponds to a single kind of notational <quote>schema</quote> 
+such as a row, a superscript, a subscript, an underscript and so on.
+Any formula is made by putting together parts which ultimately can 
+be analyzed down to the  simplest items such as digits, letters, or 
+other symbol characters.</p>
+
+<p>Although the previous paragraph was concerned with the display
+aspect of mathematical notation, and hence with presentation markup,
+the same observation about decomposition applies equally well to
+abstract mathematical objects, and hence to content markup.  For
+example, in the context of content markup a superscript would
+typically be denoted by an exponentiation operation that would require
+two operands: a <quote>base</quote> and an
+<quote>exponent</quote>. This is no coincidence, since as a general
+rule, mathematical notation's layout closely follows the logical
+structure of the underlying mathematical objects.</p>
+
+<p>The recursive nature of mathematical objects and notation is strongly
+reflected in MathML markup.  In use, most presentation or content elements
+contain some number of other MathML elements corresponding to the
+constituent pieces out of which the original object is recursively
+built. The original schema is commonly called the <emph>parent</emph>
+schema, and the constituent pieces are called <emph>child</emph>
+schemata. More generally, MathML expressions can be regarded as trees,
+where each node corresponds to a MathML element, the branches under a
+<quote>parent</quote> node correspond to its <quote>children</quote>, and
+the leaves in the tree correspond to atomic notation or content units such
+as numbers, characters, etc.</p>
+
+<p>Most leaf nodes in a MathML expression tree are either <emph>canonically
+empty elements</emph> with no bodies, or <emph>token elements</emph>.
+Canonically empty elements represent symbols directly in MathML, for
+example, the content element 
+<intref ref="contm_plus"><el role="emptytag">plus</el></intref> does
+this.  MathML token elements are the only MathML elements permitted to
+contain MathML character data.  MathML character data consists of
+Unicode characters with the infrequent addition of special
+character constructions done with the 
+<intref ref="presm_mglyph"><el>mglyph</el></intref>
+element.  A third kind of leaf node
+permitted in MathML is the 
+<intref ref="contm_annotation"><el>annotation</el></intref> element,
+which is used to hold data which is not in MathML format.</p>
+
+<p>The most important presentation token elements are 
+<intref ref="presm_mi"><el>mi</el></intref>, 
+<intref ref="presm_mn"><el>mn</el></intref> and 
+<intref ref="presm_mo"><el>mo</el></intref> for representing identifiers, numbers and operators
+respectively. Typically a renderer will employ slightly different
+typesetting styles for each of these kinds of character data: numbers are
+usually in upright font, identifiers in italics, and operators have extra
+space around them.  In content markup, there are only three tokens, 
+<intref ref="contm_ci"><el>ci</el></intref>, 
+<intref ref="contm_cn"><el>cn</el></intref> and 
+<intref ref="contm_csymbol"><el>csymbol</el></intref>, for identifiers, numbers and new symbols
+introduced in the document itself, respectively.  In content markup,
+separate elements are provided for commonly used functions and
+operators. The 
+<intref ref="contm_apply"><el>apply</el></intref> element is provided for
+user-defined extensions to the base set.</p>
+
+<p>In terms of markup, most MathML elements are denoted by a
+<emph>start</emph> tag and an <emph>end</emph> tag, which enclose the
+markup for their contents. In the case of tokens, the content is
+character data, and in most other cases, the content is the markup for
+child elements. Elements in a third category, called canonically empty
+elements, do not require any contents, and are denoted by a single tag of
+the form <el namespace="" role="emptytag">name</el>. An example of this kind of
+markup is <el role="emptytag">plus</el> in content markup.</p>
+
+<p>Let us take the very simple example of (<var>a</var> +
+<var>b</var>)<sup>2</sup>, and we can now see how the
+principles discussed above play out in practice. One form of
+presentation markup for this example is:
+<eg role='mathml'><![CDATA[
+ <mrow>
+   <msup>
+     <mfenced>
+       <mrow>
+         <mi>a</mi>
+         <mo>+</mo>
+         <mi>b</mi>
+       </mrow>
+     </mfenced>
+     <mn>2</mn>
+   </msup>
+ </mrow>
+]]></eg></p>
+
+<p>This example demonstrates a number of presentation elements.  The first
+element, one that is used a great deal is 
+<intref ref="presm_mrow"><el>mrow</el></intref>.
+This element is used to denote a row of horizontally aligned material.  The
+material contained between the <el role="starttag">mrow</el> and <el role="endtag">mrow</el> tags is considered to be an argument to the <el>mrow</el> element.  Thus the whole expression here is
+contained in an <el>mrow</el> element.  As previously noted,
+almost all mathematical expressions decompose into subexpressions.  These
+subexpressions can, in turn, also be contained in an <el>mrow</el> element.  For example, a + b is also contained in an
+<el>mrow</el>.</p>
+
+<p>The 
+<intref ref="presm_mfenced"><el>mfenced</el></intref> element is used to provide fences
+(braces, brackets, and parentheses) around formula material.  It defaults
+to using parentheses.</p>
+
+<p>Note the use of the 
+<intref ref="presm_mi"><el>mi</el></intref> element for displaying
+the variables a and b and the 
+<intref ref="presm_mo"><el>mo</el></intref> element for
+marking the + operator.</p>
+
+<p>The 
+<intref ref="presm_msup"><el>msup</el></intref> element is for expressions involving
+superscripts and takes two arguments, in order, the base expression (here,
+(<var>a</var>+<var>b</var>)) and the exponent expression (here, 2).</p>
+
+<p>The content markup for the same example is:
+<eg role='mathml'><![CDATA[
+ <mrow>
+   <apply>
+     <power/>
+     <apply>
+       <plus/>
+       <ci>a</ci>
+       <ci>b</ci>
+     </apply>
+     <cn>2</cn>
+   </apply>
+ </mrow>
+]]></eg></p>
+
+<p>Here, the 
+<intref ref="contm_apply"><el>apply</el></intref> content element means apply an
+operation to an expression.  In this example, the <el>power</el> element (for exponentiation), which requires no
+body, and the similar 
+<intref ref="contm_plus"><el>plus</el></intref> element (for addition)
+are both <emph>applied</emph>.  Observe that both operators take two
+arguments, the order being particularly significant in the case of the
+power operator.  But the order of the children is crucial in the use
+of the  <el>apply</el> since the first child, the operator,
+takes as argument list the remaining ones. </p>
+
+<p>Note the use of the 
+<intref ref="contm_ci"><el>ci</el></intref> element to mark up the
+variables a and b, and the 
+<intref ref="contm_cn"><el>cn</el></intref> element to mark up
+the number 2.</p>
+
+</div3>
+
+<div3>
+<head>Presentation Markup</head>
+
+<p>MathML presentation markup consists of about 30 elements which accept
+over 50 attributes.  Most of the elements correspond to <emph>layout
+schemata</emph>, which contain other presentation elements. Each layout
+schema corresponds to a two-dimensional notational device, such as a
+superscript or subscript, fraction or table.  In addition, there are the
+presentation token elements 
+<intref ref="presm_mi"><el>mi</el></intref>, 
+<intref ref="presm_mo"><el>mo</el></intref> and 
+<intref ref="presm_mn"><el>mn</el></intref> introduced above, as
+well as several other less commonly used token elements. The remaining few
+presentation elements are empty elements, and are used mostly in connection
+with alignment.</p>
+
+<p>The layout schemata fall into several classes. One group of
+elements is concerned with scripts, and contains elements such as
+<intref ref="presm_msub"><el>msub</el></intref>,
+<intref ref="presm_munder"><el>munder</el></intref>,
+and <intref ref="presm_mmultiscripts"><el>mmultiscripts</el></intref>.  Another group focuses on
+more general layout and includes <intref ref="presm_mrow"><el>mrow</el></intref>, <intref ref="presm_mstyle"><el>mstyle</el></intref>, and <intref ref="presm_mfrac"><el>mfrac</el></intref>.  A third group deals with tables.
+The <intref ref="presm_maction"><el>maction</el></intref> element is in a category by
+itself, and allows coding of various kinds of actions on notation,
+such as occur in an expression which toggles between two pieces of
+notation.</p>
+
+<p>An important feature of many layout schemata is that the order of child
+schemata is significant. For example, the first child of an 
+<intref ref="presm_mfrac"><el>mfrac</el></intref> element is the numerator and the second child is
+the denominator. Since the order of child schemata is not enforced at the
+XML level by the MathML DTD, the information added by ordering is only
+available to a MathML processor, as opposed to a generic XML processor.
+When we want to emphasize that a MathML element such as 
+<intref ref="presm_mfrac"><el>mfrac</el></intref> requires children in a specific order, we will
+refer to them as <emph>arguments</emph>, and think of the 
+<el>mfrac</el> element as a notational
+<quote>constructor</quote>.</p>
+</div3>
+
+<div3><head>Content Markup</head>
+
+<p>Content markup consists of about 120 elements accepting roughly a dozen
+attributes. The majority of these elements are empty elements corresponding
+to a wide variety of operators, relations and named functions. Examples of
+this sort include 
+<intref ref="contm_partialdiff"><el>partialdiff</el></intref>, 
+<intref ref="contm_leq"><el>leq</el></intref> and 
+<intref ref="contm_trig"><el>tan</el></intref>.  Others such as
+<intref ref="contm_matrix"><el>matrix</el></intref> and 
+<intref ref="contm_set"><el>set</el></intref> are used to
+encode various mathematical data types, and a third, important category of
+content elements such as 
+<intref ref="contm_apply"><el>apply</el></intref> are used to apply
+operations to expressions and also to make new mathematical objects from
+others.</p>
+
+<p>The 
+<el>apply</el> element is perhaps the single most
+important content element. It is used to apply a function or operation to a
+collection of arguments.  The positions of the child schemata are again
+significant, with the first child denoting the function to be applied, and
+the remaining children denoting the arguments of the function in
+order. Note that the <el>apply</el> construct always uses
+prefix notation, like the programming language LISP. In particular, even
+binary operations such as subtraction are marked up by applying a prefix
+subtraction operator to two arguments.  For example, <var>a</var> -
+<var>b</var> would be marked up as
+<eg role='mathml'><![CDATA[
+<mrow>
+<apply>
+   <minus/>
+   <ci>a</ci>
+   <ci>b</ci>
+</apply>
+</mrow>
+]]></eg>
+</p>
+
+<p>A number of functions and operations require one or more quantifiers to
+be well-defined. For example, in addition to an integrand, a definite
+integral must specify the limits of integration and the bound variable. For
+this reason, there are several <emph>qualifier</emph> schemata such as 
+<intref ref="contm_bvar"><el>bvar</el></intref> and 
+<intref ref="contm_lowlimit"><el>lowlimit</el></intref>.  They are
+used with operators such as 
+<intref ref="contm_diff"><el>diff</el></intref> and 
+<intref ref="contm_int"><el>int</el></intref>.</p>
+
+<p>The 
+<intref ref="contm_declare"><el>declare</el></intref> construct is especially important
+for content markup that might be evaluated by a computer algebra system.
+The <el>declare</el> element provides a basic assignment
+mechanism, where a variable can be declared to be of a certain type, with a
+certain value.</p>
+
+<p>
+In both the presentation and content markup examples, mathematical
+expressions are recursively decomposed into nested, simpler MathML
+elements specifying each stage of the decomposition.  The examples in
+the following sections illustrate this with more complex expressions.
+</p>
+
+</div3>
+
+<div3><head>Mixing Presentation and Content</head>
+
+<p>Different kinds of markup will be found most appropriate for different
+kinds of tasks.  Documents written before the World Wide Web became
+important were most often intended only for visual communication of
+information, so that legacy data is probably best translated into pure
+presentation markup, since semantic information about what the author meant
+can only be guessed at heuristically.  By contrast, some mathematical
+applications and pedagogically-oriented authoring tools will likely choose
+to be entirely content-based.  The majority of applications fall somewhere
+in between these extremes.  For these applications, the most appropriate
+markup is a mixture of both presentation and content markup.</p>
+
+<p>The rules for mixing presentation and content markup derive from the
+general principle that mixed content should only be allowed in places where
+it makes sense. For content markup embedded in presentation markup this
+basically means that any content fragments should be semantically
+meaningful, and should not require additional arguments or quantifiers to
+be fully specified.  For presentation markup embedded in content markup,
+this usually means that presentation markup must be contained in a content
+token element, so that it will be treated as an indivisible notational unit
+used as a variable or function name.</p>
+
+<p>Another option is to use a 
+<intref ref="contm_semantics"><el>semantics</el></intref> element.
+The <el>semantics</el> element is used to bind MathML
+expressions to various kinds of annotations. One common use for the <el>semantics</el> element is to bind a piece of content markup
+to some presentation markup as a semantic annotation. In this way, an
+author can specify a non-standard notation to be used when displaying a
+particular content expression.  Another use of the <el>semantics</el> element is to bind some other kind of
+semantic specification, such as an OpenMath expression, to a MathML
+expression.  In this way, the <el>semantics</el> element can
+be used to extend the scope of MathML content markup.</p>
+</div3>
+</div2>
+
+<div2 id="fund_document"><head>MathML in a Document</head>
+
+<p>The discussion above has actually been of fragmentary formulas
+outside the context of any document.  To be more specific let us look
+at what corresponds to a programming language's &quot;Hello
+World!&quot; example.  We shall provide more complete code for an <xspecref
+href="http://www.w3.org/TR/xhtml1/#well-formed">XHTML 1.0
+document</xspecref> containing the square of a sum of two variables
+mentioned above.  It would be
+
+<eg role="mathml-fragment"><![CDATA[
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ 
+<head>
+<title>MathML's Hello Square</title>
+</head>
+
+<body>
+
+<p> This is a perfect square:</p>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mrow>
+   <msup>
+     <mfenced>
+       <mrow>
+         <mi>a</mi>
+         <mo>+</mo>
+         <mi>b</mi>
+       </mrow>
+     </mfenced>
+     <mn>2</mn>
+   </msup>
+ </mrow> 
+</math>
+
+</body>
+</html>
+]]></eg>
+</p>
+
+<p>Here we have the normal structure of an XHTML document.  It begins
+with the start tag <el namespace="xhtml" role="starttag">html</el> embellished with an
+XML namespace declaration and language assertions.  A <el namespace="xhtml">head</el> element contains a title as is customary.
+<phrase diff="chg">Within the <el namespace="xhtml">body</el> is 
+ a simple paragraph followed by a <el>math</el> element
+which has the MathML namespace declared.</phrase>  Inside the <el>math</el> element is MathML markup.
+<phrase diff="del">
+as we are beginning to be used to it.
+The reasons why one might have to do a more complex
+namespace declaration for MathML are explained in <specref
+ref="interf"/>; they have to do with present-day limitations in some XML
+handling, that may be expected to go away.
+</phrase>
+</p>
+
+<p>For the next level of technical detail concerning such matters
+as <code>!DOCTYPE</code> statements and the like, see the 
+discussion in <specref ref="interf"/>.
+</p>
+
+</div2>
+
+
+<div2 id="fund_examples">
+<head>Some MathML Examples</head>
+
+<p>
+We continue below to display examples in the form of fragments of
+MathML markup such as would appear inside <el>math</el>
+elements in real documents.  For the sake of clearer exposition of
+principles, the examples in Chapters 3, 4, 5 and 6 follow this form of
+giving examples as MathML fragments.
+</p>
+
+<div3 id="fund_pres"><head>Presentation Examples</head>
+
+<p>Notation: <var>x</var><sup>2</sup> + 4<var>x</var> + 4 = 0.</p>
+
+<p>Markup:
+<eg role='mathml'><![CDATA[
+<mrow>
+  <mrow>
+    <msup>
+      <mi>x</mi>
+      <mn>2</mn>
+    </msup>
+    <mo>+</mo>
+    <mrow>
+      <mn>4</mn>
+      <mo>&InvisibleTimes;</mo>
+      <mi>x</mi>
+    </mrow>
+    <mo>+</mo>
+    <mn>4</mn>
+  </mrow>
+  <mo>=</mo>
+  <mn>0</mn>
+</mrow>
+]]></eg>
+Note the use of nested <intref ref="presm_mrow"><el>mrow</el></intref> elements to denote terms, for
+example, the left-hand side of the equation functioning as an operand
+of <quote>=</quote>.  Marking terms greatly facilitates spacing for
+visual rendering, voice rendering, and line breaking.  The <kw role="entity">InvisibleTimes</kw> MathML character entity is used here
+to indicate to a renderer that there are special spacing rules between
+the 4 and the x, and that the 4 and the x should not be broken onto
+separate lines.
+<phrase diff="del">
+In fact, this use of an entity which was introduced
+in MathML 1.0 is no longer the way that is preferred.  Ultimately all
+ordinary character data is given by Unicode values.  However, although
+a character for <kw role="entity">InvisibleTimes</kw> is expected in
+Unicode 3.2, and there is a suggested code point under
+consideration in a Unicode amendment, there is no Unicode 3.0
+character to be used at present.  We could use the expected numerical
+character reference &amp;#2062; but for clarity we will continue to
+use entity references in these examples.  The situation is explicitly
+discussed in <specref ref="presm_tokel"/> and in <specref
+ref="chars"/>.
+</phrase>
+</p>
+
+<p>Notation:
+<graphic role="inline" source="image/f1002.gif"
+         alt="x = \frac{-b\pm\sqrt{b^2 - 4ac}}{2a}"/>.</p>
+
+<p>Markup:
+<eg role='mathml'><![CDATA[
+<mrow>
+  <mi>x</mi>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mrow>
+        <mo>-</mo>
+        <mi>b</mi>
+      </mrow>
+      <mo>&PlusMinus;</mo>
+      <msqrt>
+        <mrow>
+          <msup>
+            <mi>b</mi>
+            <mn>2</mn>
+          </msup>
+          <mo>-</mo>
+          <mrow>
+            <mn>4</mn>
+            <mo>&InvisibleTimes;</mo>
+            <mi>a</mi>
+            <mo>&InvisibleTimes;</mo>
+            <mi>c</mi>
+          </mrow>
+        </mrow>
+      </msqrt>
+    </mrow>
+    <mrow>
+      <mn>2</mn>
+      <mo>&InvisibleTimes;</mo>
+      <mi>a</mi>
+    </mrow>
+  </mfrac>
+</mrow>
+]]></eg>
+
+The 
+<intref ref="presm_mfrac"><el>mfrac</el></intref>  and 
+<intref ref="presm_mroot"><el>msqrt</el></intref>  
+elements are used for generating fractions
+and square roots, respectively.</p>
+
+<p>Notice that the <quote>plus or minus</quote> sign is given by
+<phrase diff="chg">the</phrase> entity name <kw role="entity">PlusMinus</kw>,
+<phrase diff="chg">this is equivalent to using the character reference</phrase> &amp;#00B1;.
+MathML provides a very comprehensive list of character names for
+mathematical symbols. In addition to the mathematical symbols needed for
+screen and print rendering, MathML provides symbols to facilitate audio
+rendering.  For audio rendering, it is important to be able to
+automatically determine whether
+<eg role='mathml'><![CDATA[
+<mrow>
+  <mi>z</mi>
+  <mfenced>
+    <mrow>
+      <mi>x</mi>
+      <mo>+</mo>
+      <mi>y</mi>
+    </mrow>
+  </mfenced>
+</mrow>
+]]></eg>
+
+should be read as '<var>z</var> times the quantity <var>x</var> plus
+<var>y</var>' or '<var>z</var> of <var>x</var> plus <var>y</var>'.  The
+characters <kw role="entity">InvisibleTimes</kw> (U+2062) and <kw
+role="entity">ApplyFunction</kw> (U+2061) provide a way for authors to
+directly encode the distinction for audio renderers.  For instance, in
+the first case <kw role="entity">InvisibleTimes</kw> (U+2062) should
+be inserted after the line containing the <var>z</var>.  MathML also
+introduces entities like <kw role="entity">dd</kw> (U+2146) 
+representing a <quote>differential d</quote>, which renders with slightly
+different spacing in print and can be rendered as <quote>d</quote> or
+<quote>with respect to</quote> in speech. Unless content tags, or some
+other mechanism, are used to eliminate the ambiguity, authors should
+always use these characters here referred to as entities, in order to
+make their documents more accessible.</p>
+
+<p>Notation: 
+<graphic role="inline" source="image/f2008.gif"
+         alt="A=\left[\begin{array}{cc} x &amp; y \\ z &amp; w \end{array}\right]"/>.</p>
+
+<p>Markup:
+<eg role='mathml'><![CDATA[
+<mrow>
+  <mi>A</mi>
+  <mo>=</mo>
+  <mfenced open="[" close="]">
+    <mtable>
+      <mtr>
+         <mtd><mi>x</mi></mtd>
+         <mtd><mi>y</mi></mtd>
+      </mtr>
+      <mtr>
+         <mtd><mi>z</mi></mtd>
+         <mtd><mi>w</mi></mtd>
+      </mtr>
+    </mtable>
+  </mfenced>
+</mrow>
+]]></eg> The <el>mtable</el> element denotes that a
+MathML table is being created.  The <el>mtr</el>
+specifies a row of the table and the <el>mtd</el>
+element holds the data for an element of a row.  Most elements have a
+number of attributes that control the details of their screen and
+print rendering. For example, there are several attributes for the <el>mfenced</el> element that controls what delimiters
+should be used at the beginning and the end of the grouped expression
+above. The attributes for operator elements given using <el role="starttag">mo</el> are set to default values determined by a
+dictionary. For the suggested MathML operator dictionary, see <specref
+ref="oper-dict"/>.</p>
+
+</div3>
+
+<div3 id="fund_cont"><head>Content Examples</head>
+
+<!-- ION -->
+
+<p>Notation: <var>x</var><sup>2</sup> + 4<var>x</var> + 4 = 0.</p>
+
+<p>Markup:
+<eg role='mathml'><![CDATA[
+<mrow>
+<apply>
+  <eq/>
+  <apply>
+    <plus/>
+    <apply>
+      <power/>
+      <ci>x</ci>
+      <cn>2</cn>
+    </apply>
+    <apply>
+      <times/>
+      <cn>4</cn>
+      <ci>x</ci>
+    </apply>
+    <cn>4</cn>
+  </apply>
+  <cn>0</cn>
+</apply>
+</mrow>
+]]></eg>
+Note that the <el>apply</el> element is used for
+relations, operators and functions.</p>
+
+<p>Notation:
+<graphic diff="chg" role="inline" source="image/f2007.gif"
+         alt="x = \frac{\mathop{\pm}(-b,\sqrt{b^2 - 4ac})}{2a}"/>.</p>
+
+<p>Markup:
+<eg role='mathml'><![CDATA[
+<apply>
+  <eq/>
+  <ci>x</ci>
+  <apply>
+    <divide/>
+    <apply>
+      ]]><phrase diff="chg">&lt;csymbol>&amp;PlusMinus;&lt;/csymbol></phrase><![CDATA[
+      <apply>
+        <minus/>
+        <ci>b</ci>
+      </apply>
+      <apply>
+        <root/>
+        ]]><phrase diff="chg">&lt;degree>&lt;cn>2&lt;/cn>&lt;/degree></phrase><![CDATA[
+        <apply>
+          <minus/>
+          <apply>
+            <power/>
+            <ci>b</ci>
+            <cn>2</cn>
+          </apply>
+          <apply>
+            <times/>
+            <cn>4</cn>
+            <ci>a</ci>
+            <ci>c</ci>
+          </apply>
+        </apply>
+      </apply>
+    </apply>
+    <apply>
+      <times/>
+      <cn>2</cn>
+      <ci>a</ci>
+    </apply>
+  </apply>
+</apply>
+]]></eg>
+MathML content markup does not directly contain an element for the
+<quote>plus or minus</quote> operation. Therefore, we use the 
+<el>csymbol</el> element to <phrase diff="chg">specify this operator.
+Note that the default presentation is given here in prefix form,
+although a renderer may recognize this operator and render it as
+infix.
+Alternatively the Mixed Markup style shown below may be used to
+specify a presentation form for this expression as well as the Content
+Markup.</phrase></p>
+
+<p>Notation:
+<graphic role="inline" source="image/f2011.gif"
+         alt="A=\left(\begin{array}{cc} x &amp; y \\ z &amp; w \end{array}\right)"/>.</p>
+
+<p>Markup:
+<eg role='mathml'><![CDATA[
+<mrow>
+<apply>
+  <eq/>
+  <ci>A</ci>
+  <matrix>
+    <matrixrow>
+      <ci>x</ci>
+      <ci>y</ci>
+    </matrixrow>
+    <matrixrow>
+      <ci>z</ci>
+      <ci>w</ci>
+    </matrixrow>
+  </matrix>
+</apply>
+</mrow>
+]]></eg>
+
+Here we have used the <el>matrix</el> element, and the
+<el>matrixrow</el> element to wrap the entries in a row of
+the matrix.  Note that, by default, the rendering of the content
+element <el>matrix</el> includes enclosing parentheses,
+so we need not directly encode them. This is quite different from the
+presentation element <el>mtable</el> which may or may
+not refer to a matrix, and hence requires explicit encoding of
+parentheses if they are desired.</p>
+</div3>
+
+<div3 id="fund_mix"><head>Mixed Markup Examples</head>
+
+<p>Notation:
+<graphic role="inline" source="image/f2012.gif"
+         alt="\displaystyle \int_1^t \frac{\diffd x}{x}"/>.</p>
+
+<p>Markup:
+<eg role='mathml'><![CDATA[
+<mrow>
+<semantics>
+  <mrow>
+    <msubsup>
+      <mo>&int;</mo>
+      <mn>1</mn>
+      <mi>t</mi>
+    </msubsup>
+    <mfrac>
+      <mrow>
+        <mo>&dd;</mo>
+        <mi>x</mi>
+      </mrow>
+      <mi>x</mi>
+    </mfrac>
+  </mrow>
+  <annotation-xml encoding="MathML-Content">
+    <apply>
+      <int/>
+      <bvar><ci>x</ci></bvar>
+      <lowlimit><cn>1</cn></lowlimit>
+      <uplimit><ci>t</ci></uplimit>
+      <apply>
+        <divide/>
+        <cn>1</cn>
+        <ci>x</ci>
+      </apply>
+    </apply>
+  </annotation-xml>
+</semantics>
+</mrow>
+]]></eg> In this example, we use the <el>semantics</el>
+element to provide a MathML content expression to serve as a
+<quote>semantic annotation</quote> for a presentation expression.  In
+the display markup, we have used the <el>msubsup</el>
+element to attach a subscript and a superscript to an expression, in
+this case the integral sign. We also used entities <kw
+role="entity">int</kw> and <kw role="entity">dd</kw> to specify the
+integral and differential symbols.
+</p>
+
+<p>
+The <el>semantics</el> element has as its first child
+the expression being annotated, and the subsequent children are the
+annotations.  There is no restriction on the kind of annotation that
+can be attached using the <el>semantics</el> element.
+For example, one might give a &TeX; encoding, or computer algebra
+input in an annotation. The type of annotation is specified by the <att>encoding</att> attribute and the <el>annotation</el> and <el>annotation-xml</el> elements.</p>
+
+<p>Another common use of the <el>semantics</el>
+element arises  when one  wants to use  a content  coding, and
+provide  a suggestion for  its presentation.  In such  a case,
+applied to  the formula  above we would  have the  markup: 
+<eg role='mathml'><![CDATA[
+<semantics>
+  <apply>
+    <int/>
+    <bvar><ci>x</ci></bvar>
+    <lowlimit><cn>1</cn></lowlimit>
+    <uplimit><ci>t</ci></uplimit>
+    <apply>
+      <divide/>
+      <cn>1</cn>
+      <ci>x</ci>
+    </apply>
+  </apply>
+  <annotation-xml encoding="MathML-Presentation">
+    <mrow>
+      <msubsup>
+        <mo>&int;</mo>
+        <mn>1</mn>
+        <mi>t</mi>
+      </msubsup>
+      <mfrac>
+        <mrow>
+          <mo>&dd;</mo>
+          <mi>x</mi>
+        </mrow>
+        <mi>x</mi>
+      </mfrac>
+    </mrow>
+  </annotation-xml>
+</semantics>
+]]></eg>
+</p>
+
+<p>This kind of annotation is useful when something other than the default
+rendering of the content encoding is desired. For example, by default, some
+renderers might layout the integrand something like <quote>(1/<var>x</var>)
+d<var>x</var></quote>.  Specifying that the integrand should by preference
+render as <quote>d<var>x</var>/<var>x</var></quote> instead can be accomplished
+with the use of a MathML Presentation annotation as shown.  Be aware,
+however, that renderers are not required to take into account information
+contained in annotations, and what use is made of them, if any, will depend
+on the renderer.</p>
+</div3>
+</div2>
+
+<div2 id="fund_syntax">
+<head>MathML Syntax and Grammar</head>
+<div3>
+<head>MathML Syntax and Grammar</head>
+
+<p>MathML is an application of <bibref ref="XML"/>, or Extensible
+Markup Language, and as such its syntax is governed by the rules of
+XML syntax, and its grammar is in part specified by a DTD, or Document
+Type Definition.  In other words, the details of using tags,
+attributes, entity references and so on are defined in the XML
+language specification, and the details about MathML element and
+attribute names, which elements can be nested inside each other, and
+so on are specified in the MathML DTD. This is in <specref
+ref="parsing"/>.</p>
+
+<p>The W3C in seeking to increase the flexibility of the use of XML
+for the Web, and to encourage modularization of applications built
+with XML, has found that the basic form of a DTD is not sufficiently
+flexible. Therefore, a W3C Working Group was created to develop a
+specification for XML Schemas <bibref ref="XMLSchemas"/>, which are
+specification documents that will eventually supersede DTDs.  MathML
+2.0 is consciously designed so that mathematics may take advantage of the
+latest in the evolving Web technology.  Thus, there is to be a schema
+for MathML.  For further information on a MathML schema see <specref
+ref="parsing"/> and the <loc href="http://www.w3.org/Math/">MathML
+Home Page</loc>.</p>
+
+<p>However, MathML also specifies some syntax and grammar rules in addition
+to the general rules it inherits as an XML application.  These rules allow
+MathML to encode a great deal more information than would ordinarily be
+possible with pure XML, without introducing many more elements, and using a
+substantially more complex DTD or schema.  A grammar for content markup
+expressions is given in <specref ref="cmvg"/>.  Of course, one drawback to
+using MathML specific rules is that they are invisible to generic XML
+processors and validators.</p>
+
+<p>There are basically two kinds of additional MathML grammar and syntax
+rules.  One kind involves placing additional criteria on attribute values.
+For example, it is not possible in pure XML to require that an attribute
+value be a positive integer.  The second kind of rule specifies more
+detailed restrictions on the child elements (for example on ordering) than
+are given in the DTD or even a schema. For example, it is not possible in
+XML to specify that the first child be interpreted one way, and the second
+in another.</p>
+
+<p>The following sections discuss features both of XML syntax and grammar
+in general, and of MathML in particular.  Throughout the remainder of the
+MathML specification, we will usually take care to distinguish between
+usage required by XML syntax and the MathML DTD (and schema) and usage
+required by MathML specific rules. However, we will frequently allude to
+<quote>MathML errors</quote> without identifying which part of the
+specification is being violated.</p>
+</div3>
+
+<div3 id="fund_xmlsyntax">
+<head>An XML Syntax Primer</head>
+
+<p>Since MathML is an application of XML, the MathML specification uses the
+terminology of XML to describe it. Briefly, XML data is composed of Unicode
+characters (which include ordinary ASCII characters), <quote>entity
+references</quote> (informally called <quote>entities</quote>) such as <kw
+role="entity">lt</kw> which usually represent <quote>extended
+characters</quote>, and <quote>elements</quote> such as <code><![CDATA[<mi
+fontstyle="normal"> x </mi>]]></code>.</p>
+
+<p>An element quite often encloses other XML data called its
+<quote>content</quote>, or <quote>body</quote>, between a <quote>start
+tag</quote> (sometimes called a <quote>begin tag</quote>) and an <quote>end
+tag</quote>, much as in HTML.  There are also <quote>empty elements</quote>
+such as <el role="emptytag">plus</el>, whose start tag ends with
+<code>/&gt;</code> to indicate that the element has no content or end
+tag. The start tag can contain named parameters called
+<quote>attributes</quote>, such as <code>fontstyle="normal"</code> in the
+example above.  For further details on XML, consult the XML specification
+<bibref ref="XML"/>.</p>
+
+<p>As XML is case-sensitive, MathML element and attribute names are
+case-sensitive.  For reasons of legibility, the MathML specification
+defines them almost all in lowercase.</p>
+
+<p>In formal discussions of XML markup, a distinction is maintained
+between an element, such as an <el>mrow</el> element,
+and the tags <el role="starttag">mrow</el> and <el role="endtag">mrow</el> marking it. What is between the <el role="starttag">mrow</el> start tag and the <el role="endtag">mrow</el> end tag is the content, or body, of the <el>mrow</el> element.  An <quote>empty element</quote>
+such as <el>none</el> is defined to have no body, and
+so has a single tag of the form <el role="emptytag">none</el>.
+Usually, the distinction between elements and tags will not be so
+finely drawn in this specification. For instance, we will sometimes
+refer to the <el role="starttag">mrow</el> and <el role="emptytag">none</el> elements, really meaning the elements whose
+tags these are, in order that references to elements are visually
+distinguishable from references to attributes.  However, the words
+<quote>element</quote> and <quote>tag</quote> themselves will be used
+strictly in accordance with XML terminology.</p>
+
+</div3>
+
+<div3><head>Children versus Arguments</head>
+
+<p>Many MathML elements require a specific number of child elements or
+attach additional meanings to children in certain positions.  As noted
+above, these kinds of requirements are MathML specific, and cannot be
+given entirely using XML syntax and grammar. When the children of a
+given MathML element are subject to these kinds of additional
+conditions, we will often refer to them as <emph>arguments</emph>
+instead of merely as children, in order to emphasize their MathML
+specific usage. Note that, especially in <specref ref="presm"/>, the
+term <quote>argument</quote> is usually used in this technical sense,
+unless otherwise noted, and therefore refers to a child element.</p>
+
+<p>In the detailed discussions of element syntax given with each
+element throughout the MathML specification, the number of required
+arguments and their order is implicitly indicated by giving names for
+the arguments at various positions. This information is also given for
+presentation elements in the table of argument requirements in
+<specref ref="presm_reqarg"/>, and for content elements in <specref
+ref="cmvg"/>.</p>
+
+<p>A  few elements have  other requirements  on the  number or
+type of arguments. These additional requirements are described
+together with the individual elements.</p>
+</div3>
+
+<div3 id="fund_attval">
+<head>MathML Attribute Values</head>
+
+<p>According  to the  XML  language specification,  attributes
+given to elements must have one of the forms
+<eg><![CDATA[
+attribute-name = "value"
+]]></eg>
+or
+<eg><![CDATA[
+attribute-name = 'value'
+]]></eg>
+where whitespace around the '=' is optional.</p>
+
+<p>Attribute names are generally shown in a <att>monospaced</att> font within descriptive text in this
+specification, just as the <att>monospaced</att> font is used
+for examples.</p>
+
+<p>An attribute's value, which in general in MathML can be a string of
+arbitrary characters, must be surrounded by a pair of either double quotes
+(<code>&quot;</code>) or single quotes (<code>'</code>). The kind of quotes
+not used to surround the value may be included within it.</p>
+
+<p>MathML uses a more complicated syntax for attribute values than the
+generic XML syntax required by the MathML DTD. These additional rules are
+intended for use by MathML applications, and it is a MathML error to
+violate them, though they cannot be enforced by XML processing. The MathML
+syntax of each attribute value is specified in the table of attributes
+provided with the description of each element, using a notation described
+below.  When MathML applications process attribute values, whitespace
+is ignored except to separate letter and digit sequences into
+individual words or numbers.  Attribute values may contain any MathML
+characters listed in <specref ref="chars_mathmlchars"/> permitted by the syntax
+restrictions for an attribute.  Character data can be
+included directly in attribute values, or by using entity references
+as described in <specref ref="chars_unicodechars"/>.
+</p>
+
+<p>In particular, the characters <code>&quot;</code>, <code>'</code>,
+<code>&amp;</code> and <code>&lt;</code> can be included in MathML
+attribute values (when permitted by the attribute value syntax) using the
+entity references <kw role="entity">quot</kw>, <kw role="entity">apos</kw>,
+<kw role="entity">amp</kw> and <kw role="entity">lt</kw>, respectively.
+</p>
+
+<p>The MathML DTD provided in <specref ref="parsing"/> declares most
+attribute value types as <kw>CDATA</kw> strings. This permits increased
+interoperability with existing SGML and XML software and allows extension
+to the lists of predefined values.  Similar sorts of considerations apply
+with XML schemas.</p>
+
+<div4><head>Syntax notations used in the MathML specification</head>
+
+<p>To  describe  the  MathML-specific  syntax  of  permissible
+attribute values, the  following conventions and notations are
+used for most attributes in the present document.
+<table id="fund_table-attval">
+<thead>
+<tr>
+<td>Notation</td>
+<td>What it matches</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>number</td>
+<td>decimal integer or rational number (a string of digits
+with one decimal point), 
+optionally starting with '-'</td>
+</tr>
+<tr>
+<td>unsigned-number</td>
+<td>decimal integer or real number, no sign</td>
+</tr>
+<tr>
+<td>integer</td>
+<td>decimal integer, optionally starting with '-'</td>
+</tr>
+<tr>
+<td>positive-integer</td>
+<td>decimal integer, unsigned, not 0</td>
+</tr>
+<tr>
+<td>string</td>
+<td>arbitrary string (always the entire attribute value)</td>
+</tr>
+<tr>
+<td>character</td>
+<td>single non-whitespace character, or MathML entity reference;
+whitespace separation is optional</td>
+</tr>
+<tr>
+<td>#rrggbb</td> <td>RGB color value; the three pairs of
+hexadecimal digits in the example #5599dd define proportions
+of red, green and blue on a scale of x00 through xFF, which
+gives a strong sky blue.</td>
+</tr>
+<tr>
+<td>h-unit</td>
+<td>unit of horizontal length (allowable units are listed below)</td>
+</tr>
+<tr>
+<td>v-unit</td>
+<td>unit of vertical length (allowable units are listed below)</td>
+</tr>
+<tr>
+<td>css-fontfamily</td>
+<td>explained in the CSS subsection below</td>
+</tr>
+<tr>
+<td>css-color-name</td>
+<td>explained in the CSS subsection below</td>
+</tr>
+<tr>
+<td>other italicized words</td>
+<td>explained in the text for each attribute</td>
+</tr>
+<tr>
+<td>form +</td>
+<td>one or more instances of 'form'</td>
+</tr>
+<tr>
+<td>form *</td>
+<td>zero or more instances of 'form'</td>
+</tr>
+<tr>
+<td>f1 f2 ... fn</td>
+<td>one instance of each form, in sequence, perhaps separated by whitespace</td>
+</tr>
+<tr>
+<td>f1 | f2 | ... | fn</td>
+<td>any one of the specified forms</td>
+</tr>
+<tr>
+<td>[ form ]</td>
+<td>an optional instance of 'form'</td>
+</tr>
+<tr>
+<td>( form )</td>
+<td>same as form</td>
+</tr>
+<tr>
+<td>word in plain text</td>
+<td>that word, literally present in the attribute value (unless it is 
+obviously part of an explanatory phrase)</td>
+</tr>
+<tr>
+<td>quoted symbol</td>
+<td>that symbol, literally present in attribute value (e.g. "+" or '+')</td>
+</tr>
+</tbody>
+</table>
+</p>
+
+<p>The order of precedence of the syntax notation operators is,
+from highest to lowest precedence:
+<slist>
+<sitem>form +    or    form *</sitem>
+<sitem>f1 f2 ... fn    (sequence of forms)</sitem>
+<sitem>f1 | f2 | ... | fn    (alternative forms)</sitem>
+</slist>
+</p>
+
+<p>A <emph>string</emph> can contain arbitrary characters which are
+specifiable within XML <kw>CDATA</kw> attribute values.  See <specref
+ref="chars"/> for a discussion and complete listing of MathML
+characters.  No syntax rule in MathML includes a <emph>string</emph>
+as only part of an attribute value, only as the entire value.</p>
+
+<p>Adjacent keywords and numbers must be separated by whitespace in the
+actual attribute values, except for unit identifiers (denoted by <att>h-unit</att> or <att>v-unit</att> syntax symbols)
+following numbers.  Whitespace is not otherwise required, but is permitted
+between any of the tokens listed above, except (for compatibility with
+CSS) immediately before unit identifiers, between the '-' signs and digits
+of negative numbers, or between <code>#</code> or <attval>rrggbb</attval> and <attval>rgb</attval>.</p>
+
+<p>Numerical attribute values for dimensions that should depend upon the
+current font can be given in font-related units, or in named absolute units
+(described in a separate subsection below). Horizontal dimensions are
+conventionally given in <code>em</code>'s, and vertical dimensions in
+<code>ex</code>'s, by immediately following a number by one of the unit
+identifiers <attval>em</attval> or <attval>ex</attval>.  For
+example, the horizontal spacing around an operator such as <quote>+</quote>
+is conventionally given in <attval>em</attval>s, though other units
+can be used. Using font-related units is usually preferable to using
+absolute units, since it allows renderings to grow or shrink in proportion
+to the current font size.</p>
+
+<p>For most numerical attributes, only those in a subset of the expressible
+values are sensible; values outside this subset are not errors, unless
+otherwise specified, but rather are rounded up or down (at the discretion
+of the renderer) to the closest value within the allowed subset.  The set
+of allowed values may depend on the renderer, and is not specified by
+MathML.</p>
+
+<p>If a numerical value within an attribute value syntax description is
+declared to allow a minus sign ('-'), e.g. <att>number</att> or
+<att>integer</att>, it is not a syntax error when one is
+provided in cases where a negative value is not sensible. Instead, the
+value should be handled by the processing application as described in the
+preceding paragraph.  An explicit plus sign ('+') is not allowed as part of
+a numerical value except when it is specifically listed in the syntax (as a
+quoted '+' or "+"), and its presence can change the meaning of the
+attribute value (as documented with each attribute which permits it).</p>
+
+<p>The    symbols     <att>h-unit</att>,    <att>v-unit</att>, <att>css-fontfamily</att>,
+and <att>css-color-name</att> are explained in the
+following subsections.</p>
+</div4>
+
+<div4 id="fund_units">
+<head>Attributes with units</head>
+
+<p>Some attributes accept horizontal or vertical lengths as numbers
+followed by a <quote>unit identifier</quote> (often just called a
+<quote>unit</quote>). The syntax symbols <att>h-unit</att> and
+<att>v-unit</att> refer to a unit for horizontal or vertical
+length, respectively. The possible units and the lengths they refer to are
+shown in the table below; they are the same for horizontal and vertical
+lengths, but the syntax symbols are distinguished in attribute syntaxes as
+a reminder of the direction each is used in.</p>
+
+<p>The unit identifiers and meanings are taken from CSS.  However, the
+syntax of numbers followed by unit identifiers in MathML is not identical
+to the syntax of length values with units in CSS style sheets, since
+numbers in CSS cannot end with decimal points, and are allowed to start
+with '+' signs.</p>
+
+<p>The possible horizontal or vertical units in MathML are:
+</p>
+<table>
+<thead>
+<tr>
+<td>Unit identifier</td>
+<td>Unit description</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>em</td>
+<td>em (font-relative unit traditionally used for horizontal lengths)</td>
+</tr>
+<tr>
+<td>ex</td>
+<td>ex (font-relative unit traditionally used for vertical lengths)</td>
+</tr>
+<tr>
+<td>px</td>
+<td>pixels, or pixel size of the current display</td>
+</tr>
+<tr>
+<td>in</td>
+<td>inches (1 inch = 2.54 centimeters)</td>
+</tr>
+<tr>
+<td>cm</td>
+<td>centimeters</td>
+</tr>
+<tr>
+<td>mm</td>
+<td>millimeters</td>
+</tr>
+<tr>
+<td>pt</td>
+<td>points (1 point = 1/72 inch)</td>
+</tr>
+<tr>
+<td>pc</td>
+<td>picas (1 pica = 12 points)</td>
+</tr>
+<tr>
+<td>%</td>
+<td>percentage of default value</td>
+</tr>
+</tbody>
+</table>
+
+<p>The typesetting units <attval>em</attval> and <attval>ex</attval> are defined in <specref ref="glossary"/>, and
+discussed further under <quote>Additional notes</quote> below.</p>
+
+<p><code>%</code> is a <quote>relative unit</quote>; when an attribute
+value is given as <attval>n%</attval> (for any numerical value <attval>n</attval>), the value being specified is the default value for
+the property being controlled multiplied by <attval>n</attval>
+divided by 100. The default value (or the way in which it is obtained, when
+it is not constant) is listed in the table of attributes for each element,
+and its meaning is described in the subsequent documentation about that
+attribute.  (The <el>mpadded</el> element has its own syntax
+for <code>%</code> and does not allow it as a unit identifier.)</p>
+
+<p>For consistency with CSS, length units in MathML are rarely
+optional. When they are, the unit symbol is enclosed in square brackets in
+the attribute syntax, following the number to which it applies,
+e.g. <code>number [ h-unit ]</code>. The meaning of specifying no unit is
+given in the documentation for each attribute; in general it is that the
+number given is a multiplier for the default value of the attribute. (In
+such cases, specifying the number <attval>nnn</attval> without a unit
+is equivalent to specifying the number <attval>nnn</attval> times 100
+followed by <code>%</code>.  For example, <code>&lt;mo maxsize="2"&gt; (
+&lt;/mo&gt;</code> is equivalent to <code>&lt;mo maxsize="200%"&gt; (
+&lt;/mo&gt;</code>.)</p>
+
+<p>As a special exception (also consistent with CSS), a numerical value
+equal to 0 need not be followed by a unit identifier even if the syntax
+specified here requires one. In such cases, the unit identifier (or lack of
+one) would not matter, since 0 times any unit is 0.</p>
+
+<p>For most attributes, the typical unit which would be used to describe
+them in typesetting is chosen as the one used in that attribute's default
+value in this specification; when a specific default value is not given,
+the typical unit is usually mentioned in the syntax table or in the
+documentation for that attribute. The most common units are <code>em</code>
+or <code>ex</code>. However, any unit can be used, unless otherwise
+specified for a specific attribute.</p>
+
+<div5><head>Additional notes about units</head>
+
+<p>Note that some attributes, e.g.  <att>framespacing</att> 
+on a <el role="starttag">mtable</el>,
+can contain more than one numerical value, each followed by its own
+unit.</p>
+
+<p>It is conventional to use the font-relative unit <code>ex</code> mainly
+for vertical lengths, and <code>em</code> mainly for horizontal lengths,
+but this is not required. These units are relative to the font and font size
+which would be used for rendering the element in whose attribute value they
+are specified, which means they should be interpreted <emph>after</emph>
+attributes such as <att>fontfamily</att> and <att>fontsize</att> are processed, if those occur on the same
+element, since changing the current font or font size can change the length
+of one of these units.</p>
+
+<p>The definition of the length of each unit, but not the MathML syntax for
+length values, is as specified in CSS, except that if a font provides
+specific values for <code>em</code> and <code>ex</code> which differ from
+the values defined by CSS (the font size and <quote>x</quote>-height
+respectively), those values should be used.</p>
+</div5>
+</div4>
+
+<div4 id="fund_cssatt"><head>CSS-compatible attributes</head>
+
+<p>Several MathML attributes, listed below, correspond closely to text
+rendering properties defined originally in <bibref ref="CSS1"/>.
+In MathML 1.01, the names and values of these attributes were aligned
+with the CSS Recommendation where possible.  This was done so that
+renderers in CSS environments could query the environment for the
+corresponding property when determining the default values for the
+attributes. </p>
+
+<p>Allowing style properties to be set both via MathML attributes and
+CSS style sheets has drawbacks.  At a minimum, its confusing, and at
+worst, it leads to the meaning of equations being inadvertently
+changed by document-wide CSS changes.  For these reasons, these
+attributes have been <intref ref="interf_deprec">deprecated</intref>.
+In their place, MathML 2.0 introduces four new mathematical style
+attributes.  These attributes use logical values to better capture the
+abstract categories of letter-like symbols used in math, and afford a
+much cleaner separation between MathML and CSS.  See <specref
+ref="presm_commatt"/> for more details.</p>
+
+<p>For reference, a table showing the correspondence of the deprecated
+MathML 1.01 style attribute with the CSS counterparts is given below:</p>
+
+<table>
+<thead>
+<tr>
+<td>MathML attribute</td>
+<td>CSS property</td>
+<td>syntax symbol</td>
+<td>MathML elements</td>
+<td>refer to</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fontsize</td>
+<td>font-size</td>
+<td>-</td>
+<td>presentation tokens; <el>mstyle</el></td>
+<td><specref ref="presm_commatt"/></td>
+</tr>
+<tr>
+<td>fontweight</td>
+<td>font-weight</td>
+<td>-</td>
+<td>presentation tokens; <el>mstyle</el></td>
+<td><specref ref="presm_commatt"/></td>
+</tr>
+<tr>
+<td>fontstyle</td>
+<td>font-style</td>
+<td>-</td>
+<td>presentation tokens; <el>mstyle</el></td>
+<td><specref ref="presm_commatt"/></td>
+</tr>
+<tr>
+<td>fontfamily</td>
+<td>font-family</td>
+<td>css-fontfamily</td>
+<td>presentation tokens; <el>mstyle</el></td>
+<td><specref ref="presm_commatt"/></td>
+</tr>
+<tr>
+<td>color</td>
+<td>color</td>
+<td>css-color-name</td>
+<td>presentation tokens; <el>mstyle</el></td>
+<td><specref ref="presm_mstyle"/></td>
+</tr>
+<tr>
+<td>background</td>
+<td>background</td>
+<td>css-color-name</td>
+<td><el>mstyle</el></td>
+<td><specref ref="presm_mstyle"/></td>
+</tr>
+</tbody>
+</table>
+
+<p>See also <specref ref="fund_globatt"/> below for a discussion of the <att>class</att>, <att>style</att> and <att>id</att> attributes for use with style sheets.</p>
+
+<div5>
+<head>Order of processing attributes versus style sheets</head>
+
+<p>CSS or analogous style sheets can specify changes to rendering
+properties of selected MathML elements.  Since rendering properties
+can also be changed by attributes on an element, or be changed automatically
+by the renderer, it is necessary to specify the order in which changes
+from various sources occur. An example of automatic adjustment is what
+happens for <att>fontsize</att>, as explained in the
+discussion on <att>scriptlevel</att> in <specref
+ref="presm_mstyle"/>.  In the case of <quote>absolute</quote> changes,
+i.e., setting a new property value independent of the old value (as
+opposed to <quote>relative</quote> changes, such as increments or
+multiplications by a factor), the absolute change performed last will
+be the only absolute change which is effective, so the sources of
+changes which should have the highest priority must be processed
+last.</p>
+
+<p>In the  case of  CSS, the order  of processing  of changes
+from  various  sources   which  affect  one  MathML  element's
+rendering properties should be as follows:</p>
+<eg role='text'>
+(first changes; lowest priority)
+</eg>
+<ulist>
+
+<item>
+<p>Automatic changes to properties or attributes based on the type of the
+parent element, and this element's position in the parent, as for the
+changes to <att>fontsize</att> in relation to <att>scriptlevel</att> mentioned above; such changes will usually
+be implemented by the parent element itself before it passes a set of
+rendering properties to this element</p></item>
+
+<item>
+<p>From a style sheet from the reader: styles which are <emph>not</emph>
+declared <quote>important</quote></p></item>
+
+<item>
+<p>Explicit attribute settings on this MathML element</p></item>
+
+<item>
+<p>From a style sheet from the author: styles which are <emph>not</emph>
+declared <quote>important</quote></p></item>
+
+<item>
+<p>From a style sheet from the author: styles which <emph>are</emph>
+declared <quote>important</quote></p></item>
+
+<item>
+<p>From a style sheet from the reader: styles which <emph>are</emph>
+declared <quote>important</quote></p></item>
+
+</ulist>
+<eg role='text'>
+(last changes; highest priority)
+</eg>
+
+<p>Note that the order of the changes derived from CSS style sheets is
+specified by CSS itself (this is the order specified by CSS2).
+The following rationale is related only to the
+issue of where in this pre-existing order the changes caused by explicit
+MathML attribute settings should be inserted.</p>
+
+<p>Rationale: MathML rendering attributes are analogous to HTML rendering
+attributes such as <att>align</att>, which the CSS section on
+cascading order specifies should be processed with the same priority.
+Furthermore, this choice of priority permits readers, by declaring certain
+CSS styles as <quote>important</quote>, to decide which of their style
+preferences should override explicit attribute settings in MathML.  Since
+MathML expressions, whether composed of <quote>presentation</quote> or
+<quote>content</quote> elements, are primarily intended to convey meaning,
+with their <quote>graphic design</quote> (if any) intended mainly to aid in
+that purpose but not to be essential in it, it is likely that readers will
+often want their own style preferences to have priority; the main exception
+will be when a rendering attribute is intended to alter the meaning
+conveyed by an expression, which is generally discouraged in the
+presentation attributes of MathML.</p>
+
+</div5>
+</div4>
+
+<div4>
+<head>Default values of attributes</head>
+
+<p>Default values for MathML attributes are in general given along with the
+detailed descriptions of specific elements in the text.  Default values
+shown in plain text in the tables of attributes for an element are literal
+(unless they are obviously explanatory phrases), but when italicized are
+descriptions of how default values can be computed.</p>
+
+<p>Default values described as <emph>inherited</emph> are taken from the
+rendering environment, as described under <el>mstyle</el>,
+or in some cases (described individually) from the values of other
+attributes of surrounding elements, or from certain parts of those
+values. The value used will always be one which could have been specified
+explicitly, had it been known; it will never depend on the content or
+attributes of the same element, only on its environment. (What it means
+when used may, however, depend on those attributes or the content.)</p>
+
+<p>Default values described as <emph>automatic</emph> should be computed by
+a MathML renderer in a way which will produce a high-quality rendering; how
+to do this is not usually specified by the MathML specification. The value
+computed will always be one which could have been specified explicitly, had
+it been known, but it will usually depend on the element content and
+possibly on the rendering environment.</p>
+
+<p>Other italicized descriptions of default values which appear in the
+tables of attributes are explained for each attribute individually.</p>
+
+<p>The single or double quotes which are required around attribute values
+in an XML start tag are not shown in the tables of attribute value syntax
+for each element, but are shown around example attribute values in the
+text.</p>
+
+<p>Note that, in general, there is no value which can be given explicitly
+for a MathML attribute which will simulate the effect of not specifying the
+attribute at all for attributes which are <emph>inherited</emph> or
+<emph>automatic</emph>.  Giving the words <quote>inherited</quote> or
+<quote>automatic</quote> explicitly will not work, and is not generally
+allowed.  Furthermore, even for presentation attributes for which a
+specific default value is documented here, the <el>mstyle</el> element (<specref ref="presm_mstyle"/>) can be
+used to change this for the elements it contains. Therefore, the MathML DTD
+declares most presentation attribute default values as <kw>#IMPLIED</kw>,
+which prevents XML preprocessors from adding them with any specific default
+value. This point of view is carried through to the MathML schema.</p>
+</div4>
+
+<div4>
+<head>Attribute values in the MathML DTD</head>
+
+<p>In an XML DTD, allowed attribute values can be declared as general
+strings, or they can be constrained in various ways, either by enumerating
+the possible values, or by declaring them to be certain special data
+types. The choice of an XML attribute type affects the extent to which
+validity checks can be performed using a DTD.</p>
+
+<p>The MathML DTD specifies formal XML attribute types for all MathML
+attributes, including enumerations of legitimate values in some cases.  In
+general, however, the MathML DTD is relatively permissive, frequently
+declaring attribute values as strings; this is done to provide for
+interoperability with SGML parsers while allowing multiple attributes on
+one MathML element to accept the same values (such as <attval>true</attval> and <attval>false</attval>), and also to
+allow extension to the lists of predefined values.</p>
+
+<p>At the same time, even though an attribute value may be declared as a
+string in the DTD, only certain values are legitimate in MathML, as
+described above and in the rest of this specification.  For example, many
+attributes expect numerical values.  In the sections which follow, the
+allowed attribute values are described for each element. To determine when
+these constraints are actually enforced in the MathML DTD, consult <specref
+ref="parsing"/>.  However, lack of enforcement of a requirement in the DTD
+does <emph>not</emph> imply that the requirement is not part of the MathML
+language itself, or that it will not be enforced by a particular MathML
+renderer. (See <specref ref="interf_error"/> for a description of how
+MathML renderers should respond to MathML errors.)</p>
+
+<p>Furthermore, the MathML DTD is provided for convenience; although it is
+intended to be fully compatible with the text of the specification, the
+text should be taken as definitive if there is a contradiction.  (Any
+contradictions which may exist between various chapters of the text should
+be resolved by favoring <specref ref="chars"/> first, then <specref
+ref="presm"/>, <specref ref="contm"/>, then <specref ref="fund_syntax"/>,
+and then other parts of the text.)  For the MathML schema the situation
+will be the same: the published Recommendation text takes precedence.
+Though this is what is intended to happen, there is a practical difficulty.
+If the system processing the MathML uses a validating parser, whether it be
+based on a DTD or on a schema, the process will probably simply stop when
+it hits something held to be incorrect syntax, whether or not further
+MathML processing in full harmony with the specification would have
+processed the piece correctly.</p>
+
+</div4>
+</div3>
+
+<div3 id="fund_globatt">
+<head>Attributes Shared by all MathML Elements</head>
+
+<p>In order to facilitate use with style sheet mechanisms such as
+<bibref ref="XSLT"/> and <bibref ref="CSS2"/>
+all MathML elements accept <att>class</att>, <att>style</att>, and <att>id</att> attributes in addition to the attributes described
+specifically for each element.  MathML renderers not supporting CSS may
+ignore these attributes. MathML specifies these attribute values as general
+strings, even if style sheet mechanisms have more restrictive syntaxes for
+them. That is, any value for them is valid in MathML.</p>
+
+<p>In order to facilitate compatibility with linking mechanisms, all
+MathML elements accept the <att>xlink:href</att>
+attribute.</p>
+
+<p>All MathML elements also accept the <att>xref</att>
+attribute for use in parallel markup (<specref
+ref="mixing_parallel"/>).  The <att>id</att> is also used
+in this context.</p>
+
+<p>Every MathML element, because of a legacy from MathML 1.0, also
+accepts the <intref ref="interf_deprec">deprecated</intref> attribute
+<att>other</att> (<specref ref="interf_unspecified"/>)
+which was conceived for passing non-standard attributes without
+violating the MathML DTD. MathML renderers are only required to
+process this attribute if they respond to any attributes which are not
+standard in MathML.  However, the use of <att>other</att>
+is strongly <phrase diff="chg">discouraged</phrase> when there are already other ways within MathML
+of passing specific information.</p>
+
+<p>See also <specref ref="presm_commatt"/> for a list of MathML attributes
+which can be used on most presentation token elements.</p>
+</div3>
+
+<div3 id="fund_collapse">
+<head>Collapsing Whitespace in Input</head>
+
+<p>MathML ignores whitespace occurring outside token elements.
+Non-whitespace characters are not allowed there. Whitespace occurring
+within the content of token elements is <quote>trimmed</quote> from the
+ends, i.e.,  all whitespace at the beginning and end of the content is
+removed.  Whitespace internal to content of MathML elements is
+<quote>collapsed</quote> canonically, i.e.,  each sequence of 1 or more
+whitespace characters is replaced with one space character (sometimes
+called a blank character).</p>
+
+<p>In MathML, as in XML, <quote>whitespace</quote> means simple spaces,
+tabs, newlines, or carriage returns, i.e.,  characters with hexadecimal
+Unicode codes <kw>U+0020</kw>, <kw>U+0009</kw>, <kw>U+000A</kw>, or
+<kw>U+000D</kw>, respectively.</p>
+
+<p>For example, <code><![CDATA[<mo> ( </mo>]]></code> is equivalent to
+<code><![CDATA[<mo>(</mo>]]></code>, and
+<eg role='mathml'><![CDATA[
+<mtext>
+  Theorem
+  1:
+</mtext>
+]]></eg>
+is equivalent to 
+<code><![CDATA[<mtext>Theorem 1:</mtext>]]></code>.</p>
+
+<p>Authors wishing to encode whitespace characters at the start or end of
+the content of a token, or in sequences other than a single space, without
+having them ignored, must use <kw role="entity">nbsp</kw> or other
+<quote>whitespace</quote> non-marking entities as described in <specref
+ref="chars_nonmark"/>. For example, compare
+<eg role='mathml'><![CDATA[
+<mtext>
+ Theorem
+  1:
+</mtext>
+]]></eg>
+with
+<eg role='mathml'><![CDATA[
+<mtext>
+&nbsp;Theorem &nbsp;1: 
+</mtext> ]]></eg>
+</p>
+
+<p>When the first example is rendered, there is no whitespace before
+<quote>Theorem</quote>, one space between <quote>Theorem</quote> and
+<quote>1:</quote>, and no whitespace after <quote>1:</quote>. In the
+second example, a single space is rendered before
+<quote>Theorem</quote>, two spaces are rendered before
+<quote>1:</quote>, and there is no whitespace after the
+<quote>1:</quote>.</p>
+
+<p>Note that the <att>xml:space</att> attribute does not apply
+in this situation since XML processors pass whitespace in tokens to a
+MathML processor; it is the MathML processing rules which specify that
+whitespace is trimmed and collapsed.</p>
+
+<p>For whitespace occurring outside the content of the token elements <el>mi</el>, <el>mn</el>, <el>mo</el>, <el>ms</el>, <el>mtext</el>, <el>ci</el>, <el>cn</el> and <el>annotation</el>, an <el>mspace</el> element should be used, as opposed to an <el>mtext</el> element containing only <quote>whitespace</quote>
+entities.</p>
+
+</div3>
+
+</div2>
+</div1>
+
+
+                              

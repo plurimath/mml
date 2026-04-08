@@ -4,6 +4,7 @@ module Mml
   module V3
     class Mo < Lutaml::Model::Serializable
       include Base::Mo
+      include Base::V3Common
       include Base::DeprecatedFontAttributes
       include Base::V3Only::OperatorAttributes
     end

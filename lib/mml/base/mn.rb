@@ -12,7 +12,6 @@ module Mml
           attribute :mathbackground, :string
           attribute :mathvariant, :string
           attribute :mathsize, :string
-          attribute :dir, :string
 
           xml do
             namespace Mml::Namespace
@@ -23,7 +22,6 @@ module Mml
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "mathsize", to: :mathsize
-            map_attribute "dir", to: :dir
           end
         end
       end

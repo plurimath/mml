@@ -1,0 +1,982 @@
+<div1 id="mixing" role="chapter5"><head>Combining Presentation and Content Markup</head>
+<!-- $Id: mixing.xml,v 1.45 2003/06/09 13:42:03 jsdevitt Exp $ -->
+
+<!--
+Principal authors
+Stephen Watt: overal design; organization and original text of documentation.
+Robert Miner: additional text.
+-->
+
+<p>Presentation markup and content markup can be combined in two
+ways. The first manner is to intersperse content and presentation elements
+in what is essentially a single tree. This is called <emph>mixed</emph>
+markup. The second manner is to provide <emph>both</emph> an explicit
+presentation and an explicit content in a pair of trees. This is called
+<emph>parallel</emph> markup. This chapter describes both mixed and
+parallel markup, and how they may used in conjunction with style sheets and
+other tools.</p>
+
+<div2 id="mixing_why"><head>Why Two Different Kinds of Markup?</head>
+
+<p>Chapters 3 and 4 describe two kinds of markup for encoding mathematical
+material in documents.</p>
+
+<p><emph>Presentation markup</emph> captures <emph>notational
+structure</emph>. It encodes the notational structure of an expression in a
+sufficiently abstract way to facilitate rendering to various media. Thus,
+the same presentation markup can be rendered with relative ease on screen
+in either wide and narrow windows, in ASCII or graphics, in print, or it
+can be enunciated in a sensible way when spoken. It does this by providing
+information such as structured grouping of expression parts, classification
+of symbols, etc.</p>
+
+<p>Presentation markup does <emph>not</emph> directly concern itself with
+the mathematical structure or meaning of an expression. In many situations,
+notational structure and mathematical structure are closely related, so a
+sophisticated processing application may be able to heuristically infer
+mathematical meaning from notational structure, provided sufficient context
+is known. However, in practice, the inference of mathematical meaning from
+mathematical notation must often be left to the reader.</p>
+
+<p> Employing presentation tags alone may limit the ability to re-use a
+MathML object in another context, especially evaluation by external
+applications.</p>
+
+<p><emph>Content markup</emph> captures <emph>mathematical
+structure</emph>. It encodes mathematical structure in a sufficiently
+regular way in order to facilitate the assignment of mathematical meaning
+to an expression by application programs. Though the details of mapping
+from mathematical expression structure to mathematical meaning can be
+extremely complex, in practice, there is wide agreement about the
+conventional meaning of many basic mathematical constructions.
+Consequently, much of the meaning of a content expression is easily
+accessible to a processing application, independently of where or how it is
+displayed to the reader. In many cases, content markup could be cut from a
+Web browser and pasted into a mathematical software tool 
+with confidence that sensible
+values will be computed.</p>
+
+<p>Since content markup is <emph>not</emph> directly concerned with how an
+expression is displayed, a renderer must infer how an expression should be
+presented to a reader. While a sufficiently sophisticated renderer and
+style sheet mechanism could in principle allow a user to read mathematical
+documents using personalized notational preferences, in practice, rendering
+content expressions with notational nuances may still require 
+intervention of some sort.</p>
+
+<p> Employing content tags alone may limit the ability of the author to
+precisely control how an expression is rendered.</p>
+
+<p>Both content and presentation tags are
+necessary in order to provide the full expressive capability one would
+expect in a mathematical markup language. Often the same mathematical
+notation is used to represent several completely different concepts. For
+example, the notation <var>x</var><sup><var>i</var></sup> may be intended (in
+polynomial algebra) as the <var>i</var>-th power of the variable <var>x</var>,
+or as the <var>i</var>-th component of a vector <var>x</var> (in tensor calculus).
+In other cases, the same mathematical concept may be displayed in one of various
+notations. For instance, the factorial of a number might be expressed with
+an exclamation mark, a Gamma function, or a Pochhammer symbol.</p>
+
+<p>Thus the same notation may represent several mathematical ideas, and,
+conversely, the same mathematical idea often has several notations. In
+order to provide authors with the ability to precisely control notation
+while at the same time encoding meanings in a machine-readable way,
+both content and presentation markup are needed.</p>
+
+<p>In general, if it is important to control exactly how an expression is
+rendered, presentation markup will generally be more satisfactory. If it is
+important that the meaning of an expression can be interpreted dependably
+and automatically, then content markup will generally be more
+satisfactory.</p>
+</div2>
+
+<div2 id="mixing_markup"><head>Mixed Markup</head>
+
+<p>MathML offers authors elements for both content and presentation
+markup. Whether to use one or the other, or a combination of both, depends
+on what aspects of rendering and interpretation an author wishes to
+control, and what kinds of re-use he or she wishes to facilitate.</p>
+
+<div3 id="mixing_reasons"><head>Reasons to Mix Markup</head>
+
+<p>In many common situations, an author or authoring tool may choose to
+generate either presentation or content markup exclusively. For example, a
+program for translating legacy documents would most likely generate pure
+presentation markup. Similarly, an educational software package might very
+well generate only content markup for evaluation in a computer algebra
+system. However, in many other situations, there are advantages to mixing
+both presentation and content markup within a single expression.</p>
+
+<p>If an author is primarily presentation-oriented, interspersing some
+content markup will often produce more accessible, more re-usable
+results. For example, an author writing about linear algebra might write:
+<eg role="mathml"><![CDATA[
+<mrow>
+  <apply>
+    <power/>
+    <ci>x</ci>
+    <cn>2</cn>
+  </apply>
+  <mo>+</mo>
+  <msup>
+    <mi>v</mi>
+    <mn>2</mn>
+  </msup>
+</mrow>
+]]></eg>
+where <var>v</var> is a vector and the superscript denotes a vector
+component, and <var>x</var> is a real variable. On account of the linear
+algebra context, a visually impaired reader may have directed his or her
+voice synthesis software to render superscripts as vector components. By
+explicitly encoding the power, the content markup yields a much better
+voice rendering than would likely happen by default.</p>
+
+<p>If an author is primarily content-oriented, there are two reasons to
+intersperse presentation markup. First, using presentation markup provides
+a way of modifying or refining how a content expression is rendered. For
+example, one might write:
+<eg role="mathml"><![CDATA[
+<apply>
+  <in/>
+  <ci><mi mathvariant="bold">v</mi></ci>
+  <ci>S</ci>
+</apply>
+]]></eg>
+In this case, the use of embedded presentation markup allows the
+author to specify that <var>v</var> should be rendered in
+boldface.
+In the same way, it is sometimes the case that a completely different 
+notation is desired for a content expression.  For example, here
+we express a fact about factorials, <var>n</var> = <var>n</var>!/(<var>n</var>-1)!,
+using the ascending factorial notation:
+<eg role="mathml"><![CDATA[
+<apply>
+  <equivalent/>
+  <ci>n</ci>
+  <apply>
+     <divide/>
+     <semantics>
+        <apply>
+           <factorial/>
+           <ci>n</ci>
+        </apply>
+        <annotation-xml encoding="MathML-Presentation">
+           <msup>
+              <mn>1</mn>
+              <mover accent="true">
+                 <mi>n</mi>
+                 <mo>&OverBar;</mo>
+              </mover>
+           </msup>
+        </annotation-xml>
+     </semantics>
+     <semantics>
+        <apply>
+           <factorial/>
+           <apply><minus/><ci>n</ci><cn>1</cn></apply>
+        </apply>
+        <annotation-xml encoding="MathML-Presentation">
+           <msup>
+              <mn>1</mn>
+              <mover accent="true">
+                 <mrow><mi>n</mi><mo>-</mo><mn>1</mn></mrow>
+                 <mo>&OverBar;</mo>
+              </mover>
+           </msup>
+        </annotation-xml>
+     </semantics>
+   </apply>
+</apply>
+]]></eg>
+This content expression would render using the given notation as:
+<graphic diff="chg" role="inline" source="image/factid.gif" 
+         alt="n \equiv \frac{1^{\bar{n}}}{1^{\frac{}{n-1}}}"/>
+</p>
+
+<p>A second reason to use presentation within content markup is that
+there is a continually growing list of areas of discourse that do not have
+pre-defined content elements for encoding their objects and operators. As a
+consequence, any system of content markup inevitably requires an extension
+mechanism that combines notation with semantics in some way. MathML
+content markup specifies several ways of attaching an external semantic
+definitions to content objects. It is necessary, however, to use MathML
+presentation markup to specify how such user-defined semantic extensions
+should be rendered.</p>
+
+<p>For example, the <quote>rank</quote> operator from linear algebra is not
+included as a pre-defined MathML content element. Thus, to express
+the statement rank(<var>u</var><sup>T</sup><var>v</var>)=1
+we use a <el>semantics</el> element to bind a semantic
+definition to the symbol <var>rank</var>. 
+<eg role="mathml"><![CDATA[
+<apply>
+  <eq/>
+  <apply>
+    <semantics>
+      <mi>rank</mi>
+      <annotation-xml encoding="OpenMath">
+        <OMS name="rank" cd="linalg]]><phrase diff="chg">4</phrase><![CDATA[" xmlns="http://www.openmath.org/OpenMath"/>
+      </annotation-xml>
+    </semantics>
+    <apply> 
+      <times/> 
+      <apply> <transpose/> <ci>u</ci> </apply> 
+      <ci>v</ci> 
+    </apply>
+  </apply>
+  <cn>1</cn>
+</apply>
+]]></eg>
+Here, the semantics of rank have been
+given using a symbol from an OpenMath <bibref diff="add"
+ref="OpenMath2000"/> content dictionary (CD).</p>
+
+</div3>
+
+<div3><head>Combinations that are prohibited</head>
+
+<p>The main consideration when presentation markup and content markup are
+mixed together in a single expression is that the result should still make
+sense. When both kinds of markup are contained in a presentation
+expression, this means it should be possible to render the resulting mixed
+expressions simply and sensibly. Conversely, when mixed markup appears in a
+content expression, it should be possible to simply and sensibly assign a
+semantic interpretation to the expression as <phrase diff="add">a</phrase> whole. These requirements
+place a few natural constraints on how presentation and content markup can
+be mixed in a single expression, in order to avoid ambiguous or otherwise
+problematic expressions.</p>
+
+<p>Two examples illustrate the kinds of problems that must
+be avoided in mixed markup. Consider:
+<eg role="mathml-error"><![CDATA[
+<mrow>
+  <bvar> x </bvar> <mo> + </mo> <bvar> y </bvar>
+</mrow>
+]]></eg>
+In this example, the content element <el>bvar</el> has been
+indiscriminately embedded in a presentation expression. 
+Since <el>bvar</el> requires an enclosing context for its
+meaning, this expression is unclear.</p>
+
+<p>Similarly, consider:
+<eg role="mathml-error"><![CDATA[
+<apply>
+  <ci> x </ci> <mo> + </mo> <ci> y </ci>
+</apply>
+]]></eg>
+Here, the <el>mo</el> element is problematic. Should a
+renderer infer that the usual arithmetic operator is intended, and act as
+if the prefix content element <el>plus</el> had been used?
+Or should this be literally interpreted as the operator <var>x</var>
+applied to two arguments,
+<el role="starttag">mo</el>+<el role="endtag">mo</el> and 
+<el role="starttag">mi</el>y<el role="endtag">mi</el> ?
+Even if we were to decide that 
+<el role="starttag">mo</el>+<el role="endtag">mo</el>  was the operator, then what 
+should its meaning be?
+These questions do not have particularly compelling answers, so this kind 
+of mixing of content and presentation markup is also prohibited.</p>
+
+</div3>
+
+<div3 id="mixing_pmincm"><head>Presentation Markup Contained in Content Markup</head>
+
+<p>The use of presentation markup within content markup is limited to
+situations that do not effect the ability of content markup to
+unambiguously encode mathematical meaning. Specifically,
+presentation markup may only appear in content markup in three ways:
+<olist>
+<item><p>within <el>ci</el> and 
+<el>cn</el> token elements</p>
+</item>
+<item><p>within the <el>csymbol</el> element</p>
+</item>
+<item><p>within the <el>semantics</el> element</p>
+</item>
+</olist>
+Any other presentation markup occurring within a content markup is a
+MathML error. More detailed discussion of these three cases follows:
+<glist>
+<gitem>
+<label>Presentation markup within token elements.</label>
+<def><p>The token elements <el>ci</el> and <el>cn</el> are permitted to contain any sequence of 
+MathML characters (defined in <specref ref="chars"/>),
+presentation elements, and <el>sep</el> empty elements. 
+Contiguous blocks of MathML characters in <el>ci</el> and
+<el>cn</el> elements are rendered as if they were wrapped in
+<el>mi</el> and <el>mn</el>
+elements respectively. If a token element contains both MathML characters 
+and presentation elements, contiguous blocks of MathML characters (if any) 
+are treated as
+if wrapped in <el>mi</el> or <el>mn</el>
+elements as appropriate, and the resulting collection of presentation
+elements are rendered as if wrapped in an <el>mrow</el>
+element.</p></def>
+</gitem>
+
+<gitem>
+<label>Presentation markup within the <el>csymbol</el>
+element.</label>
+<def><p>The <el>csymbol</el> element may contain either
+MathML characters interspersed with presentation markup, or content elements
+of the container type. It is a MathML error for a <el>csymbol</el> element to contain both presentation and
+content elements. When the <el>csymbol</el> element contains
+both raw data and presentation markup, the same rendering rules that apply
+to content elements of the token type should be used.</p></def>
+</gitem>
+
+<gitem>
+<label>Presentation markup within the <el>semantics</el> element.</label>
+<def><p>One of the main purposes of the
+<el>semantics</el> element is to provide a mechanism for
+incorporating arbitrary MathML expressions into content markup in a
+semantically meaningful way. In particular, any valid presentation
+expression can be embedded in a content expression by placing it as the
+first child of a <el>semantics</el> element. The
+meaning of this wrapped expression should be indicated by one or more
+annotation elements also contained in the <el>semantics</el>
+element. Suggested rendering for a <el>semantics</el>
+element is discussed in <specref ref="contm_synsem"/>.</p></def>
+</gitem>
+</glist>
+</p>
+</div3>
+
+<div3 id="mixing_cminpm"><head>Content Markup Contained in 
+Presentation Markup</head>
+
+<p>The guiding principle for embedding content markup within presentation
+expressions is that the resulting expression should still have an
+unambiguous rendering. In general, this means that embedded content
+expressions must be semantically meaningful, since rendering of content
+markup depends on its meaning.</p>
+
+<p>Certain content elements
+derive part of their semantic meaning from the surrounding context, such as
+whether a <el>bvar</el> element is qualifying an integral,
+logical quantifier or lambda expression. Another example
+would be whether a <el>degree</el> element occurs in
+a <el>root</el> or <el>partialdiff</el> element.
+Thus, in a presentation context, elements such as these do not have a clearly
+defined meaning, and hence there is no obvious choice for a rendering.
+Consequently, they are not allowed.</p>
+
+<p>Using the terminology of <specref ref="contm_cats"/>, 
+we see that operator, relation, container, constant and symbol 
+elements make sense on their own, while elements of the 
+qualifier and condition type do not.
+(Note that <el>interval</el> may be used either as
+a general container, or as a qualifier.)</p>
+
+<p>Outside these categories, certain elements deserve specific comment:
+the elements <el>declare</el>, <el>sep</el>,
+<el>annotation</el> and <el>annotation-xml</el>
+can only appear in very specific contexts and consequently are not permitted
+as direct sub-expressions of any presentation element.
+Finally, the element <el>semantics</el>
+carries with it sufficient information to be permitted in presentation.</p>
+
+<p>The complete list of content elements that <emph>cannot</emph> appear as a child
+in a presentation element is:
+<el>annotation</el>,
+<el>annotation-xml</el>,
+<el>sep</el>,
+<el>declare</el>,
+<el>bvar</el>,
+<el>condition</el>,
+<el>degree</el>,
+<el>logbase</el>,
+<el>lowlimit</el>,
+<el>uplimit</el>.
+</p>
+
+<p>Note that within presentation markup, content expressions may only
+appear in locations where it is valid for any MathML expression to
+appear. In particular, content expressions may not appear within
+presentation token elements. In this regard mixing presentation and content
+are asymmetrical.</p>
+
+<p>Note that embedding content markup in presentation will often require
+applications to render operators outside of an <el>apply</el>
+context.  E.g., it may be necessary to render 
+<el>abs</el>,
+<el>plus</el>,
+<el>root</el> or
+<el>sin</el>
+outside of an application.   Content/presentation mixing does not
+introduce any new requirements, however, since unapplied operators
+are already permitted in content expressions, for example:
+<eg role="mathml"><![CDATA[
+<apply>
+   <compose/>
+   <sin/>
+   <apply>
+      <inverse/>
+      <root/>
+   </apply>
+</apply>
+]]></eg></p>
+
+</div3>
+</div2>
+
+<div2 id="mixing_parallel"><head>Parallel Markup</head>
+
+<p>Some applications are able to make use of <emph>both</emph> presentation
+and content information. For these applications it is desirable to provide
+both forms of markup for the same mathematical expression. This is called
+<emph>parallel markup</emph>.</p>
+
+<p>Parallel markup is achieved with the <el>semantics</el> element. Parallel markup for an expression
+can be used on its own, or can be incorporated as part of a larger content
+or presentation tree.
+</p>
+
+<div3><head>Top-level Parallel Markup</head>
+<p>
+In many cases what is desired is to provide
+presentation markup and content markup for a mathematical
+expression as a whole.
+To achieve this, a single <el>semantics</el> element is used
+pairing two markup trees, with the first branch being the MathML presentation
+markup, and the second branch being the MathML content markup.</p>
+
+<p>The following example encodes the boolean arithmetic expression
+(<var>a</var>+<var>b</var>)(<var>c</var>+<var>d</var>) in this way.
+<eg role="mathml"><![CDATA[
+<semantics>
+  <mrow>
+    <mrow><mo>(</mo><mi>a</mi> <mo>+</mo> <mi>b</mi><mo>)</mo></mrow>
+    <mo>&InvisibleTimes;</mo>
+    <mrow><mo>(</mo><mi>c</mi> <mo>+</mo> <mi>d</mi><mo>)</mo></mrow>
+  </mrow>
+  <annotation-xml encoding="MathML-Content">
+    <apply><and/>
+      <apply><xor/><ci>a</ci> <ci>b</ci></apply>
+      <apply><xor/><ci>c</ci> <ci>d</ci></apply>
+    </apply>
+  </annotation-xml>
+</semantics>
+]]></eg>
+This example is non-trivial in the sense that the content markup
+could not be easily derived from the presentation markup alone.
+</p>
+</div3>
+
+<div3><head>Fine-grained Parallel Markup</head>
+
+<p>Top-level pairing of independent presentation and content markup is
+sufficient for many, but not all, situations. Applications that allow
+treatment of <emph>sub-expressions</emph> of mathematical objects
+require the ability to associate presentation, content or information
+with the <emph>parts</emph> of an object with mathematical
+markup. Top-level pairing with a <el>semantics</el> element is
+insufficient in this type of situation; identification of a
+sub-expression in one branch of <phrase diff="add">a</phrase>
+<el>semantics</el> element gives no indication of the corresponding
+parts in other branches.</p>
+
+<p>The ability to identify corresponding sub-expressions is required in
+applications such as mathematical expression editors. In this situation,
+selecting a sub-expression on a visual display can identify a particular
+portion of a presentation markup tree. The application then needs to
+determine the corresponding annotations of the sub-expressions; in
+particular, the application requires the sub-expressions of the
+<el>annotation-xml</el> tree in MathML content notation.</p>
+
+<p>It is, in principle, possible to provide annotations for
+each presentation node by incorporating
+<el>semantics</el> elements recursively.
+<eg role="mathml"><![CDATA[
+<semantics>
+  <mrow>
+    <semantics>
+      <mrow><mo>(</mo><mi>a</mi> <mo>+</mo> <mi>b</mi><mo>)</mo></mrow>
+      <annotation-xml encoding="MathML-Content">
+        <apply><plus/><ci>a</ci> <ci>b</ci></apply>
+      </annotation-xml>
+    </semantics>
+    <mo>&InvisibleTimes;</mo>
+    <semantics>
+      <mrow><mo>(</mo><mi>c</mi> <mo>+</mo> <mi>d</mi><mo>)</mo></mrow>
+      <annotation-xml encoding="MathML-Content">
+        <apply><plus/><ci>c</ci> <ci>d</ci></apply>
+      </annotation-xml>
+    </semantics>
+  </mrow>
+
+  <annotation-xml encoding="MathML-Content">
+    <apply><times/>
+      <apply><plus/><ci>a</ci> <ci>b</ci></apply>
+      <apply><plus/><ci>c</ci> <ci>d</ci></apply>
+    </apply>
+  </annotation-xml>
+</semantics>
+]]></eg>
+To be complete this example would be much more verbose, wrapping each of
+the individual leaves <el>mi</el>, <el>mo</el> and <el>mn</el> in a further seven
+<el>semantics</el> elements.</p>
+
+<p>This approach is very general and works for all kinds of annotations
+(including non-MathML annotations and multiple annotations). It leads,
+however, to O(<phrase diff="chg"><var>n</var> log <var>n</var></phrase>) increase in size of the document.
+This is therefore not a suitable approach for fine-grained parallel markup
+of large objects.</p>
+</div3>
+
+<div3><head>Parallel Markup via Cross-References:
+<att>id</att> and <att>xref</att></head>
+
+<p>To better accommodate applications that must deal with sub-expressions
+of large objects, MathML uses cross-references between the branches of a
+<el>semantics</el> element to identify corresponding
+sub-structures.</p>
+
+<p>Cross-referencing is achieved using <att>id</att> and <att>xref</att> attributes within the branches of a containing <el>semantics</el> element. These attributes may optionally be
+placed on MathML elements of any type.</p>
+
+<p>The following example shows this cross-referencing for the
+boolean arithmetic expression
+(<var>a</var>+<var>b</var>)(<var>c</var>+<var>d</var>).
+
+<eg role="mathml"><![CDATA[
+<semantics>
+  <mrow id="E">
+    <mrow id="E.1">
+      <mo id="E.1.1">(</mo>
+      <mi id="E.1.2">a</mi>
+      <mo id="E.1.3">+</mo>
+      <mi id="E.1.4">b</mi>
+      <mo id="E.1.5">)</mo>
+    </mrow>
+    <mo id="E.2">&InvisibleTimes;</mo>
+    <mrow id="E.3">
+      <mo id="E.3.1">(</mo>
+      <mi id="E.3.2">c</mi>
+      <mo id="E.3.3">+</mo>
+      <mi id="E.3.4">d</mi>
+      <mo id="E.3.5">)</mo>
+    </mrow>
+  </mrow>
+
+  <annotation-xml encoding="MathML-Content">
+    <apply xref="E">
+      <and xref="E.2"/>
+      <apply xref="E.1">
+        <xor xref="E.1.3"/><ci xref="E.1.2">a</ci><ci xref="E.1.4">b</ci>
+      </apply>
+      <apply xref="E.3">
+        <xor xref="E.3.3"/><ci xref="E.3.2">c</ci><ci xref="E.3.4">d</ci>
+      </apply>
+    </apply>
+  </annotation-xml>
+</semantics>
+]]></eg></p>
+
+<p>An <att>id</att> attribute and a corresponding <att>xref</att> appearing within the same <el>semantics</el> element create a correspondence between
+sub-expressions.</p>
+
+<p>In creating these correspondences by cross-reference, <emph>all</emph>
+of the <att>id</att> attributes referenced by any <att>xref</att> must be in the <emph>same</emph> branch of an
+enclosing <el>semantics</el> element. This constraint
+guarantees that these correspondences do not create unintentional cycles.
+(Note that this restriction does <emph>not</emph> exclude the use of <att>id</att> attributes within the other branches of the enclosing
+<el>semantics</el> element. It does, however, exclude
+references to these other <att>id</att> attributes 
+originating in the same <el>semantics</el> element.)</p>
+
+<p>There is no restriction on which branch of the <el>semantics</el> element may contain the destination <att>id</att> attributes. It is up to the application to determine
+which branch to use.</p>
+
+<p>In general, there will not be a one-to-one correspondence between nodes
+in parallel branches. For example, a presentation tree may contain
+elements, such as parentheses, that have no correspondents in the content
+tree. It is therefore often useful to put the <att>id</att>
+attributes on the branch with the finest-grained node structure. Then all
+of the other branches will have <att>xref</att> attributes
+to some subset of the <att>id</att> attributes.</p>
+
+<p>In absence of other criteria, the first branch of the <el>semantics</el> element is a sensible choice to contain the
+<att>id</att> attributes. Applications that add or remove
+annotations will then not have to re-assign attributes to the <el>semantics</el> trees.</p>
+
+<p>In general, the use of <att>id</att> and <att>xref</att> attributes allows a full correspondence between
+sub-expressions to be given in text that is at most a constant factor
+larger than the original. The direction of the references should not be
+taken to imply that sub-expression selection is intended to be permitted
+only on one child of the <el>semantics</el> element. It is
+equally feasible to select a subtree in any branch and to recover the
+corresponding subtrees of the other branches.</p>
+</div3>
+
+<div3><head>Annotation Cross-References using XLink:
+<att>id</att> and <att>href</att></head>
+
+<p>It is possible to give cross-references between a MathML expression and 
+a non-MathML XML annotation using the XLink protocol <bibref ref="XLink"/>.
+As an example, the boolean expression of the previous section can
+be annotated with OpenMath, and cross-linked as follows:
+<eg role="mathml-extension"><![CDATA[
+<semantics>
+  <mrow id="E">
+    <mrow id="E.1">
+      <mo id="E.1.1">(</mo>
+      <mi id="E.1.2">a</mi>
+      <mo id="E.1.3">+</mo>
+      <mi id="E.1.4">b</mi>
+      <mo id="E.1.5">)</mo>
+    </mrow>
+    <mo id="E.2">&InvisibleTimes;</mo>
+    <mrow id="E.3">
+      <mo id="E.3.1">(</mo>
+      <mi id="E.3.2">c</mi>
+      <mo id="E.3.3">+</mo>
+      <mi id="E.3.4">d</mi>
+      <mo id="E.3.5">)</mo>
+    </mrow>
+  </mrow>
+
+  <annotation-xml encoding="MathML-Content">
+    <apply xref="E">
+      <and xref="E.2"/>
+      <apply xref="E.1">
+        <xor xref="E.1.3"/><ci xref="E.1.2">a</ci><ci xref="E.1.4">b</ci>
+      </apply>
+      <apply xref="E.3">
+        <xor xref="E.3.3"/><ci xref="E.3.2">c</ci><ci xref="E.3.4">d</ci>
+      </apply>
+    </apply>
+  </annotation-xml>
+
+  <annotation-xml encoding="OpenMath" 
+                  xmlns:om="http://www.openmath.org/OpenMath"
+                  xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <om:OMA xlink:href="#xpointer(id('E'))" xlink:type="simple">
+      <om:OMS name="and" cd="logic1" 
+              xlink:href="#xpointer(id('E.2'))" xlink:type="simple"/>
+
+      <om:OMA xlink:href="#xpointer(id('E.1'))" xlink:type="simple">
+        <om:OMS name="xor" cd="logic1" 
+                xlink:href="#xpointer(id('E.1.3'))" xlink:type="simple"/>
+        <om:OMV name="a" 
+                xlink:href="#xpointer(id('E.1.2'))" xlink:type="simple"/>
+        <om:OMV name="b" 
+                xlink:href="#xpointer(id('E.1.4'))" xlink:type="simple"/>
+      </om:OMA>
+
+      <om:OMA xlink:href="#xpointer(id('E.3'))" xlink:type="simple">
+        <om:OMS name="xor" cd="logic1" 
+                xlink:href="#xpointer(id('E.3.3'))" xlink:type="simple"/>
+        <om:OMV name="c" 
+                xlink:href="#xpointer(id('E.3.2'))" xlink:type="simple"/>
+        <om:OMV name="d" 
+                xlink:href="#xpointer(id('E.3.4'))" xlink:type="simple"/>
+      </om:OMA>
+    </om:OMA>
+  </annotation-xml>
+</semantics>
+]]></eg>
+Here
+<el namespace="openmath">OMA</el>, <el namespace="openmath">OMS</el> and 
+<el namespace="openmath">OMV</el> are elements defined in the OpenMath
+standard for representing
+application, symbol and variable, respectively. 
+The references from the OpenMath annotation are given by the
+<att>xlink:href</att> attributes which in this case
+use XPointer <bibref ref="XPointer"/> to refer to<phrase diff="del">an</phrase> 
+<att>id</att>s within the current document.</p>
+
+<p>Note that the application might or might not have a mechanism for
+extending DTDs.  It will be the case, therefore that some applications 
+will give well-formed, but not "valid", XML within 
+<el>annotation-xml</el> elements.  
+Consequently, some MathML applications using 
+<el>annotation-xml</el> will not be validated.
+More flexibility is offered by the use of XML Schemas.</p>
+
+</div3>
+</div2>
+
+<div2 id="mixing_tools"><head>Tools, Style Sheets and Macros for Combined Markup</head>
+
+<p>The interaction of presentation and content markup can be greatly
+enhanced through the use of various tools. While the set of tools and
+standards for working with XML applications is rapidly evolving at the
+present, we can already outline some specific techniques.</p>
+
+<p>In general, the interaction of content and presentation is handled via
+transformation rules on MathML trees. These transformation rules are
+sometimes called <quote>macros</quote>. In principle, these rules can be
+expressed using any one of a number of mechanisms, including DSSSL, Java
+programs operating on a DOM, etc. We anticipate, however, that the
+principal mechanism for these transformations in most applications shall be
+XSLT.</p>
+
+<p>In this section we discuss transformation rules for two specific purposes:
+for notational style sheets, and to simplify parallel markup.</p>
+
+<div3 id="mixing_notsheet"><head>Notational Style Sheets</head>
+
+<p>Authors who make use of content markup may be required to deploy their
+documents in locales with notational conventions different than the default
+content rendering. It is therefore expected that transformation tools will
+be used to determine notations for content elements in different
+settings. Certain elements, e.g. <el>lambda</el>, 
+<el>mean</el> and <el>transpose</el>, have
+widely varying common notations and will often require notational
+selection.  Some examples of notational variations are given below.
+
+<ulist>
+<item><p><graphic role="inline" source="image/f5001.gif" alt="\mathbf{V}"/>
+versus <graphic role="inline" source="image/f5002.gif" alt="\vec{V}"/>
+</p></item>
+<item><p>tan <var>x</var> versus tg <var>x</var>
+</p></item>
+<item><p><graphic role="inline" source="image/f5003.gif" alt="{n \choose m}"/>
+versus <graphic role="inline" source="image/f5004.gif" alt="{}_nC^m"/>
+versus <graphic role="inline" source="image/f5005.gif" alt="C^n_m"/>
+versus <graphic role="inline" source="image/f5006.gif" alt="C^m_n"/>
+</p></item>
+<item><p><graphic role="inline" source="image/f5007.gif"
+  alt="a_0 + \frac{ ~1 ~ |}{| ~a_1 ~} + \ldots + \frac{~1 ~ |}{| ~ a_k~}"/>
+versus <graphic role="inline" source="image/f5008.gif" alt="[a_0, a_1, \ldots, a_k]"/>
+</p></item>
+</ulist>
+Other elements, for example <el>plus</el> and <el>sin</el>, are less likely to require these features.</p>
+
+<p>Selection of notational style is sometimes necessary
+for correct understanding of documents by locale. For instance,
+the binomial coefficient
+<graphic role="inline" source="image/f5005.gif" alt="C^n_m"/>
+in French notation is equivalent to
+<graphic role="inline" source="image/f5006.gif" alt="C^m_n"/>
+in Russian notation.</p>
+
+<p>A natural way for a MathML application to bind a particular notation to
+the set of content tags is with an XSLT style sheet <bibref
+ref="XSLT"/>. The examples of this section shall assume this is the
+mechanism to express style choices. (Other choices are equally possible,
+for example an application program may provide menus offering a number of
+rendering choices for all content tags.)
+</p>
+
+<p>When writing XSLT style sheets for mathematical notation, some
+transformation rules can be purely local, while others will require
+multi-node context to determine the correct output notation. The following
+example gives a local transformation rule that could be included in a
+notational style sheet displaying open intervals as
+]<var>a</var>,<var>b</var>[ rather than as (<var>a</var>,<var>b</var>).
+<eg><![CDATA[
+<xsl:template match="m:interval">
+  <m:mrow>
+    <xsl:choose>
+      <xsl:when test="@closure='closed'">
+        <m:mfenced open="[" close="]" separators=",">
+          <xsl:apply-templates/>
+        </m:mfenced>
+      </xsl:when>
+      <xsl:when test="@closure='open'">
+        <m:mfenced open="]" close="[" separators=",">
+          <xsl:apply-templates/>
+        </m:mfenced>
+      </xsl:when>
+      <xsl:when test="@closure='open-closed'">
+        <m:mfenced open="]" close="]" separators=",">
+          <xsl:apply-templates/>
+        </m:mfenced>
+      </xsl:when>
+      <xsl:when test="@closure='closed-open'">
+        <m:mfenced open="[" close="[" separators=",">
+          <xsl:apply-templates/>
+        </m:mfenced>
+      </xsl:when>
+      <xsl:otherwise>
+        <m:mfenced open="[" close="]" separators=",">
+          <xsl:apply-templates/>
+        </m:mfenced>
+      </xsl:otherwise>
+    </xsl:choose>
+  </m:mrow>
+</xsl:template>
+]]></eg>
+Here <code>m</code> is established as the MathML namespace.</p>
+
+<p>An example of a rule requiring context information would be:
+<eg><![CDATA[
+<xsl:template match="m:apply[m:factorial]">
+  <m:mrow>
+    <xsl:choose>
+      <xsl:when test="not(*[2]=m:ci) and not(*[2]=m:cn)">
+        <m:mrow>
+          <m:mo>(</m:mo>
+          <xsl:apply-templates select="*[2]" />
+          <m:mo>)</m:mo>
+        </m:mrow>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="*[2]" />
+      </xsl:otherwise>
+    </xsl:choose>
+    <m:mo>!</m:mo>
+  </m:mrow>
+</xsl:template>
+]]></eg>
+Other examples of context-dependent transformations would be, e.g.
+for the <el>apply</el> of a <el>plus</el>
+to render <var>a</var>-<var>b</var>+<var>c</var>, rather than
+<var>a</var>+ -<var>b</var>+<var>c</var>,  or for  the
+<el>apply</el> of a <el>power</el>
+to render sin<sup>2</sup><var>x</var>, rather than
+sin <var>x</var><sup>2</sup>.</p>
+
+<p>Notational variation will occur both for built-in content elements
+as well as extensions. Notational style for extensions can be handled
+as described above, with rules matching the names of any extension
+tags, and with the content handling (in a content-faithful style sheet)
+proceeding as described in <specref ref="mixing_sheet"/>.</p>
+</div3>
+
+<div3><head>Content-Faithful Transformations</head>
+
+<p>There may be a temptation to view notational style sheets as a
+transformation from content markup to equivalent presentation markup.
+This viewpoint is explicitly discouraged, since information will be
+lost and content-oriented applications will not function properly.</p>
+
+<p>We define a <quote>content-faithful</quote> transformation to be a
+transformation that retains the original content in parallel markup
+(<specref ref="mixing_parallel"/>).</p>
+
+<p>Tools that support MathML should be <quote>content-faithful</quote>,
+and not gratuitously convert content elements to presentation elements in
+their processing. Notational style sheets should be content-faithful
+whenever they may be used in interactive applications.</p>
+
+<p>It is possible to write content-faithful style sheets in a number
+of ways. Top-level parallel markup can be achieved by incorporating the
+following rules in an XSLT style sheet:
+<eg><![CDATA[
+<xsl:template match="m:math">
+   <m:semantics>
+      <xsl:apply-templates/>
+
+      <m:annotation-xml m:encoding="MathML-Content">
+         <xsl:copy-of select="."/>
+      </m:annotation-xml>
+   </m:semantics>
+</xsl:template>
+]]></eg>
+The notation would be generated by additional rules for producing presentation
+from content, such as those in <specref ref="mixing_notsheet"/>.
+Fine-grained parallel markup can be achieved with additional rules
+treating <att>id</att> attributes.  A detailed example 
+is given in <bibref ref="RodWatt2000"/>. </p>
+
+</div3>
+
+<div3 id="mixing_sheet"><head>Style Sheets for Extensions</head>
+
+<p>The presentation tags of MathML form a closed vocabulary of notational
+structures, but are quite rich and can be used to express a rendering of
+most mathematical notations.  Complex notations can be composed from
+the basic elements provided for presentation markup.
+In this sense, the presentation ability of MathML is open-ended. 
+It is often useful, however, to give a
+name to new notational schemas if they are going to be used often.
+For example, we can shorten and clarify the ascending factorial example of 
+<specref ref="mixing_reasons"/>, with a rule which replaces
+<eg role="mathml-extension"><![CDATA[
+<mx:a-factorial>X</mx:a-factorial>
+]]></eg>
+with
+<eg role="mathml"><![CDATA[
+<semantics>
+   <apply> <factorial/>]]> &lt;<phrase diff="chg">ci</phrase>>X&lt;/<phrase diff="chg">ci</phrase>> <![CDATA[</apply>
+   <annotation-xml encoding="MathML-Presentation">
+      <msup>
+         <mn>1</mn>
+         <mover accent="true">
+            <mi>X</mi>
+            <mo>&OverBar;</mo>
+         </mover>
+      </msup>
+   </annotation-xml>
+</semantics>
+]]></eg>
+Then the example would be more clearly written as:
+<eg role="mathml-extension"><![CDATA[
+<apply>
+  <equivalent/>
+  <ci>n</ci>
+  <apply>
+     <divide/>
+     <mx:a-factorial><ci>n</ci></mx:a-factorial>
+     <mx:a-factorial>
+        <apply><minus/><ci>n</ci><cn>1</cn></apply>
+     </mx:a-factorial>
+   </apply>
+</apply>
+]]></eg></p>
+
+<p>Likewise, the content tags form a fixed vocabulary of concepts covering 
+the types of mathematics seen in most common applications.  It is not 
+reasonable to
+expect users to compose existing MathML content tags to construct new
+content concepts. (This approach is fraught with technical difficulties
+even for professional mathematicians.)  Instead, it is anticipated that
+applications whose mathematical content concepts extend beyond what is
+offered by MathML will use annotations and attributes within 
+<el>semantics</el> and <el>csymbol</el> elements,
+and that these annotations will use
+content description languages outside of MathML.</p>
+
+<p>Often the naming of a notation and the identification of a new semantic
+concept are related. This allows a single transformation rule to capture
+both a presentation and a content markup for an expression. This is one of
+the areas of MathML that benefits most strongly from the use of macro
+processing. 
+<eg role="mathml-extension"><![CDATA[
+<mx:rank/>
+]]></eg>
+and
+<eg role="mathml-extension"><![CDATA[
+<mx:tr>X</mx:tr>
+]]></eg>
+and respectively transform them to
+<eg role="mathml"><![CDATA[
+<semantics>
+   <ci><mo>rank</mo></ci>
+   <annotation-xml encoding="OpenMath">
+      <OMS name="rank" cd="linalg]]><phrase diff="chg">4</phrase><![CDATA[" xmlns="http://www.openmath.org/OpenMath"/>
+   </annotation-xml>
+</semantics>
+]]></eg>
+and
+<eg role="mathml"><![CDATA[
+<apply>
+ <transpose/>
+ <ci>X</ci>
+</apply>
+]]></eg>
+The lengthy sample encoding of
+rank(<var>u</var><sup>T</sup><var>v</var>)=1,
+from <specref ref="mixing_reasons"/> could then be condensed to
+<eg role="mathml-extension"><![CDATA[
+<apply>
+  <eq/>
+  <apply>
+    <mx:rank/>
+    <apply> <times/> <mx:tr>u</mx:tr> <ci>v</ci> </apply>
+   </apply>
+  <cn>1</cn>
+</apply>
+]]></eg>
+  From this example we see how the combination of presentation and content
+markup could become much simpler and effective to generate as standard
+style sheet libraries become available.
+</p>
+</div3>
+</div2>
+</div1>
