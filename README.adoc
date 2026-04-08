@@ -491,6 +491,23 @@ and is normalized to a context id internally.
 If you reset global contexts and need the built-in MML contexts restored
 explicitly, call `populate_context!` for the version(s) you want to restore.
 
+== Unsupported Features
+
+The following MathML test suite files are intentionally skipped (not failures) because
+they use features that are not part of the MathML namespace:
+
+[cols="1,3,1",options="header"]
+|===
+|Feature |Reason |Approx. Tests Skipped
+|HTML attributes (`style`, `class`, `id`, `dir`, `mode`) |These are HTML/XML attributes, not MathML attributes |Varies by test suite
+|HTML `<span>` elements |HTML elements are not part of MathML namespace |Varies by test suite
+|XML comments |XML comments inside MathML elements are not supported |Varies by test suite
+|===
+
+These tests are filtered out via `UNSUPPORTED_PATTERNS` in the test configuration
+and do not represent bugs. They are marked as "pending" in test output because
+RSpec's `skip` directive still records them as pending tests.
+
 == Development
 
 [source,bash]

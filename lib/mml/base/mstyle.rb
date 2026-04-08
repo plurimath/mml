@@ -7,8 +7,8 @@ module Mml
       # Use fully qualified names (e.g., Mml::Namespace).
       def self.included(klass)
         klass.class_eval do
-          attribute :mathcolor, :string
-          attribute :mathbackground, :string
+          include UniversalPresentationAttributes
+
           attribute :scriptsizemultiplier, :integer
           attribute :scriptminsize, :string
           attribute :infixlinebreakstyle, :string
@@ -29,7 +29,6 @@ module Mml
           attribute :crossout, :string
           attribute :denomalign, :string
           attribute :depth, :string
-          attribute :dir, :string
           attribute :edge, :string
           attribute :equalcolumns, :string
           attribute :equalrows, :string
@@ -97,8 +96,6 @@ module Mml
             element "mstyle"
             mixed_content
 
-            map_attribute "mathcolor", to: :mathcolor
-            map_attribute "mathbackground", to: :mathbackground
             map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier
             map_attribute "scriptminsize", to: :scriptminsize
             map_attribute "infixlinebreakstyle", to: :infixlinebreakstyle
@@ -119,7 +116,6 @@ module Mml
             map_attribute "crossout", to: :crossout
             map_attribute "denomalign", to: :denomalign
             map_attribute "depth", to: :depth
-            map_attribute "dir", to: :dir
             map_attribute "edge", to: :edge
             map_attribute "equalcolumns", to: :equalcolumns
             map_attribute "equalrows", to: :equalrows

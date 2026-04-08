@@ -1,0 +1,773 @@
+<inform-div1 id="changes" role="appendixj"><head>Changes</head>
+<!-- $Id: changes.xml,v 1.61 2003/10/07 10:33:33 davidc Exp $ -->
+
+<div2 diff="add" id="changes_mathml2.0-2.02e">
+<head>Changes between MathML 2.0 and MathML 2.0 Second Edition</head>
+
+<ulist>
+
+<item><p>Changes to frontmatter.</p>
+<ulist>
+<item><p>New text in <specref ref="abstract"/> and <specref ref="status"/>.</p></item>
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="intro"/>.</p>
+<ulist>
+
+<item><p>Additional markup for bibliographic references in 
+<specref ref="intro_role"/> and
+<specref ref="intro_goals"/>.</p></item>
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="fund_overview"/>.</p>
+<ulist>
+<item><p>Modify description of namespace declarations  in <specref ref="fund_document"/>.</p></item>
+<item><p>Modify description of entity usage in <specref ref="fund_pres"/>.</p></item>
+<item><p>Correct the MathML and default rendering of quatratic
+formula example in <specref ref="fund_cont"/>.</p></item>
+<item><p>Wording changes in  <specref ref="fund_globatt"/>.</p></item>
+</ulist>
+</item>
+
+
+<item><p>Changes to <specref ref="presm"/>.</p>
+<ulist>
+<item><p>Delete incorrect reference to default em units in
+<specref ref="presm_opspacing"/>.</p></item>
+<item><p>Delete references to Negative Space Characters in <specref
+ref="presm_mtext"/> and <specref ref="presm_mstyle"/>.</p></item>
+<item><p>Editorial changes to the wording in
+<specref ref="presm_ms"/>.</p></item>
+<item><p>Correct description of <att>lspace</att> value in
+<specref ref="presm_mpadded"/>.</p></item>
+<item><p>Add
+warning that attempts to render outside the bounding box of the
+MathML expression will give implemetation specific results in
+<specref ref="presm_mpadded"/>.</p></item>
+<item><p>Modify text to match example and refer to over brace rather
+than over bar in <specref ref="presm_mover"/>.</p></item>
+<item><p>Correct description of <att>displaystyle</att> in
+<specref ref="presm_mfrac"/> (may be set on <el>mtable</el>).</p></item>
+<item><p> Extend the description of <specref ref="presm_menclose"/>
+to clarify that the list of notations is open-ended, and extend
+the example list to include boxes and strikeouts of various forms.</p>
+<p>The example in this section omitted units in the <att>columnspacing</att> and <att>rowspacing</att> attributes.</p></item>
+<item><p>Correct the example MathML in <specref ref="presm_mtable"/>.</p></item>
+<item><p>Correct the description of <att>minlabelspacing</att>
+and include <el>mlabeledtr</el> in list of elements with inferred
+mrows in <specref ref="presm_malign"/>.</p></item>
+<item><p>Clarify <att>rowspan</att> and <att>columnspan</att> must be
+positive integers in <specref ref="presm_mtdatts"/>.</p></item>
+<item><p>Correct the description the <att>linebreak</att> attribute in
+ <specref ref="presm_mspace"/>.</p></item>
+
+<item><p>Editorial changes to the text in
+<specref ref="presm_summary"/>,
+<specref ref="presm_symbolchars"/>,
+<specref ref="presm_commatt"/>,
+<specref ref="presm_color"/>,
+<specref ref="presm_mglyph"/>,
+<specref ref="presm_msubsup"/>,
+<specref ref="presm_munderover"/>, and
+<specref ref="presm_mmultiscripts"/>.</p></item>
+
+<item><p>Clarification that the <att>fontfamily</att> attribute
+of <el>mglyph</el> is not deprecated
+in <specref ref="presm_deprecatt"/>.</p></item>
+<item><p>Editorial changes to the description of MathML conformance,
+and deletion of the non normative and unsupported menu action type
+in <specref ref="presm_maction"/>.</p></item>
+<item><p>Addition of a tail to the image for U+2910, and swapping the
+images for the lowercase phi variants, U+03D5 and U+03C6.</p></item>
+</ulist>
+
+</item>
+
+
+<item><p>Changes to <specref ref="contm"/>.</p>
+<ulist>
+<item><p>Add comment about use of <el>semantics</el> in
+ <specref ref="contm_cats"/>.</p></item>
+<item><p>Modify description of the <att>definitionURL</att> attribute in
+ <specref ref="contm_deffun"/>,
+ <specref ref="contm_container"/>
+  to be consistent with the DTD with regard to the <att>type</att> attribute.</p></item>
+<item><p>Modify description of the <att>type</att> attribute in
+ <specref ref="contm_cats"/>.</p></item>
+<item><p>Add clarifying comments on the attributes allowed on
+<el>declare</el> and give new extended example in
+ <specref ref="contm_declare"/>.</p></item>
+<item><p>Editorial correction to text in
+ <specref ref="contm_union"/> and <specref ref="contm_prsubset"/>.</p></item>
+<item><p>New text clarifying the use of <el>tendsto</el> in
+ <specref ref="contm_tendsto"/>.</p></item>
+<item><p>Clarifying the use of <att>definitionURL</att> and
+<att>encoding</att> attributes with <el>annotation</el> in
+ <specref ref="contm_annotation"/> and  <specref ref="contm_semantics"/>.</p></item>
+<item><p>New text highlighting the fact that <el>vector</el> may be
+rendered either horizontally or vertically in
+ <specref ref="contm_vector"/>.</p></item>
+
+
+<item><p>The descriptions of the "scientific, or e notation" (1.234e5) in
+<specref ref="contm_typeattrib"/>, <specref ref="contm_ci"/> and
+Appendices C and D became inconsistent in the final 
+draft of MathML2. The older names float and floating-point remained, and the
+description of type="e-notation" in Chapter 4 (but not Appendix C)
+described its use with the example 1.234 e 5
+ where e was used as a separator rather than the <el>sep</el> element 
+</p></item>
+<item><p>Correct the example MathML in <specref
+ref="contm_genatt"/>.</p></item>
+<item><p>Add note to <specref
+ref="contm_forall"/> observing that the mathematical expressions in the
+examples are false.</p></item>
+<item><p>Clarify that the order of child elements of <el>bvar</el>
+is not signifcant in <specref
+ref="contm_bvar"/>.</p></item>
+<item><p>Correct the example of OpenMath usage in
+in <specref ref="contm_annotation-xml"/>,
+<specref ref="contm_conditions"/>, and 
+<specref ref="contm_csymbol"/>.</p></item>
+
+<item><p>
+Clarification on the use of bound variables in
+in <specref ref="contm_constructor"/>,
+<specref ref="contm_opwithqual"/>,
+<specref ref="contm_interval"/>,
+<specref ref="contm_lambda"/>,
+<specref ref="contm_int"/>, and
+<specref ref="contm_diff"/>.</p></item>
+<item><p>Clarification of the examples of the deprecated <el>fn</el>
+element in <specref ref="contm_elem"/>,
+<specref ref="contm_apply"/>, and
+<specref ref="contm_fn"/>.</p></item>
+<item><p>Clarification that <el>piecewice</el> may be used with no
+<el>piece</el> children in <specref ref="contm_piecewise"/>.</p></item>
+<item><p>Use the MathML2 <el>pi</el> element in the example in <specref ref="contm_approx"/>.</p></item>
+<item><p>Modify example of the <attval>constant</attval> type in <specref ref="contm_cn"/>.</p></item>
+<item><p>Expand and clarify the use of qualifier elements such as
+<el>bvar</el> in <specref ref="contm_usequalifier"/>.</p></item>
+<item><p>Delete misleading references to <el>declare</el> in
+<el>bvar</el> in <specref ref="contm_funopqual"/> and <specref ref="contm_relation"/>.</p></item>
+<item><p>Clarify the description of the <el>condition</el> element in
+ <specref ref="contm_condition"/>, especially its relationship to <el>domainofapplication</el>.</p></item>
+<item><p>Make explict that <el>domainofapplication</el> is a qualifier
+element in <specref ref="contm_domainofapplication"/></p></item>
+<item><p>Clarify the use of the <el>set</el> and <el>condition</el>
+elements to specify a set as a range of a function over a given domain
+in <specref ref="contm_set"/> (and similarly in <specref ref="contm_list"/>).</p></item>
+<item><p>Clarify the description of the use of
+<el>domainofapplication</el>  with <el>sum</el>
+in <specref ref="contm_sum"/> and <specref ref="contm_product"/>.</p></item>
+<item><p>Show the full equation, not just the left hand side,
+in the example rendering in <specref
+ref="contm_scalarproduct"/>.</p></item>
+<item><p>Note <el>fn</el> is deprecated
+in <specref ref="contm_usequalifier"/>.</p></item>
+<item><p>Editorial changes in 
+<specref ref="contm_usage"/>.</p></item>
+<item><p>Deletion of the stated restriction that the element may only
+ appear as a child of <el>apply</el> or <el>reln</el>
+ in <specref ref="contm_maxmin"/>.</p></item>
+<item><p>Clarify that qualifiers may be used with all n-ary operators
+ in <specref ref="contm_naryopwithqual"/>.</p></item>
+<item><p>Clarification of the use of qualifier elements with
+<el>csymbol</el> and <el>ci</el>
+ in <specref ref="contm_csymbolwithqual"/>.</p></item>
+<item><p>Clarification of the use of qualifier elements in
+ in 
+<specref ref="contm_compose"/>,
+<specref ref="contm_plus"/>,
+<specref ref="contm_times"/>,
+<specref ref="contm_cartesianproduct"/>,
+<specref ref="contm_gcd"/>,
+<specref ref="contm_and"/>,
+<specref ref="contm_or"/>,
+<specref ref="contm_xor"/>,
+<specref ref="contm_exists"/>,
+<specref ref="contm_eq"/>,
+<specref ref="contm_gt"/>,
+<specref ref="contm_lt"/>,
+<specref ref="contm_geq"/>,
+<specref ref="contm_leq"/>,
+<specref ref="contm_equivalent"/>,
+<specref ref="contm_lcm"/>.</p></item>
+<item><p>Additional example, showing the use of <el>bvar</el>
+ in <specref ref="contm_subset"/>.</p></item>
+
+<item><p>Alternative renderings using nabla added in
+<specref ref="contm_divergence"/>,
+<specref ref="contm_grad"/> and
+<specref ref="contm_curl"/>.</p></item>
+<item><p>Editorial changes to clarify the allowed arguments in
+<specref ref="contm_intersect"/>.</p></item>
+<item><p>Correct the example renderings in <specref
+ref="contm_notsubset"/>
+and <specref ref="contm_notprsubset"/>.</p></item>
+<item><p>Editorial additions clarifying the intended
+ use of <el>encoding</el> in
+ <specref ref="contm_attrib"/>.</p></item>
+<item><p>Correct the example rendering in <specref
+ref="contm_outerproduct"/>.</p></item>
+</ulist>
+</item>
+
+
+<item><p>Changes to <specref ref="mixing"/>.</p>
+<ulist>
+<item><p>Editorial corrections to text in <specref
+ref="mixing_markup"/>.</p></item>
+<item><p>Correct the complexity of parallel markup given in <specref
+ref="mixing_parallel"/> to O(n log n).</p></item>
+<item><p>Modify the example rendering image to include both sides of
+the equivalence expression in <specref
+ref="mixing_reasons"/>.</p></item>
+<item><p>Add bibiographic reference to the OpenMath Standard in <specref
+ref="mixing_reasons"/>.</p></item>
+<item><p>Correct the example MathML in <specref
+ref="mixing_sheet"/>.</p></item>
+</ulist>
+</item>
+
+
+<item><p>Changes to <specref ref="chars"/>.</p>
+<ulist>
+<item><p>Editorial changes to  <specref ref="chars"/>, especially 
+<specref ref="chars_intro"/>.</p></item>
+<item><p>Delete references to (deprecated) negative and other spacing
+characters in the table in <specref ref="chars_nonmark"/>.</p></item>
+<item><p>Delete reference to possible Unicode characters for Boolean
+values as these were not in the final set of characters added at
+Unicode 3.2, <specref ref="chars_special"/>.</p></item>
+<item><p>Some changes in <specref ref="chars_math-negated-tables"/> to
+document the current usage of combining characters which have been
+brought into line with the final versions of Unicode 3.2.</p></item>
+<item><p>Changes to
+<specref ref="chars_mathmlchars"/>,
+<specref ref="chars_unicodechars"/>,
+<specref ref="chars_BMP-SMP"/>, 
+<specref ref="chars_byxxx"/>,
+<specref ref="chars_16x16-tables"/>,
+<specref ref="chars_math-variant-tables"/>,
+<specref ref="chars_letter-like-tables"/> and
+<specref ref="chars_char-status"/>,
+to reflect Unicode 3.1 and 3.2 which were both released after the first edition of MathML
+2.0.</p></item>
+<item><p>Editorial changes to the description of <el>mglyph</el> in 
+<specref ref="chars_mglyph"/>.</p></item>
+</ulist>
+</item>
+
+
+<item><p>Changes to <specref ref="interf"/>.</p>
+<ulist>
+<item><p>Deleted reference to non-conforming namespace behavior in some
+existing systems in <specref ref="interf_namespace"/>.</p></item>
+<item><p>Editorial changes to  <specref ref="interf_toplevel"/>.</p></item>
+<item><p>Change reference to XLink which is now a W3C Recommendation, <specref ref="interf_link"/>.</p></item>
+<item><p>New section, <specref ref="interf_graphics"/> giving an
+example integrating with SVG.</p></item>
+<item><p>Additional markup for bibliographic references in 
+<specref ref="interf_unspecified"/>.</p></item>
+<item><p>Editorial changes to description of MathML processors in 
+<specref ref="interf_genproc"/>.</p></item>
+<item><p>New section describing (existing) extension mechanisms in
+MathML 2, <specref ref="interf_extension"/>.</p></item>
+<item><p>Editorial changes to use consistent terminology to describe conformance
+criteria for MathML processors in
+<specref ref="interf_testsuite"/>, <specref ref="interf_deprec"/>,
+ <specref ref="interf_error"/>,
+and <specref ref="interf_future"/>.</p></item>
+</ulist>
+</item>
+
+
+
+<item><p>Changes to <specref ref="parsing"/>.</p>
+<ulist>
+
+<item><p>New section, <specref
+ref="parsing_wellformed"/> describing use without a DTD.</p>
+</item>
+
+<item><p>The location of the MathML DTDs  described in <specref
+ref="parsing_doctype"/> and  <specref
+ref="parsing_module"/> are now in the Math Working group area rather
+than distributed with this Recommendation.</p>
+</item>
+
+<item><p>New sections descriping parameterisation possibilities for
+the DTD: <specref ref="parsing_dtd_prefix"/>
+and <specref ref="parsing_dtd_strict"/>.</p>
+</item>
+
+<item><p>In <specref ref="parsing_sgml"/>, the link to the W3C Note on
+SGML and XML has been corrected and changed to a bibliography
+reference.</p></item>
+
+<item><p>The MathML DTD as shown in <specref ref="parsing_dtd"/>
+Incorporates several corrections as listed in the MathML 2.0
+Errata document, or listed in the change log at the end of the DTD.</p></item>
+<item><p>New section, <specref ref="parsing_usingxsd"/> describing the
+use of the W3C XML Schema for MathML.</p></item>
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="cmvg"/>.</p>
+<ulist>
+<item><p>Many corrections, and new display format for the productions
+given in the grammar for Content Markup in <specref ref="cmvg"/>.</p></item>
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="cedef"/>.</p>
+<ulist>
+<item><p>Many corrections to the MathML Examples in
+<specref ref="cedef_cn"/>,
+<specref ref="cedef_ci"/>,
+<specref ref="cedef_interval"/>,
+<specref ref="cedef_factorial"/>,
+<specref ref="cedef_rem"/>,
+<specref ref="cedef_root"/>,
+<specref ref="cedef_gcd"/>,
+<specref ref="cedef_divide"/>,
+<specref ref="cedef_plus"/>,
+<specref ref="cedef_equivalent"/>,
+<specref ref="cedef_partialdiff"/>,
+<specref ref="cedef_divergence"/>,
+<specref ref="cedef_grad"/>,
+<specref ref="cedef_limit"/>,
+<specref ref="cedef_moment"/>,
+<specref ref="cedef_selector"/>,
+<specref ref="cedef_rationals"/>,
+<specref ref="cedef_exponentiale"/>,
+<specref ref="cedef_imaginaryi"/>,
+<specref ref="cedef_reln"/>,
+<specref ref="cedef_condition"/>,
+<specref ref="cedef_lambda"/>,
+<specref ref="cedef_compose"/>,
+<specref ref="cedef_codomain"/>,
+<specref ref="cedef_image"/>,
+<specref ref="cedef_domainofapplication"/>,
+<specref ref="cedef_piecewise"/>,
+<specref ref="cedef_piece"/>,
+<specref ref="cedef_quotient"/>,
+<specref ref="cedef_min"/>,
+<specref ref="cedef_forall"/>,
+<specref ref="cedef_int"/>,
+<specref ref="cedef_max"/>,
+<specref ref="cedef_minus"/>,
+<specref ref="cedef_times"/>,
+<specref ref="cedef_eq"/>,
+<specref ref="cedef_lowlimit"/>,
+<specref ref="cedef_abs"/>,
+<specref ref="cedef_lcm"/>,
+<specref ref="cedef_gt"/>,
+<specref ref="cedef_lt"/>,
+<specref ref="cedef_geq"/>,
+<specref ref="cedef_leq"/>,
+<specref ref="cedef_lowlimit"/>,
+<specref ref="cedef_uplimit"/>,
+<specref ref="cedef_bvar"/>,
+<specref ref="cedef_degree"/>,
+<specref ref="cedef_curl"/>,
+<specref ref="cedef_set"/>,
+<specref ref="cedef_list"/>,
+<specref ref="cedef_union"/>,
+<specref ref="cedef_intersect"/>,
+<specref ref="cedef_subset"/>,
+<specref ref="cedef_prsubset"/>,
+<specref ref="cedef_sum"/>,
+<specref ref="cedef_product"/>,
+<specref ref="cedef_exp"/>,
+<specref ref="cedef_ln"/>,
+<specref ref="cedef_log"/>,
+<specref ref="cedef_sin"/>,
+<specref ref="cedef_cos"/>,
+<specref ref="cedef_tan"/>,
+<specref ref="cedef_sec"/>,
+<specref ref="cedef_csc"/>,
+<specref ref="cedef_cot"/>,
+<specref ref="cedef_sinh"/>,
+<specref ref="cedef_cosh"/>,
+<specref ref="cedef_tanh"/>,
+<specref ref="cedef_sech"/>,
+<specref ref="cedef_csch"/>,
+<specref ref="cedef_coth"/>,
+<specref ref="cedef_arcsin"/>,
+<specref ref="cedef_arccos"/>,
+<specref ref="cedef_arctan"/>,
+<specref ref="cedef_arccosh"/>,
+<specref ref="cedef_arccot"/>,
+<specref ref="cedef_arccoth"/>,
+<specref ref="cedef_arccsc"/>,
+<specref ref="cedef_arccsch"/>,
+<specref ref="cedef_arcsec"/>,
+<specref ref="cedef_arcsech"/>,
+<specref ref="cedef_arcsinh"/>,
+<specref ref="cedef_arctanh"/>,
+<specref ref="cedef_momentabout"/>,
+<specref ref="cedef_vector"/>,
+<specref ref="cedef_matrix"/>,
+<specref ref="cedef_transpose"/>,
+<specref ref="cedef_reals"/>,
+<specref ref="cedef_power"/>,
+<specref ref="cedef_exists"/>,
+<specref ref="cedef_floor"/>,
+<specref ref="cedef_ceiling"/>,
+<specref ref="cedef_approx"/>,
+<specref ref="cedef_true"/>,
+<specref ref="cedef_false"/>,
+<specref ref="cedef_pi"/>,
+<specref ref="cedef_eulergamma"/>,
+<specref ref="cedef_otherwise"/>.
+</p></item>
+<item><p>Clarify the use of <att>definitionURL</att>
+in <specref ref="cedef_about"/>.</p></item>
+
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="mathml-dom"/>.</p>
+<ulist>
+<item><p>Corrections to the following interfaces:
+<intref ref="dom_PresentationToken">MathMLPresentationToken</intref>,
+<intref ref="dom_ContentToken">MathMLContentToken</intref>,
+<intref ref="dom_SpaceElement">MathMLSpaceElement</intref>,
+<intref ref="dom_OperatorElement">MathMLOperatorElement</intref>,
+<intref ref="dom_StyleElement">MathMLStyleElement</intref>,
+<intref ref="dom_FencedElement">MathMLFencedElement</intref>,
+<intref ref="dom_FractionElement">MathMLFractionElement</intref>,
+<intref ref="dom_ContentElement">MathMLContentElement</intref>,
+<intref ref="dom_IntervalElement">MathMLIntervalElement</intref>,
+<intref ref="dom_ApplyElement">MathMLApplyElement</intref>,
+<intref ref="dom_EncloseElement">MathMLEncloseElement</intref>,
+<intref ref="dom_ActionElement">MathMLActionElement</intref>,
+<intref ref="dom_TableRowElement">MathMLTableRowElement</intref>,
+<intref ref="dom_CnElement">MathMLCnElement</intref>,
+<intref ref="dom_CiElement">MathMLCiElement</intref>,
+<intref ref="dom_TendsToElement">MathMLTendsToElement</intref>.</p></item>
+<item><p>Modification of the description of 
+<el>tendsto</el> in <specref ref="dom_elementTable"/>.</p>
+</item>
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="oper-dict"/>.</p>
+<ulist>
+<item><p>Blank lines in <specref ref="oper-dict_entries"/> used in the inferred
+mrow grouping algorithm were omitted. 
+They have been restored based on the groupings in MathML 1.01.
+</p></item>
+<item><p>Some entity names in  <specref ref="oper-dict_entries"/> have
+been corrected and/or deleted to match the names in the MathML DTD.
+</p></item>
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="contributors"/>.</p>
+<ulist>
+<item><p>Document changes in Working Group membership in <specref ref="contrib"/>.</p></item>
+<item><p>Editorial changes in <specref ref="contrib_ack"/>.</p></item>
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="changes"/>.</p>
+<ulist>
+<item><p>New section <specref ref="changes_mathml2.0-2.02e"/> 
+describing changes in the Second Edition.</p></item>
+<item><p>Minor edits to the description of the earlier changes
+ in <specref ref="changes_mathml1.01-2.0"/>.</p></item>
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="references"/>.</p>
+<ulist>
+<item><p>Added and updated many entries:
+<bibref ref="Behaviors"/>,
+<bibref ref="CSS1"/>,
+<bibref ref="CSS2"/>,
+<bibref ref="DOM"/>,
+<bibref ref="HTML4"/>,
+<bibref ref="MathML1"/>,
+<bibref ref="MathML2"/>,
+<bibref ref="Modularization"/>,
+<bibref ref="Namespaces"/>,
+<bibref ref="RFC2045"/>,
+<bibref ref="RFC2046"/>,
+<bibref ref="sgml-xml"/>,
+<bibref ref="SVG1.1"/>,
+<bibref ref="XHTML"/>,
+<bibref ref="XHTML-MathML-SVG"/>,
+<bibref ref="XLink"/>,
+<bibref ref="XML"/>,
+<bibref ref="XMLSchemas"/>,
+<bibref ref="XPath"/>,
+<bibref ref="XPointer"/>,
+<bibref ref="XSLT"/>,
+<bibref ref="UAX15"/>.
+</p></item>
+</ulist>
+</item>
+
+<item><p>Changes to <specref ref="index"/>.</p>
+<ulist>
+<item><p>New Appendix <specref ref="index"/> incorporating 
+<specref ref="index_elem"/> and <specref ref="index_att"/></p></item>
+</ulist>
+</item>
+
+
+</ulist>
+</div2>
+
+<div2 id="changes_mathml1.01-2.0">
+<head>Changes between MathML 1.01 and MathML 2.0</head>
+
+
+<ulist>
+<item><p>changes to <specref ref="intro"/> 
+<ulist>
+<item><p>rewritten to reflect developments since publication of
+the MathML 1.0 Recommendation <bibref diff="add" ref="MathML1"/>, for example XML, XSL, CSS and schemas</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="fund"/>
+<ulist>
+<item><p>rewritten to reflect developments since publication of
+the MathML 1.0 Recommendation <bibref diff="add" ref="MathML1"/>, for example XML, XSL, CSS and schemas</p></item>
+<item><p>examples were rewritten to reflect good MathML 2.0 practice</p></item>
+<item><p>descriptions of attribute values were updated to reflect
+MathML 2.0</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="presm"/>
+<ulist>
+
+<item><p>introduced a new section on bidirectional layout of
+mathematics</p></item>  
+
+<item><p>introduced new mathematics style attributes
+<att>mathvariant</att>,
+<att>mathsize</att>,
+<att>mathweight</att>, and
+<att>mathcolor</att> on token elements, and deprecated the
+use of
+<att>fontfamily</att>,
+<att>fontsize</att>,
+<att>fontweight</att>,
+<att>fontstyle</att> and
+<att>color</att>.
+</p></item> 
+
+
+<item><p>introduced new elements <kw>mglyph</kw>, <kw>menclose</kw>
+and <kw>mlabeledtr</kw> and updated related text accordingly</p></item> 
+
+<item><p>added attributes <kw>beveled</kw>, <kw>numalign</kw> and
+<kw>denomalign</kw> to <kw>mfrac</kw></p></item>
+
+<item><p>added a linebreaking attribute to <kw>mspace</kw></p></item>
+
+<item><p>required <kw>mtr</kw> and <kw>mtd</kw> elements to be
+explicit instead of allowing them to be inferred. </p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="contm"/>
+<ulist>
+<item><p>deprecated the use of <kw>reln</kw> and <kw>fn</kw> and
+changed the use of <kw>apply</kw> accordingly</p></item>
+
+<item><p>introduced <kw>csymbol</kw> and added a discussion about the
+relation to the deprecated <kw>fn</kw> element</p></item>
+
+<item><p>introduced new content elements
+<kw>domain</kw>,
+<kw>codomain</kw>,
+<kw>image</kw>,
+<kw>domainofapplication</kw>,
+<kw>arg</kw>,
+<kw>real</kw>,
+<kw>imaginary</kw>,
+<kw>lcm</kw>,
+<kw>floor</kw>,
+<kw>ceiling</kw>,
+<kw>equivalent</kw>,
+<kw>approx</kw>,
+<kw>divergence</kw>,
+<kw>grad</kw>,
+<kw>curl</kw>,
+<kw>laplacian</kw>,
+<kw>card</kw>,
+<kw>cartesianproduct</kw>,
+<kw>momentabout</kw>,
+<kw>vectorproduct</kw>,
+<kw>scalarproduct</kw>,
+<kw>outerproduct</kw>,
+<kw>integers</kw>,
+<kw>reals</kw>,
+<kw>rationals</kw>,
+<kw>naturalnumbers</kw>,
+<kw>complexes</kw>,
+<kw>primes</kw>,
+<kw>exponentiale</kw>,
+<kw>imaginaryi</kw>,
+<kw>notanumber</kw>,
+<kw>true</kw>,
+<kw>false</kw>,
+<kw>emptyset</kw>,
+<kw>pi</kw>,
+<kw>eulergamma</kw>,
+<kw>infinity</kw>,
+<kw>piecewise</kw>,
+<kw>piece</kw> and
+<kw>otherwise</kw>
+</p></item>
+
+<item><p>corrected examples and fixed typos</p></item>
+
+<item><p>expanded the attribute <kw>definitionURL</kw> to allow a URL
+or a URI as a value</p></item> 
+
+<item><p>clarified the use of presentation markup inside
+<kw>cn</kw></p></item> 
+
+<item><p>made use of <kw>encoding</kw> attribute more
+uniform</p></item> 
+
+<item><p>changed description of the use of <kw>bvar</kw> in
+combination with <kw>min</kw> and <kw>max</kw></p></item>
+
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="mixing"/>
+<ulist>
+<item><p>added description of content-faithful transformation</p></item>
+<item><p>updated examples to reflect MathML 2.0</p></item>
+<item><p>define list of content that can appear in presentation</p></item>
+<item><p>add attribute <kw>xref</kw> for cross-referencing purposes</p></item>
+<item><p>added examples using XLink and namespaces</p></item>
+<item><p>make use of <kw>encoding</kw> attribute more uniform</p></item>
+<item><p>miscellaneous typographical corrections</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="chars"/>
+<ulist>
+<item><p>added a new section describing the methods of using Unicode
+data within MathML</p></item>
+
+<item><p>added a new section describing the correspondence between
+Math Alphabet characters and the <att>mathvariant</att>
+attribute</p></item> 
+
+<item><p>completely revised and reformatted the MathML character
+tables to reflect changes in Unicode since MathML 1.01</p></item> 
+
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="interf"/>
+<ulist>
+<item><p>reworked the text in acknowledgement of the fact that the top-level and 
+interface elements for MathML are now in practice the same</p></item>
+
+<item><p>rewrote the text about linking to reflect changes in XLink
+since MathML 1.01</p></item>
+<item><p>revised material about interactions with embedded renderers to 
+reflect the current state of DOM implementation</p></item>
+<item><p>added a definition of deprecated features in MathML 2</p></item>
+<item><p>updated the text to reflect the use of namespaces and the
+introduction of XHTML.
+2.0</p></item> 
+<item><p>added a new section on the appropriate use of CSS and the
+new mathematics style attributes in rendering environments with
+support CSS</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="dom-intro"/>
+<ulist>
+<item><p>this is a completely new chapter</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="parsing"/>
+<ulist>
+<item><p>renamed attribute <kw>occurence</kw> to <kw>occurrence</kw></p></item>
+<item><p>added global attribute <kw>xref</kw></p></item>
+<item><p>add links to tables for each entity set</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="cmvg"/>
+<ulist>
+<item><p>Updated to reflect MathML 2.0.</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="cedef"/>
+<ulist>
+<item><p>completely rewritten to reflect changes in MathML 2.0</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="oper-dict"/>
+<ulist>
+<item><p>entries in operator dictionary are parametrized</p></item>
+<item><p>operator dictionary has become a non-normative part of the specification</p></item>
+<item><p>new entries were added to operator dictionary</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="mathml-dom"/>
+<ulist>
+<item><p>this is a completely new appendix, containing the IDL definitions 
+</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="glossary"/>
+<ulist>
+<item><p>added entries for XSL, XSLT and XSL FO</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="contributors"/> 
+<ulist>
+<item><p>all members of first and second Math Working Group are listed</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="changes"/>
+<ulist>
+<item><p>completely new appendix, based on the logs obtained from CVS</p></item>
+</ulist>
+</p></item>
+
+<item><p>changes to <specref ref="references"/>
+<ulist>
+<item><p>added and updated many entries</p></item>
+</ulist>
+</p></item>
+
+<item><p>general changes
+<ulist>
+<item><p>text of specification now in XML form, with HTML and XHTML rendering by
+means of XSLT, and PDF rendering by means of XSLT and &TeX;</p></item>
+<item><p>fixed errors in spelling and notation</p></item>
+<item><p>normative examples of formulas are images, with a La&TeX; equivalent</p></item>
+<item><p>non-normative examples of formulas are HTML constructions wherever possible</p></item>
+<item><p>improved cross-referencing</p></item>
+</ulist>
+</p></item>
+</ulist>
+</div2>
+</inform-div1>

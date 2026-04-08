@@ -17,6 +17,5 @@ module Mml
         map_attribute "hreflang", to: :hreflang
       end
     end
-    Configuration.register_model(A, id: :a)
   end
 end

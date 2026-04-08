@@ -7,14 +7,16 @@ module Mml
       # Use fully qualified names (e.g., Mml::Namespace).
       def self.included(klass)
         klass.class_eval do
-          attribute :annotation, :mi, collection: true
+          attribute :definition_url, :string
+          attribute :semantics_encoding, :string
 
           xml do
             namespace Mml::Namespace
             element "semantics"
             mixed_content
 
-            map_element :annotation, to: :annotation
+            map_attribute "definitionURL", to: :definition_url
+            map_attribute "encoding", to: :semantics_encoding
           end
         end
       end

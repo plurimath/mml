@@ -31,7 +31,7 @@ module Mml
       Mml::ContextOptions.normalize_context_option(
         context: context,
         register: register,
-        default_context: self::Configuration.context_id,
+        default_context: self::Configuration.default_context_id,
         warning_source: "#{name}.parse",
       )
     end

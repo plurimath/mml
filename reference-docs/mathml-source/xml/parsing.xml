@@ -1,0 +1,2565 @@
+<div1 id="parsing" role="appendixa"><head>Parsing MathML</head>
+<!-- $Id: parsing.xml,v 1.70 2003/09/15 13:47:27 davidc Exp $ -->
+
+
+<div2 diff="add" id="parsing_wellformed"><head>Use of MathML as Well-Formed
+XML</head>
+
+<p>A MathML document must be a well-formed XML documents using elements in
+the MathML namespace as defined by this specification, however it is
+not required that the document refer to any specific Document Type
+Definition (DTD) or schema that specifies MathML. It is sometimes
+advantagous <emph>not</emph> to specify such a language definition as
+these files are large, often much larger than the MathML expression
+and unless they have been previously cached by the MathML application,
+the time taken to fetch the DTD or schema may have an appreciable
+effect on the processing of the MathML document.</p>
+
+<p>Note also that if no DTD is specified with a DOCTYPE declaration,
+that entity references (for example to refer to MathML characters by
+name) may not be used. The document should be encoded in an encoding
+(for example UTF-8) in which all needed characters may be encoded as
+character data, or characters may be referenced using numeric
+character references, for example &amp;#x222B; rather than &amp;int;</p>
+
+<p>If a MathML fragment is parsed without a DTD, in other words as a
+well-formed XML fragment, it is the responsibility of the processing
+application to treat the white space characters occurring
+outside of token elements as not significant.</p>
+
+<p>However, in many circumstances, especially while producing or
+editing MathML, it is useful to use a language definition, to
+constrain the editing process or to check the correctness of generated
+files. The following section, <specref ref="parsing_usingdtdt"/>,
+discusses the MathML DTD, which forms a normative part of the
+specification. Following that, <specref ref="parsing_usingxsd"/>,
+discusses an alternative language definition using the W3C XML schema
+language, <bibref ref="XMLSchemas"/>. One should note that the
+schema definition of the language is currently stricter than the DTD
+version. That is, a schema validating processor will
+declare invalid documents that are declared valid by a (DTD)
+validating XML parser. This is partly due to the fact that the XML schema
+language may express additional constraints not expressable in the
+DTD, and partly due to the fact that for 
+reasons of compatibility with earlier releases, the DTD is
+intentionally forgiving in some places and does not enforce
+constraints that are specified in the text of this specification.</p>
+</div2>
+
+<div2 id="parsing_usingdtdt">
+<head>Using the MathML DTD</head>
+
+<div3 id="parsing_doctype"><head>DOCTYPE declaration for MathML</head>
+<p>MathML documents should be validated using the XML DTD for
+MathML,
+<loc diff="chg"
+href="http://www.w3.org/Math/DTD/mathml2/mathml2.dtd">http://www.w3.org/Math/DTD/mathml2/mathml2.dtd</loc>,
+which is also shown below in 
+<specref ref="parsing_dtd"/>.</p> 
+
+<p>Documents using this DTD should contain a doctype declaration
+of the form:
+<eg diff="chg"><![CDATA[
+<!DOCTYPE math 
+    PUBLIC "-//W3C//DTD MathML 2.0//EN"
+           "http://www.w3.org/Math/DTD/mathml2/mathml2.dtd"
+>
+]]></eg>
+The URI may be changed to that of a local copy
+of the DTD if required.</p>
+</div3>
+
+<div3 id="parsing_dtd_param">
+<head>DTD Parameters</head>
+
+<p>The MathML DTD has several parameter entities that may be used to
+customise the behaviour of the XML parser.  In the examples below
+these parameter entites are shown being used in the <emph>internal
+subset</emph> of the DTD, i.e. within <code>[]</code> inside the
+<code>&lt;!DOCTYPE</code> declaration. If the MathML DTD is being used
+as a module in a larger document type, then these parameters entities
+may be set in the combined DTD and need not be explictly set in
+individual document instances. For example the combined XHTML + MathML
+DTD described below in <specref ref="parsing_module"/> sets each of
+these parameters to appropriate defaults.</p>
+
+<div4 diff="chg" id="parsing_dtd_prefix">
+<head>Namespace Prefix</head>
+<p>It is sometimes necessary, or convenient, to
+use the mechanisms described in <bibref ref="Modularization"/>
+ which provide a namespace prefix on
+MathML element names. The DTD below is designed to allow this usage.
+If the parameter entity <code>MATHML.prefixed</code> is declared to be 
+INCLUDE, using a declaration such as
+<eg><![CDATA[
+<!ENTITY % MATHML.prefixed "INCLUDE" >
+]]></eg>
+either in the internal subset of the DOCTYPE declaration, or in the
+DTD file that is including the MathML DTD, then all MathML elements
+should be used with a prefix, for example <el role="starttag">m:mrow</el>,
+<el role="starttag">m:apply</el>, etc. The prefix defaults to <code>m</code>
+but another prefix  may be declared by
+declaring in addition the parameter entity <code>MathML.prefix</code>.
+For example,
+<eg><![CDATA[
+<!ENTITY % MATHML.prefix   "mml" >
+]]></eg>
+would set the prefix for the MathML namespace to <code>mml</code>.</p>
+
+<p>So a complete declaration for a document using this prefix could be:
+<eg role="mathml-fragment"><![CDATA[
+<!DOCTYPE mml:math 
+    PUBLIC "-//W3C//DTD MathML 2.0//EN"
+           "http://www.w3.org/Math/DTD/mathml2/mathml2.dtd" [
+    <!ENTITY % MATHML.prefixed "INCLUDE">
+    <!ENTITY % MATHML.prefix "mml">
+]>
+<mml:math>
+...
+]]></eg>
+This use of parameter entities to control namespace prefixes
+follows the conventions specified in <bibref ref="Modularization"/>.</p>
+
+<p>In addition to the prefix for the MathML namespace, the DTD
+allows similar customization of other prefixes that may be used
+in attributes. The Xlink  and W3C XML schema instance namespaces 
+may be used with this DTD, with default prefixes <code>xlink</code>
+and <code>xsi</code> respectively. The entities <code>XLINK.prefix</code> and
+<code>Schema.prefix</code> may be set in the same way as
+<code>MATHML.prefix</code> above to use different prefixes. As these
+namespaces are used for attribute names, they must be used with
+explict prefixes, so there is no analogue of the
+<code>MATHML.prefixed</code> parameter in these cases.
+The following example uses the <att>s:schemaLocation</att> attribute (which is
+described below in <specref ref="parsing_schemalocation"/>)
+with a non standard prefix, and uses a parameter entity in the internal
+subset of the DTD so that the file may be DTD valid as well as
+schema valid.</p>
+<eg role="mathml-fragment"><![CDATA[
+<!DOCTYPE math 
+    PUBLIC "-//W3C//DTD MathML 2.0//EN"
+           "http://www.w3.org/Math/DTD/mathml2/mathml2.dtd" [
+    <!ENTITY % Schema.prefix "s">
+]>
+<math xmlns="http://www.w3.org/1998/Math/MathML"
+      xmlns:s="http://www.w3.org/2001/XMLSchema-instance"
+      s:schemaLocation="http://www.w3.org/1998/Math/MathML 
+                        http://www.w3.org/Math/XMLSchema/mathml2/mathml2.xsd">
+
+...
+]]></eg>
+<p>Note that while the <bibref ref="Namespaces"/> Recommendation provides
+mechanisms to change the prefix at arbitrary points in the document,
+this flexibility is <emph>not provided</emph> in this DTD (and is probably not
+possible to specify in any DTD).</p>
+</div4>
+
+
+<div4 diff="add" id="parsing_dtd_strict">
+<head>Additional DTD Checking</head>
+<p>For reasons of backward compatibility, there are several
+constraints specified in this specification that are <emph>not</emph>
+enforced by the DTD by default. There are many constraints in the
+specification that may not be enforced by a DTD, however there
+are some additional constraints that could be checked.
+The parameter entity <code>MathMLStrict</code>
+ may be set to <code>INCLUDE</code> to activate
+these stricter checks.</p>
+<p>The syntax to set the parameter is as the same as for the
+previous examples:
+<eg><![CDATA[
+<!DOCTYPE math 
+    PUBLIC "-//W3C//DTD MathML 2.0//EN"
+           "http://www.w3.org/Math/DTD/mathml2/mathml2.dtd" [
+    <!ENTITY % MathMLstrict "INCLUDE">
+]>
+]]></eg>
+</p>
+<p>If this strict checking is enabled, the DTD will enforce that
+<el>mfrac</el> has exactly two child elements. Similarly for
+<el>msub</el>, <el>mover</el>, etc. The values of several
+attributes will be checked, for example the value of
+<att>mathvariant</att> is constrained to the list specified in <specref
+ref="presm_commatt"/>. The DTD will check
+that table makup, <el>mtr</el> and <el>mtd</el>, is only used correctly
+nested in <el>mtable</el>. Finally the use of Presentation MathML
+elements within  Content MathML is restricted to those elements listed
+in section <specref ref="mixing_pmincm"/>.</p>
+</div4>
+
+</div3>
+
+
+<div3 id="parsing_module"><head>MathML as a DTD Module</head>
+<p>Normally, however, a MathML expression does not constitute an entire
+XML document. MathML is designed to be used as the mathematics fragment
+of larger markup languages. In particular it is designed to be used
+as a <emph>module</emph> in documents marked up with the XHTML 
+family of markup languages, as defined in
+<bibref ref="Modularization"/>. As a convenience, a version of the
+<loc href="http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">XHTML DTD,
+extended with this MathML module</loc>,  is also provided as a 
+concrete example. This version
+includes all the necessary declarations included into one file (in contrast
+to the standalone version of the MathML DTD which references several files
+for entity declarations etc.).
+To use this DTD, a document should contain the doctype declaration
+<eg diff="chg"><![CDATA[
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+           "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd"
+>
+]]></eg>
+as above, the URI may be altered to that of a local copy of the DTD,
+and the namespace prefixes used for XHTML and MathML may be
+controlled by the use of parameter entities.</p>
+</div3>
+
+
+<div3 id="parsing_sgml"><head>SGML</head>
+<p>If required, one may validate MathML documents using an SGML
+parser such as <code>nsgmls</code>,  
+rather than a validating XML parser.
+In this case an SGML declaration defining the
+constraints of XML applicable to an SGML parser must be used.
+See <phrase diff="chg"><bibref ref="sgml-xml"/></phrase>.</p>
+
+</div3>
+
+
+<div3 id="parsing_dtd"><head>The MathML DTD</head>
+
+<p>The entity declarations for characters are referenced
+at the end of the DTD.
+These are linked to the character tables in <specref ref="chars"/>
+for each entity set.</p>
+<p>Lists of the combined MathML set of character names, ordered by
+<loc href="byalpha.html">name</loc> or by 
+<loc href="bycodes.html">Unicode value</loc> are also available.</p>
+
+<p>In order to accommodate XML namespace prefixes, the DTD does not
+directly refer to an element name such as <el>mrow</el>
+but instead always refers to the name via a parameter entity such as
+<code>%mrow.qname;</code>. The definitions of these parameter
+entities are in the file <loc href="http://www.w3.org/Math/DTD/mathml2/mathml2-qname-1.mod"/>
+but are not shown here. They are simply declarations such as
+the following, one for each MathML element.
+<eg><![CDATA[
+<!ENTITY % mrow.qname           "%MATHML.pfx;mrow" >
+]]></eg>
+</p>
+
+
+<p>Here we give the main
+body of the DTD. The full DTD, as well as the XHTML-Math DTD, is available
+as a <loc href="http://www.w3.org/Math/DTD/mathml2.tgz">gzipped tar archive</loc>.</p>
+
+<eg>
+&lt;!-- MathML 2.0 DTD  ....................................................... -->
+&lt;!-- file: mathml2.dtd
+-->
+
+&lt;!-- MathML 2.0 DTD
+
+     This is the Mathematical Markup Language (MathML) 2.0, an XML
+     application for describing mathematical notation and capturing
+     both its structure and content.
+
+     Copyright &amp;#xa9; 1998-2003 W3C&amp;#xae; (MIT, ERCIM, Keio), All Rights 
+     Reserved. W3C liability, trademark, document use and software
+     licensing rules apply. 
+
+     Permission to use, copy, modify and distribute the MathML 2.0 DTD and
+     its accompanying documentation for any purpose and without fee is
+     hereby granted in perpetuity, provided that the above copyright notice
+     and this paragraph appear in all copies.  The copyright holders make
+     no representation about the suitability of the DTD for any purpose.
+
+     It is provided "as is" without expressed or implied warranty.
+
+        Revision:   $Id: parsing.xml,v 1.70 2003/09/15 13:47:27 davidc Exp $
+
+     This entity may be identified by the PUBLIC and SYSTEM identifiers:
+
+       PUBLIC "-//W3C//DTD MathML 2.0//EN"
+       SYSTEM "mathml2.dtd"
+
+     Revisions: editor and revision history at EOF
+-->
+<phrase diff="add">&lt;!-- Entity used to enable marked sections which enforces stricter</phrase>
+<phrase diff="add">     checking of MathML syntax rules</phrase>
+-->
+<phrase diff="add"><phrase id='pent_MathMLstrict'/>&lt;!ENTITY % MathMLstrict "IGNORE"></phrase>
+
+&lt;!-- MathML Qualified Names module ............................... -->
+<phrase id='pent_mathml_qname.module'/>&lt;!ENTITY % mathml-qname.module "INCLUDE" >
+<phrase>&lt;![<intref ref='pent_mathml_qname.module'>%mathml-qname.module;</intref>[
+<phrase id='pent_mathml_qname.mod'/>&lt;!ENTITY % mathml-qname.mod
+     PUBLIC "-//W3C//ENTITIES MathML 2.0 Qualified Names 1.0//EN"
+            "mathml2-qname-1.mod" >
+<intref ref='pent_mathml_qname.mod'>%mathml-qname.mod;</intref>]]&gt;</phrase>
+
+&lt;!-- if <intref ref='pent_mathml_qname.module'>%NS.prefixed;</intref> is INCLUDE, include all NS attributes, 
+     otherwise just those associated with MathML
+-->
+<phrase>&lt;![<intref ref='pent_mathml_qname.module'>%NS.prefixed;</intref>[
+  &lt;!ENTITY % MATHML.NamespaceDecl.attrib 
+         "<intref ref='pent_mathml_qname.module'>%NamespaceDecl.attrib;</intref>"
+>
+]]&gt;</phrase>
+<phrase id='pent_MATHML.NamespaceDecl.attrib'/>&lt;!ENTITY % MATHML.NamespaceDecl.attrib 
+     "<intref ref='pent_mathml_qname.module'>%MATHML.xmlns.attrib;</intref>"
+>
+
+
+&lt;!-- Attributes shared by all elements  .......................... -->
+
+<phrase id='pent_MATHML.Common.attrib'/>&lt;!ENTITY % MATHML.Common.attrib
+     "<intref ref='pent_MATHML.NamespaceDecl.attrib'>%MATHML.NamespaceDecl.attrib;</intref>
+<phrase diff="add">      <intref ref='pent_mathml_qname.module'>%XLINK.prefix;</intref>:href   CDATA           #IMPLIED</phrase>
+<phrase diff="chg">      <intref ref='pent_mathml_qname.module'>%XLINK.prefix;</intref>:type   CDATA           #IMPLIED</phrase>
+      class        CDATA                    #IMPLIED
+      style        CDATA                    #IMPLIED
+      id           ID                       #IMPLIED
+      xref         IDREF                    #IMPLIED
+      other        CDATA                    #IMPLIED"
+>
+
+&lt;!-- Presentation element set  ................................... -->
+
+&lt;!-- Attribute definitions -->
+
+<phrase id='pent_att_fontsize'/>&lt;!ENTITY % att-fontsize
+     "fontsize     CDATA                    #IMPLIED" >
+<phrase id='pent_att_fontweight'/>&lt;!ENTITY % att-fontweight
+     "fontweight   ( normal | bold )        #IMPLIED" >
+<phrase id='pent_att_fontstyle'/>&lt;!ENTITY % att-fontstyle
+     "fontstyle    ( normal | italic )      #IMPLIED" >
+<phrase id='pent_att_fontfamily'/>&lt;!ENTITY % att-fontfamily
+     "fontfamily   CDATA                    #IMPLIED" >
+<phrase id='pent_att_color'/>&lt;!ENTITY % att-color
+     "color        CDATA                    #IMPLIED" >
+
+&lt;!-- MathML2 typographically-distinguished symbol attributes -->
+
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+  &lt;!ENTITY % att-mathvariant
+     "mathvariant     ( normal | bold | italic | bold-italic | double-struck | 
+                        bold-fraktur | script | bold-script | fraktur |
+                        sans-serif | bold-sans-serif | sans-serif-italic |
+                        sans-serif-bold-italic | monospace )
+                                                                   #IMPLIED" >
+]]&gt;</phrase>
+<phrase id='pent_att_mathvariant'/>&lt;!ENTITY % att-mathvariant
+     "mathvariant     CDATA                    #IMPLIED" >
+<phrase id='pent_att_mathsize'/>&lt;!ENTITY % att-mathsize
+     "mathsize     CDATA                    #IMPLIED" >
+<phrase id='pent_att_mathcolor'/>&lt;!ENTITY % att-mathcolor
+     "mathcolor     CDATA                    #IMPLIED" >
+<phrase id='pent_att_mathbackground'/>&lt;!ENTITY % att-mathbackground
+     "mathbackground     CDATA                    #IMPLIED" >
+
+<phrase id='pent_att_fontinfo'/>&lt;!ENTITY % att-fontinfo
+     "<intref ref='pent_att_fontsize'>%att-fontsize;</intref>
+      <intref ref='pent_att_fontweight'>%att-fontweight;</intref>
+      <intref ref='pent_att_fontstyle'>%att-fontstyle;</intref>
+      <intref ref='pent_att_fontfamily'>%att-fontfamily;</intref>
+      <intref ref='pent_att_color'>%att-color;</intref>
+      <intref ref='pent_att_mathvariant'>%att-mathvariant;</intref>
+      <intref ref='pent_att_mathsize'>%att-mathsize;</intref>
+      <intref ref='pent_att_mathcolor'>%att-mathcolor;</intref>
+      <intref ref='pent_att_mathbackground'>%att-mathbackground;</intref>"
+>
+
+<phrase id='pent_att_form'/>&lt;!ENTITY % att-form
+     "form         ( prefix | infix | postfix )  #IMPLIED" >
+<phrase id='pent_att_fence'/>&lt;!ENTITY % att-fence
+     "fence        ( true | false )         #IMPLIED" >
+<phrase id='pent_att_separator'/>&lt;!ENTITY % att-separator
+     "separator    ( true | false )         #IMPLIED" >
+<phrase id='pent_att_lspace'/>&lt;!ENTITY % att-lspace
+     "lspace       CDATA                    #IMPLIED" >
+<phrase id='pent_att_rspace'/>&lt;!ENTITY % att-rspace
+     "rspace       CDATA                    #IMPLIED" >
+<phrase id='pent_att_stretchy'/>&lt;!ENTITY % att-stretchy
+     "stretchy     ( true | false )         #IMPLIED" >
+<phrase id='pent_att_symmetric'/>&lt;!ENTITY % att-symmetric
+     "symmetric    ( true | false )         #IMPLIED" >
+<phrase id='pent_att_maxsize'/>&lt;!ENTITY % att-maxsize
+     "maxsize      CDATA                    #IMPLIED" >
+<phrase id='pent_att_minsize'/>&lt;!ENTITY % att-minsize
+     "minsize      CDATA                    #IMPLIED" >
+<phrase id='pent_att_largeop'/>&lt;!ENTITY % att-largeop
+     "largeop      ( true | false)          #IMPLIED" >
+<phrase id='pent_att_movablelimits'/>&lt;!ENTITY % att-movablelimits
+     "movablelimits ( true | false )        #IMPLIED" >
+<phrase id='pent_att_accent'/>&lt;!ENTITY % att-accent
+     "accent       ( true | false )         #IMPLIED" >
+
+<phrase id='pent_att_opinfo'/>&lt;!ENTITY % att-opinfo
+     "<intref ref='pent_att_form'>%att-form;</intref>
+      <intref ref='pent_att_fence'>%att-fence;</intref>
+      <intref ref='pent_att_separator'>%att-separator;</intref>
+      <intref ref='pent_att_lspace'>%att-lspace;</intref>
+      <intref ref='pent_att_rspace'>%att-rspace;</intref>
+      <intref ref='pent_att_stretchy'>%att-stretchy;</intref>
+      <intref ref='pent_att_symmetric'>%att-symmetric;</intref>
+      <intref ref='pent_att_maxsize'>%att-maxsize;</intref>
+      <intref ref='pent_att_minsize'>%att-minsize;</intref>
+      <intref ref='pent_att_largeop'>%att-largeop;</intref>
+      <intref ref='pent_att_movablelimits'>%att-movablelimits;</intref>
+      <intref ref='pent_att_accent'>%att-accent;</intref>"
+>
+<phrase id='pent_att_width'/>&lt;!ENTITY % att-width
+     "width        CDATA                    #IMPLIED" >
+<phrase id='pent_att_height'/>&lt;!ENTITY % att-height
+     "height       CDATA                    #IMPLIED" >
+<phrase id='pent_att_depth'/>&lt;!ENTITY % att-depth
+     "depth        CDATA                    #IMPLIED" >
+<phrase id='pent_att_linebreak'/>&lt;!ENTITY % att-linebreak
+     "linebreak    CDATA                    #IMPLIED" >
+<phrase id='pent_att_sizeinfo'/>&lt;!ENTITY % att-sizeinfo
+     "<intref ref='pent_att_width'>%att-width;</intref>
+      <intref ref='pent_att_height'>%att-height;</intref>
+      <intref ref='pent_att_depth'>%att-depth;</intref>"
+>
+<phrase id='pent_att_lquote'/>&lt;!ENTITY % att-lquote               
+     "lquote       CDATA                    #IMPLIED" >
+<phrase id='pent_att_rquote'/>&lt;!ENTITY % att-rquote               
+     "rquote       CDATA                    #IMPLIED" >
+<phrase id='pent_att_linethickness'/>&lt;!ENTITY % att-linethickness        
+     "linethickness CDATA                   #IMPLIED" >
+<phrase id='pent_att_scriptlevel'/>&lt;!ENTITY % att-scriptlevel          
+     "scriptlevel  CDATA                    #IMPLIED" >
+<phrase id='pent_att_displaystyle'/>&lt;!ENTITY % att-displaystyle         
+     "displaystyle ( true | false )         #IMPLIED" >
+<phrase id='pent_att_scriptsizemultiplier'/>&lt;!ENTITY % att-scriptsizemultiplier 
+     "scriptsizemultiplier CDATA            #IMPLIED" >
+<phrase id='pent_att_scriptminsize'/>&lt;!ENTITY % att-scriptminsize        
+     "scriptminsize CDATA                   #IMPLIED" >
+<phrase id='pent_att_background'/>&lt;!ENTITY % att-background           
+     "background   CDATA                    #IMPLIED" >
+<phrase id='pent_att_veryverythinmathspace'/>&lt;!ENTITY % att-veryverythinmathspace           
+     "veryverythinmathspace   CDATA         #IMPLIED" >
+<phrase id='pent_att_verythinmathspace'/>&lt;!ENTITY % att-verythinmathspace           
+     "verythinmathspace   CDATA             #IMPLIED" >
+<phrase id='pent_att_thinmathspace'/>&lt;!ENTITY % att-thinmathspace           
+     "thinmathspace   CDATA                 #IMPLIED" >
+<phrase id='pent_att_mediummathspace'/>&lt;!ENTITY % att-mediummathspace           
+     "mediummathspace   CDATA               #IMPLIED" >
+<phrase id='pent_att_thickmathspace'/>&lt;!ENTITY % att-thickmathspace           
+     "thickmathspace   CDATA                #IMPLIED" >
+<phrase id='pent_att_verythickmathspace'/>&lt;!ENTITY % att-verythickmathspace           
+     "verythickmathspace   CDATA            #IMPLIED" >
+<phrase id='pent_att_veryverythickmathspace'/>&lt;!ENTITY % att-veryverythickmathspace           
+     "veryverythickmathspace   CDATA        #IMPLIED" >
+<phrase id='pent_att_open'/>&lt;!ENTITY % att-open                 
+     "open         CDATA                    #IMPLIED" >
+<phrase id='pent_att_close'/>&lt;!ENTITY % att-close                
+     "close        CDATA                    #IMPLIED" >
+<phrase id='pent_att_separators'/>&lt;!ENTITY % att-separators          
+     "separators   CDATA                    #IMPLIED" >
+<phrase id='pent_att_subscriptshift'/>&lt;!ENTITY % att-subscriptshift       
+     "subscriptshift CDATA                  #IMPLIED" >
+<phrase id='pent_att_superscriptshift'/>&lt;!ENTITY % att-superscriptshift     
+     "superscriptshift CDATA                #IMPLIED" >
+<phrase id='pent_att_accentunder'/>&lt;!ENTITY % att-accentunder          
+     "accentunder  ( true | false )         #IMPLIED" >
+<phrase id='pent_att_align'/>&lt;!ENTITY % att-align       
+     "align        CDATA                    #IMPLIED" >
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+<phrase diff="chg">  &lt;!ENTITY % att-numalign</phrase>
+     "numalign     ( left | center | right )         #IMPLIED" >
+  &lt;!ENTITY % att-denomalign
+     "denomalign   ( left | center | right )         #IMPLIED" >
+]]&gt;</phrase>
+<phrase diff="add"><phrase id='pent_att_numalign'/>&lt;!ENTITY % att-numalign</phrase>
+<phrase diff="add">     "numalign        CDATA                    #IMPLIED" ></phrase>
+<phrase diff="add"><phrase id='pent_att_denomalign'/>&lt;!ENTITY % att-denomalign</phrase>
+<phrase diff="add">     "denomalign        CDATA                    #IMPLIED" ></phrase>
+<phrase diff="add"><phrase id='pent_att-rowalign-list'/>&lt;!ENTITY % att-rowalign-list</phrase>
+<phrase diff="add">     "rowalign     CDATA                    #IMPLIED" ></phrase>
+<phrase diff="add"><phrase id='pent_att-columnalign-list'/>&lt;!ENTITY % att-columnalign-list</phrase>
+<phrase diff="add">     "columnalign  CDATA                    #IMPLIED" ></phrase>
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+  &lt;!ENTITY % att-rowalign
+     "rowalign     ( top | bottom |	center | baseline | axis )    #IMPLIED" >
+  &lt;!ENTITY % att-columnalign
+     "columnalign  ( left | center | right )        #IMPLIED" >
+]]&gt;</phrase>
+<phrase id='pent_att_rowalign'/>&lt;!ENTITY % att-rowalign      
+     "rowalign     CDATA                    #IMPLIED" >
+<phrase id='pent_att_columnalign'/>&lt;!ENTITY % att-columnalign     
+     "columnalign  CDATA                    #IMPLIED" >
+<phrase id='pent_att_columnwidth'/>&lt;!ENTITY % att-columnwidth   
+     "columnwidth  CDATA                    #IMPLIED" >
+<phrase diff="add"><phrase id='pent_att-groupalign-list'/>&lt;!ENTITY % att-groupalign-list</phrase>
+<phrase diff="add">     "groupalign   CDATA                    #IMPLIED" ></phrase>
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+  &lt;!ENTITY % att-groupalign
+     "groupalign   ( left | right | center | decimalpoint )   #IMPLIED" >
+]]&gt;</phrase>
+<phrase id='pent_att_groupalign'/>&lt;!ENTITY % att-groupalign      
+     "groupalign   CDATA                    #IMPLIED" >
+<phrase id='pent_att_alignmentscope'/>&lt;!ENTITY % att-alignmentscope 
+     "alignmentscope CDATA                  #IMPLIED" >
+<phrase id='pent_att_rowspacing'/>&lt;!ENTITY % att-rowspacing           
+     "rowspacing   CDATA                    #IMPLIED" >
+<phrase id='pent_att_columnspacing'/>&lt;!ENTITY % att-columnspacing      
+     "columnspacing CDATA                   #IMPLIED" >
+<phrase id='pent_att_rowlines'/>&lt;!ENTITY % att-rowlines            
+     "rowlines     CDATA                    #IMPLIED" >
+<phrase id='pent_att_columnlines'/>&lt;!ENTITY % att-columnlines        
+     "columnlines  CDATA                    #IMPLIED" >
+<phrase id='pent_att_frame'/>&lt;!ENTITY % att-frame            
+     "frame       ( none | solid | dashed ) #IMPLIED" >
+<phrase diff="add"><phrase id='pent_att_side'/>&lt;!ENTITY % att-side</phrase>
+<phrase diff="add">     "side       ( left | right | leftoverlap | rightoverlap ) #IMPLIED" ></phrase>
+<phrase id='pent_att_framespacing'/>&lt;!ENTITY % att-framespacing         
+     "framespacing CDATA                    #IMPLIED" >
+<phrase diff="add"><phrase id='pent_att_minlabelspacing'/>&lt;!ENTITY % att-minlabelspacing</phrase>
+<phrase diff="add">     "minlabelspacing CDATA                 #IMPLIED" ></phrase>
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+  &lt;!ENTITY % att-equalrows
+     "equalrows    ( true | false )         #IMPLIED" >
+  &lt;!ENTITY % att-equalcolumns
+     "equalcolumns ( true | false )         #IMPLIED" >
+]]&gt;</phrase>
+<phrase id='pent_att_equalrows'/>&lt;!ENTITY % att-equalrows        
+     "equalrows    CDATA                    #IMPLIED" >
+<phrase id='pent_att_equalcolumns'/>&lt;!ENTITY % att-equalcolumns         
+     "equalcolumns CDATA                    #IMPLIED" >
+
+<phrase id='pent_att_tableinfo'/>&lt;!ENTITY % att-tableinfo            
+     "<intref ref='pent_att_align'>%att-align;</intref>
+<phrase diff="chg">      <intref ref='pent_att-rowalign-list'>%att-rowalign-list;</intref></phrase>
+<phrase diff="chg">      <intref ref='pent_att-columnalign-list'>%att-columnalign-list;</intref></phrase>
+      <intref ref='pent_att_columnwidth'>%att-columnwidth;</intref>
+<phrase diff="chg">      <intref ref='pent_att-groupalign-list'>%att-groupalign-list;</intref></phrase>
+      <intref ref='pent_att_alignmentscope'>%att-alignmentscope;</intref>
+<phrase diff="add">      <intref ref='pent_att_side'>%att-side;</intref></phrase>
+      <intref ref='pent_att_rowspacing'>%att-rowspacing;</intref>
+      <intref ref='pent_att_columnspacing'>%att-columnspacing;</intref>
+      <intref ref='pent_att_rowlines'>%att-rowlines;</intref>
+      <intref ref='pent_att_columnlines'>%att-columnlines;</intref>
+<phrase diff="add">      <intref ref='pent_att_width'>%att-width;</intref></phrase>
+      <intref ref='pent_att_frame'>%att-frame;</intref>
+      <intref ref='pent_att_framespacing'>%att-framespacing;</intref>
+<phrase diff="add">      <intref ref='pent_att_minlabelspacing'>%att-minlabelspacing;</intref></phrase>
+      <intref ref='pent_att_equalrows'>%att-equalrows;</intref>
+      <intref ref='pent_att_equalcolumns'>%att-equalcolumns;</intref>
+      <intref ref='pent_att_displaystyle'>%att-displaystyle;</intref>" 
+>
+
+<phrase id='pent_att_rowspan'/>&lt;!ENTITY % att-rowspan              
+     "rowspan      CDATA                    #IMPLIED" >
+<phrase id='pent_att_columnspan'/>&lt;!ENTITY % att-columnspan           
+     "columnspan   CDATA                    #IMPLIED" >
+<phrase id='pent_att_edge'/>&lt;!ENTITY % att-edge        
+     "edge         ( left | right )         #IMPLIED" >
+<phrase id='pent_att_actiontype'/>&lt;!ENTITY % att-actiontype          
+     "actiontype   CDATA                    #IMPLIED" >
+<phrase id='pent_att_selection'/>&lt;!ENTITY % att-selection       
+     "selection    CDATA                    #IMPLIED" >
+
+<phrase id='pent_att_name'/>&lt;!ENTITY % att-name                 
+     "name         CDATA                    #IMPLIED" >
+<phrase id='pent_att_alt'/>&lt;!ENTITY % att-alt              
+     "alt          CDATA                    #IMPLIED" >
+<phrase id='pent_att_index'/>&lt;!ENTITY % att-index           
+     "index        CDATA                    #IMPLIED" >
+
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+  &lt;!ENTITY % att-bevelled
+     "bevelled      ( true | false )        #IMPLIED" >
+]]&gt;</phrase>
+<phrase id='pent_att_bevelled'/>&lt;!ENTITY % att-bevelled       
+     "bevelled      CDATA                    #IMPLIED" >
+
+&lt;!-- Presentation schemata with content -->
+
+<phrase id='pent_ptoken'/>&lt;!ENTITY % ptoken                   
+     "&#37;mi.qname; | &#37;mn.qname; | &#37;mo.qname;
+      | &#37;mtext.qname; | &#37;ms.qname;" >
+
+<phrase id='attr_mi.qname'/><intref ref='elem_mi.qname'>&lt;!ATTLIST</intref> &#37;mi.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_fontinfo'>%att-fontinfo;</intref>
+>
+
+<phrase id='attr_mn.qname'/><intref ref='elem_mn.qname'>&lt;!ATTLIST</intref> &#37;mn.qname;      
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref> 
+      <intref ref='pent_att_fontinfo'>%att-fontinfo;</intref>
+>
+
+<phrase id='attr_mo.qname'/><intref ref='elem_mo.qname'>&lt;!ATTLIST</intref> &#37;mo.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref> 
+      <intref ref='pent_att_fontinfo'>%att-fontinfo;</intref>
+      <intref ref='pent_att_opinfo'>%att-opinfo;</intref>
+>
+
+<phrase id='attr_mtext.qname'/><intref ref='elem_mtext.qname'>&lt;!ATTLIST</intref> &#37;mtext.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_fontinfo'>%att-fontinfo;</intref>
+>
+
+<phrase id='attr_ms.qname'/><intref ref='elem_ms.qname'>&lt;!ATTLIST</intref> &#37;ms.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_fontinfo'>%att-fontinfo;</intref>
+      <intref ref='pent_att_lquote'>%att-lquote;</intref>
+      <intref ref='pent_att_rquote'>%att-rquote;</intref>
+>
+
+&lt;!-- Empty presentation schemata -->
+
+<phrase id='pent_petoken'/>&lt;!ENTITY % petoken                  
+     "&#37;mspace.qname;" >
+<phrase id='elem_mspace.qname'/><intref ref='attr_mspace.qname'>&lt;!ELEMENT</intref> &#37;mspace.qname;  EMPTY >
+
+<phrase id='attr_mspace.qname'/><intref ref='elem_mspace.qname'>&lt;!ATTLIST</intref> &#37;mspace.qname; 
+      <intref ref='pent_att_sizeinfo'>%att-sizeinfo;</intref>
+      <intref ref='pent_att_linebreak'>%att-linebreak;</intref>
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+&lt;!-- Presentation: general layout schemata -->
+
+<phrase id='pent_pgenschema'/>&lt;!ENTITY % pgenschema               
+     "&#37;mrow.qname; | &#37;mfrac.qname; | &#37;msqrt.qname; | &#37;mroot.qname; 
+      | &#37;menclose.qname; | &#37;mstyle.qname; | &#37;merror.qname; 
+      | &#37;mpadded.qname; | &#37;mphantom.qname; | &#37;mfenced.qname;" >
+
+<phrase id='attr_mrow.qname'/><intref ref='elem_mrow.qname'>&lt;!ATTLIST</intref> &#37;mrow.qname;        
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_mfrac.qname'/><intref ref='elem_mfrac.qname'>&lt;!ATTLIST</intref> &#37;mfrac.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+<phrase diff="add">      <intref ref='pent_att_bevelled'>%att-bevelled;</intref></phrase>
+<phrase diff="add">      <intref ref='pent_att_numalign'>%att-numalign;</intref></phrase>
+<phrase diff="add">      <intref ref='pent_att_denomalign'>%att-denomalign;</intref></phrase>
+      <intref ref='pent_att_linethickness'>%att-linethickness;</intref>
+>
+
+<phrase id='attr_msqrt.qname'/><intref ref='elem_msqrt.qname'>&lt;!ATTLIST</intref> &#37;msqrt.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_menclose.qname'/><intref ref='elem_menclose.qname'>&lt;!ATTLIST</intref> &#37;menclose.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      notation CDATA 'longdiv' >
+
+<phrase id='attr_mroot.qname'/><intref ref='elem_mroot.qname'>&lt;!ATTLIST</intref> &#37;mroot.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_mstyle.qname'/><intref ref='elem_mstyle.qname'>&lt;!ATTLIST</intref> &#37;mstyle.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_fontinfo'>%att-fontinfo;</intref>
+      <intref ref='pent_att_opinfo'>%att-opinfo;</intref>
+      <intref ref='pent_att_lquote'>%att-lquote;</intref>
+      <intref ref='pent_att_rquote'>%att-rquote;</intref>
+      <intref ref='pent_att_linethickness'>%att-linethickness;</intref>
+      <intref ref='pent_att_scriptlevel'>%att-scriptlevel;</intref>
+      <intref ref='pent_att_scriptsizemultiplier'>%att-scriptsizemultiplier;</intref>
+      <intref ref='pent_att_scriptminsize'>%att-scriptminsize;</intref>
+      <intref ref='pent_att_background'>%att-background;</intref>
+      <intref ref='pent_att_veryverythinmathspace'>%att-veryverythinmathspace;</intref>
+      <intref ref='pent_att_verythinmathspace'>%att-verythinmathspace;</intref>
+      <intref ref='pent_att_thinmathspace'>%att-thinmathspace;</intref>
+      <intref ref='pent_att_mediummathspace'>%att-mediummathspace;</intref>
+      <intref ref='pent_att_thickmathspace'>%att-thickmathspace;</intref>
+      <intref ref='pent_att_verythickmathspace'>%att-verythickmathspace;</intref>
+      <intref ref='pent_att_veryverythickmathspace'>%att-veryverythickmathspace;</intref>
+      <intref ref='pent_att_open'>%att-open;</intref>
+      <intref ref='pent_att_close'>%att-close;</intref>
+      <intref ref='pent_att_separators'>%att-separators;</intref>
+      <intref ref='pent_att_subscriptshift'>%att-subscriptshift;</intref>
+      <intref ref='pent_att_superscriptshift'>%att-superscriptshift;</intref>
+      <intref ref='pent_att_accentunder'>%att-accentunder;</intref>
+      <intref ref='pent_att_tableinfo'>%att-tableinfo;</intref>
+      <intref ref='pent_att_rowspan'>%att-rowspan;</intref>
+      <intref ref='pent_att_columnspan'>%att-columnspan;</intref>
+      <intref ref='pent_att_edge'>%att-edge;</intref>
+      <intref ref='pent_att_selection'>%att-selection;</intref>
+<phrase diff="chg">      <intref ref='pent_att_bevelled'>%att-bevelled;</intref></phrase>
+<phrase diff="add">      <intref ref='pent_att_height'>%att-height;</intref></phrase>
+<phrase diff="add">      <intref ref='pent_att_depth'>%att-depth;</intref></phrase>
+>
+
+<phrase id='attr_merror.qname'/><intref ref='elem_merror.qname'>&lt;!ATTLIST</intref> &#37;merror.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_mpadded.qname'/><intref ref='elem_mpadded.qname'>&lt;!ATTLIST</intref> &#37;mpadded.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_sizeinfo'>%att-sizeinfo;</intref>
+      <intref ref='pent_att_lspace'>%att-lspace;</intref>
+>
+
+<phrase id='attr_mphantom.qname'/><intref ref='elem_mphantom.qname'>&lt;!ATTLIST</intref> &#37;mphantom.qname;      
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_mfenced.qname'/><intref ref='elem_mfenced.qname'>&lt;!ATTLIST</intref> &#37;mfenced.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_open'>%att-open;</intref>
+      <intref ref='pent_att_close'>%att-close;</intref>
+      <intref ref='pent_att_separators'>%att-separators;</intref>
+>
+
+&lt;!-- Presentation layout schemata: scripts and limits -->
+
+<phrase id='pent_pscrschema'/>&lt;!ENTITY % pscrschema               
+     "&#37;msub.qname; | &#37;msup.qname; | &#37;msubsup.qname; | &#37;munder.qname; 
+      | &#37;mover.qname; | &#37;munderover.qname; | &#37;mmultiscripts.qname;" >
+
+<phrase id='attr_msub.qname'/><intref ref='elem_msub.qname'>&lt;!ATTLIST</intref> &#37;msub.qname;      
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_subscriptshift'>%att-subscriptshift;</intref>
+>
+
+<phrase id='attr_msup.qname'/><intref ref='elem_msup.qname'>&lt;!ATTLIST</intref> &#37;msup.qname;         
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_superscriptshift'>%att-superscriptshift;</intref>
+>
+
+<phrase id='attr_msubsup.qname'/><intref ref='elem_msubsup.qname'>&lt;!ATTLIST</intref> &#37;msubsup.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_subscriptshift'>%att-subscriptshift;</intref>
+      <intref ref='pent_att_superscriptshift'>%att-superscriptshift;</intref>
+>
+
+<phrase id='attr_munder.qname'/><intref ref='elem_munder.qname'>&lt;!ATTLIST</intref> &#37;munder.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_accentunder'>%att-accentunder;</intref>
+>
+
+<phrase id='attr_mover.qname'/><intref ref='elem_mover.qname'>&lt;!ATTLIST</intref> &#37;mover.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_accent'>%att-accent;</intref>
+>
+
+<phrase id='attr_munderover.qname'/><intref ref='elem_munderover.qname'>&lt;!ATTLIST</intref> &#37;munderover.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_accent'>%att-accent;</intref>
+      <intref ref='pent_att_accentunder'>%att-accentunder;</intref>
+>
+
+<phrase id='attr_mmultiscripts.qname'/><intref ref='elem_mmultiscripts.qname'>&lt;!ATTLIST</intref> &#37;mmultiscripts.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_subscriptshift'>%att-subscriptshift;</intref>
+      <intref ref='pent_att_superscriptshift'>%att-superscriptshift;</intref>
+>
+
+&lt;!-- Presentation layout schemata: empty elements for scripts -->
+
+<phrase id='pent_pscreschema'/>&lt;!ENTITY % pscreschema              
+     "&#37;mprescripts.qname; | &#37;none.qname;" >
+
+<phrase id='elem_mprescripts.qname'/><intref ref='attr_mprescripts.qname'>&lt;!ELEMENT</intref> &#37;mprescripts.qname;  EMPTY >
+<phrase id='attr_mprescripts.qname'/><intref ref='elem_mprescripts.qname'>&lt;!ATTLIST</intref> &#37;mprescripts.qname;   
+      <intref ref='pent_mathml_qname.module'>%MATHML.xmlns.attrib;</intref> >
+
+<phrase id='elem_none.qname'/><intref ref='attr_none.qname'>&lt;!ELEMENT</intref> &#37;none.qname;  EMPTY >
+<phrase id='attr_none.qname'/><intref ref='elem_none.qname'>&lt;!ATTLIST</intref> &#37;none.qname;    
+      <intref ref='pent_mathml_qname.module'>%MATHML.xmlns.attrib;</intref> >
+
+&lt;!-- Presentation layout schemata: tables -->
+
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+&lt;!-- in strict mode only allow mtable at top level.
+     mtr ,mlabledtr and mtd only allowed inside mtable.
+-->
+  &lt;!ENTITY % ptabschema    "&#37;mtable.qname;" >
+]]&gt;</phrase>
+
+<phrase id='pent_ptabschema'/>&lt;!ENTITY % ptabschema               
+     "&#37;mtable.qname; | &#37;mtr.qname; | &#37;mlabeledtr.qname; | &#37;mtd.qname;" >
+
+<phrase id='attr_mtable.qname'/><intref ref='elem_mtable.qname'>&lt;!ATTLIST</intref> &#37;mtable.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_tableinfo'>%att-tableinfo;</intref>
+>
+
+<phrase id='attr_mtr.qname'/><intref ref='elem_mtr.qname'>&lt;!ATTLIST</intref> &#37;mtr.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_rowalign'>%att-rowalign;</intref>
+<phrase diff="chg">      <intref ref='pent_att-columnalign-list'>%att-columnalign-list;</intref></phrase>
+<phrase diff="chg">      <intref ref='pent_att-groupalign-list'>%att-groupalign-list;</intref></phrase>
+>
+
+<phrase id='attr_mlabeledtr.qname'/><intref ref='elem_mlabeledtr.qname'>&lt;!ATTLIST</intref> &#37;mlabeledtr.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_rowalign'>%att-rowalign;</intref>
+<phrase diff="chg">      <intref ref='pent_att-columnalign-list'>%att-columnalign-list;</intref></phrase>
+<phrase diff="chg">      <intref ref='pent_att-groupalign-list'>%att-groupalign-list;</intref></phrase>
+>
+
+<phrase id='attr_mtd.qname'/><intref ref='elem_mtd.qname'>&lt;!ATTLIST</intref> &#37;mtd.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_rowalign'>%att-rowalign;</intref>
+      <intref ref='pent_att_columnalign'>%att-columnalign;</intref>
+<phrase diff="chg">      <intref ref='pent_att-groupalign-list'>%att-groupalign-list;</intref></phrase>
+      <intref ref='pent_att_rowspan'>%att-rowspan;</intref>
+      <intref ref='pent_att_columnspan'>%att-columnspan;</intref>
+>
+<phrase id='pent_plschema'/>&lt;!ENTITY % plschema                 
+     "<intref ref='pent_pgenschema'>%pgenschema;</intref> | <intref ref='pent_pscrschema'>%pscrschema;</intref> | <intref ref='pent_ptabschema'>%ptabschema;</intref>" >
+
+&lt;!-- Empty presentation layout schemata -->
+
+<phrase id='pent_peschema'/>&lt;!ENTITY % peschema                 
+     "&#37;maligngroup.qname; | &#37;malignmark.qname;" >
+
+<phrase id='elem_malignmark.qname'/><intref ref='attr_malignmark.qname'>&lt;!ELEMENT</intref> &#37;malignmark.qname;  EMPTY >
+
+<phrase id='attr_malignmark.qname'/><intref ref='elem_malignmark.qname'>&lt;!ATTLIST</intref> &#37;malignmark.qname;  
+      <intref ref='pent_att_edge'>%att-edge;</intref> >
+
+<phrase id='elem_maligngroup.qname'/><intref ref='attr_maligngroup.qname'>&lt;!ELEMENT</intref> &#37;maligngroup.qname;  EMPTY >
+<phrase id='attr_maligngroup.qname'/><intref ref='elem_maligngroup.qname'>&lt;!ATTLIST</intref> &#37;maligngroup.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_groupalign'>%att-groupalign;</intref>
+>
+
+
+<phrase id='elem_mglyph.qname'/><intref ref='attr_mglyph.qname'>&lt;!ELEMENT</intref> &#37;mglyph.qname;  EMPTY >
+<phrase id='attr_mglyph.qname'/><intref ref='elem_mglyph.qname'>&lt;!ATTLIST</intref> &#37;mglyph.qname;    
+      <intref ref='pent_att_alt'>%att-alt;</intref>
+      <intref ref='pent_att_fontfamily'>%att-fontfamily;</intref>
+      <intref ref='pent_att_index'>%att-index;</intref> >
+
+&lt;!-- Presentation action schemata -->
+
+<phrase id='pent_pactions'/>&lt;!ENTITY % pactions                 
+     "&#37;maction.qname;" >
+<phrase id='attr_maction.qname'/><intref ref='elem_maction.qname'>&lt;!ATTLIST</intref> &#37;maction.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_actiontype'>%att-actiontype;</intref>
+      <intref ref='pent_att_selection'>%att-selection;</intref>
+>
+
+&lt;!-- The following entity for substitution into
+     content constructs excludes elements that
+     are not valid as expressions.
+-->
+
+<phrase id='pent_PresInCont'/>&lt;!ENTITY % PresInCont               
+     "<intref ref='pent_ptoken'>%ptoken;</intref> | <intref ref='pent_petoken'>%petoken;</intref> |
+      <intref ref='pent_plschema'>%plschema;</intref> | <intref ref='pent_peschema'>%peschema;</intref> | <intref ref='pent_pactions'>%pactions;</intref>" >
+
+&lt;!-- Presentation entity: all presentation constructs -->
+
+
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+&lt;!-- In strict mode don't allow prescripts and none at top level.-->
+  &lt;!ENTITY % Presentation "<intref ref='pent_PresInCont'>%PresInCont;</intref>">             
+]]&gt;</phrase>
+<phrase id='pent_Presentation'/>&lt;!ENTITY % Presentation             
+     "<intref ref='pent_ptoken'>%ptoken;</intref> | <intref ref='pent_petoken'>%petoken;</intref> | <intref ref='pent_pscreschema'>%pscreschema;</intref> |
+      <intref ref='pent_plschema'>%plschema;</intref> | <intref ref='pent_peschema'>%peschema;</intref> | <intref ref='pent_pactions'>%pactions;</intref>">
+
+&lt;!-- Content element set  ........................................ -->
+
+&lt;!-- Attribute definitions -->
+
+<phrase id='pent_att_base'/>&lt;!ENTITY % att-base                 
+     "base         CDATA                    '10'" >
+<phrase id='pent_att_closure'/>&lt;!ENTITY % att-closure              
+     "closure      CDATA                    'closed'" >
+<phrase id='pent_att_definition'/>&lt;!ENTITY % att-definition           
+     "definitionURL CDATA                   ''" >
+<phrase id='pent_att_encoding'/>&lt;!ENTITY % att-encoding             
+     "encoding     CDATA                    ''" >
+<phrase id='pent_att_nargs'/>&lt;!ENTITY % att-nargs             
+     "nargs        CDATA                    '1'" >
+<phrase id='pent_att_occurrence'/>&lt;!ENTITY % att-occurrence           
+     "occurrence   CDATA                    'function-model'" >
+<phrase id='pent_att_order'/>&lt;!ENTITY % att-order   
+     "order        CDATA                    'numeric'" >
+<phrase id='pent_att_scope'/>&lt;!ENTITY % att-scope                
+     "scope        CDATA                    'local'" >
+<phrase id='pent_att_type'/>&lt;!ENTITY % att-type                 
+     "type         CDATA                    #IMPLIED" >
+
+&lt;!-- Content elements: leaf nodes -->
+
+<phrase id='pent_ctoken'/>&lt;!ENTITY % ctoken               
+     "&#37;csymbol.qname; | &#37;ci.qname; | &#37;cn.qname;" >
+
+<phrase id='attr_ci.qname'/><intref ref='elem_ci.qname'>&lt;!ATTLIST</intref> &#37;ci.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_type'>%att-type;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='attr_csymbol.qname'/><intref ref='elem_csymbol.qname'>&lt;!ATTLIST</intref> &#37;csymbol.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+      <intref ref='pent_att_type'>%att-type;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+>
+
+<phrase id='attr_cn.qname'/><intref ref='elem_cn.qname'>&lt;!ATTLIST</intref> &#37;cn.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_type'>%att-type;</intref>
+      <intref ref='pent_att_base'>%att-base;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+&lt;!-- Content elements: specials -->
+
+<phrase id='pent_cspecial'/>&lt;!ENTITY % cspecial                 
+     "&#37;apply.qname; | &#37;reln.qname; |
+      &#37;lambda.qname;" >
+
+<phrase id='attr_apply.qname'/><intref ref='elem_apply.qname'>&lt;!ATTLIST</intref> &#37;apply.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_reln.qname'/><intref ref='elem_reln.qname'>&lt;!ATTLIST</intref> &#37;reln.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_lambda.qname'/><intref ref='elem_lambda.qname'>&lt;!ATTLIST</intref> &#37;lambda.qname;      
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+&lt;!-- Content elements: others -->
+
+<phrase id='pent_cother'/>&lt;!ENTITY % cother                   
+     "&#37;condition.qname; | &#37;declare.qname; | &#37;sep.qname;" >
+
+<phrase id='attr_condition.qname'/><intref ref='elem_condition.qname'>&lt;!ATTLIST</intref> &#37;condition.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_declare.qname'/><intref ref='elem_declare.qname'>&lt;!ATTLIST</intref> &#37;declare.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_type'>%att-type;</intref>
+      <intref ref='pent_att_scope'>%att-scope;</intref>
+      <intref ref='pent_att_nargs'>%att-nargs;</intref>
+      <intref ref='pent_att_occurrence'>%att-occurrence;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_sep.qname'/><intref ref='attr_sep.qname'>&lt;!ELEMENT</intref> &#37;sep.qname;  EMPTY >
+<phrase id='attr_sep.qname'/><intref ref='elem_sep.qname'>&lt;!ATTLIST</intref> &#37;sep.qname;         
+      <intref ref='pent_mathml_qname.module'>%MATHML.xmlns.attrib;</intref> >
+
+&lt;!-- Content elements: semantic mapping -->
+
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+&lt;!-- in strict mode only allow semantics at top level.
+     annotation and annotation-xml only allowed in semantics
+-->
+  &lt;!ENTITY % csemantics  "&#37;semantics.qname;" >
+]]&gt;</phrase>
+<phrase id='pent_csemantics'/>&lt;!ENTITY % csemantics               
+     "&#37;semantics.qname; | &#37;annotation.qname; |
+      &#37;annotation-xml.qname;" >
+
+<phrase id='attr_semantics.qname'/><intref ref='elem_semantics.qname'>&lt;!ATTLIST</intref> &#37;semantics.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='attr_annotation.qname'/><intref ref='elem_annotation.qname'>&lt;!ATTLIST</intref> &#37;annotation.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='attr_annotation_xml.qname'/><intref ref='elem_annotation_xml.qname'>&lt;!ATTLIST</intref> &#37;annotation-xml.qname; 
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+&lt;!-- Content elements: constructors -->
+
+<phrase id='pent_cconstructor'/>&lt;!ENTITY % cconstructor             
+     "&#37;interval.qname; | &#37;list.qname; | &#37;matrix.qname; 
+      | &#37;matrixrow.qname; | &#37;set.qname; | &#37;vector.qname;
+      | &#37;piecewise.qname; " >
+
+<phrase id='attr_interval.qname'/><intref ref='elem_interval.qname'>&lt;!ATTLIST</intref> &#37;interval.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_closure'>%att-closure;</intref>
+>
+
+<phrase id='attr_set.qname'/><intref ref='elem_set.qname'>&lt;!ATTLIST</intref> &#37;set.qname;        
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_type'>%att-type;</intref>
+>
+
+<phrase id='attr_list.qname'/><intref ref='elem_list.qname'>&lt;!ATTLIST</intref> &#37;list.qname;          
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_order'>%att-order;</intref>
+>
+
+<phrase id='attr_vector.qname'/><intref ref='elem_vector.qname'>&lt;!ATTLIST</intref> &#37;vector.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_matrix.qname'/><intref ref='elem_matrix.qname'>&lt;!ATTLIST</intref> &#37;matrix.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_matrixrow.qname'/><intref ref='elem_matrixrow.qname'>&lt;!ATTLIST</intref> &#37;matrixrow.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_piecewise.qname'/><intref ref='elem_piecewise.qname'>&lt;!ATTLIST</intref> &#37;piecewise.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_piece.qname'/><intref ref='elem_piece.qname'>&lt;!ATTLIST</intref> &#37;piece.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_otherwise.qname'/><intref ref='elem_otherwise.qname'>&lt;!ATTLIST</intref> &#37;otherwise.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+
+&lt;!-- Content elements: symbols -->
+
+<phrase id='pent_c0ary'/>&lt;!ENTITY % c0ary              
+    "&#37;integers.qname; |
+     &#37;reals.qname; |
+     &#37;rationals.qname; |
+     &#37;naturalnumbers.qname; |
+     &#37;complexes.qname; |
+     &#37;primes.qname; |
+     %exponentiale.qname; |
+     &#37;imaginaryi.qname; |
+     &#37;notanumber.qname; |
+     &#37;true.qname; |
+     &#37;false.qname; |
+     %emptyset.qname; |
+     &#37;pi.qname; |
+     %eulergamma.qname; |
+     &#37;infinity.qname;" >
+
+<phrase id='elem_integers.qname'/><intref ref='attr_integers.qname'>&lt;!ELEMENT</intref> &#37;integers.qname;  EMPTY >
+<phrase id='attr_integers.qname'/><intref ref='elem_integers.qname'>&lt;!ATTLIST</intref> &#37;integers.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_reals.qname'/><intref ref='attr_reals.qname'>&lt;!ELEMENT</intref> &#37;reals.qname;  EMPTY >
+<phrase id='attr_reals.qname'/><intref ref='elem_reals.qname'>&lt;!ATTLIST</intref> &#37;reals.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_rationals.qname'/><intref ref='attr_rationals.qname'>&lt;!ELEMENT</intref> &#37;rationals.qname;  EMPTY >
+<phrase id='attr_rationals.qname'/><intref ref='elem_rationals.qname'>&lt;!ATTLIST</intref> &#37;rationals.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_naturalnumbers.qname'/><intref ref='attr_naturalnumbers.qname'>&lt;!ELEMENT</intref> &#37;naturalnumbers.qname;  EMPTY >
+<phrase id='attr_naturalnumbers.qname'/><intref ref='elem_naturalnumbers.qname'>&lt;!ATTLIST</intref> &#37;naturalnumbers.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_complexes.qname'/><intref ref='attr_complexes.qname'>&lt;!ELEMENT</intref> &#37;complexes.qname;  EMPTY >
+<phrase id='attr_complexes.qname'/><intref ref='elem_complexes.qname'>&lt;!ATTLIST</intref> &#37;complexes.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_primes.qname'/><intref ref='attr_primes.qname'>&lt;!ELEMENT</intref> &#37;primes.qname;  EMPTY >
+<phrase id='attr_primes.qname'/><intref ref='elem_primes.qname'>&lt;!ATTLIST</intref> &#37;primes.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_exponentiale.qname'/><intref ref='attr_exponentiale.qname'>&lt;!ELEMENT</intref> %exponentiale.qname;  EMPTY >
+<phrase id='attr_exponentiale.qname'/><intref ref='elem_exponentiale.qname'>&lt;!ATTLIST</intref> %exponentiale.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_imaginaryi.qname'/><intref ref='attr_imaginaryi.qname'>&lt;!ELEMENT</intref> &#37;imaginaryi.qname;  EMPTY >
+<phrase id='attr_imaginaryi.qname'/><intref ref='elem_imaginaryi.qname'>&lt;!ATTLIST</intref> &#37;imaginaryi.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_notanumber.qname'/><intref ref='attr_notanumber.qname'>&lt;!ELEMENT</intref> &#37;notanumber.qname;  EMPTY >
+<phrase id='attr_notanumber.qname'/><intref ref='elem_notanumber.qname'>&lt;!ATTLIST</intref> &#37;notanumber.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_true.qname'/><intref ref='attr_true.qname'>&lt;!ELEMENT</intref> &#37;true.qname;  EMPTY >
+<phrase id='attr_true.qname'/><intref ref='elem_true.qname'>&lt;!ATTLIST</intref> &#37;true.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_false.qname'/><intref ref='attr_false.qname'>&lt;!ELEMENT</intref> &#37;false.qname;  EMPTY >
+<phrase id='attr_false.qname'/><intref ref='elem_false.qname'>&lt;!ATTLIST</intref> &#37;false.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_emptyset.qname'/><intref ref='attr_emptyset.qname'>&lt;!ELEMENT</intref> %emptyset.qname;  EMPTY >
+<phrase id='attr_emptyset.qname'/><intref ref='elem_emptyset.qname'>&lt;!ATTLIST</intref> %emptyset.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_pi.qname'/><intref ref='attr_pi.qname'>&lt;!ELEMENT</intref> &#37;pi.qname;  EMPTY >
+<phrase id='attr_pi.qname'/><intref ref='elem_pi.qname'>&lt;!ATTLIST</intref> &#37;pi.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_eulergamma.qname'/><intref ref='attr_eulergamma.qname'>&lt;!ELEMENT</intref> %eulergamma.qname;  EMPTY >
+<phrase id='attr_eulergamma.qname'/><intref ref='elem_eulergamma.qname'>&lt;!ATTLIST</intref> %eulergamma.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_infinity.qname'/><intref ref='attr_infinity.qname'>&lt;!ELEMENT</intref> &#37;infinity.qname;  EMPTY >
+<phrase id='attr_infinity.qname'/><intref ref='elem_infinity.qname'>&lt;!ATTLIST</intref> &#37;infinity.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+&lt;!-- Content elements: operators -->
+
+<phrase id='pent_cfuncop1ary'/>&lt;!ENTITY % cfuncop1ary              
+     "&#37;inverse.qname; | &#37;ident.qname;|
+      &#37;domain.qname; |  &#37;codomain.qname; | 
+      &#37;image.qname;  " >
+
+<phrase id='elem_inverse.qname'/><intref ref='attr_inverse.qname'>&lt;!ELEMENT</intref> &#37;inverse.qname;  EMPTY >
+<phrase id='attr_inverse.qname'/><intref ref='elem_inverse.qname'>&lt;!ATTLIST</intref> &#37;inverse.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_domain.qname'/><intref ref='attr_domain.qname'>&lt;!ELEMENT</intref> &#37;domain.qname;  EMPTY >
+<phrase id='attr_domain.qname'/><intref ref='elem_domain.qname'>&lt;!ATTLIST</intref> &#37;domain.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_codomain.qname'/><intref ref='attr_codomain.qname'>&lt;!ELEMENT</intref> &#37;codomain.qname;  EMPTY >
+<phrase id='attr_codomain.qname'/><intref ref='elem_codomain.qname'>&lt;!ATTLIST</intref> &#37;codomain.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_image.qname'/><intref ref='attr_image.qname'>&lt;!ELEMENT</intref> &#37;image.qname;  EMPTY >
+<phrase id='attr_image.qname'/><intref ref='elem_image.qname'>&lt;!ATTLIST</intref> &#37;image.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+
+
+<phrase id='pent_cfuncopnary'/>&lt;!ENTITY % cfuncopnary              
+     "&#37;fn.qname; | &#37;compose.qname;" >
+
+<phrase id='attr_fn.qname'/><intref ref='elem_fn.qname'>&lt;!ATTLIST</intref> &#37;fn.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_ident.qname'/><intref ref='attr_ident.qname'>&lt;!ELEMENT</intref> &#37;ident.qname;  EMPTY >
+<phrase id='attr_ident.qname'/><intref ref='elem_ident.qname'>&lt;!ATTLIST</intref> &#37;ident.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_compose.qname'/><intref ref='attr_compose.qname'>&lt;!ELEMENT</intref> &#37;compose.qname;  EMPTY >
+<phrase id='attr_compose.qname'/><intref ref='elem_compose.qname'>&lt;!ATTLIST</intref> &#37;compose.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_carithop1ary'/>&lt;!ENTITY % carithop1ary             
+     "&#37;abs.qname; | &#37;conjugate.qname; | %exp.qname; | &#37;factorial.qname; |
+      &#37;arg.qname; | &#37;real.qname; | &#37;imaginary.qname; |
+      &#37;floor.qname; | &#37;ceiling.qname;" >
+
+<phrase id='elem_exp.qname'/><intref ref='attr_exp.qname'>&lt;!ELEMENT</intref> %exp.qname;  EMPTY >
+<phrase id='attr_exp.qname'/><intref ref='elem_exp.qname'>&lt;!ATTLIST</intref> %exp.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_abs.qname'/><intref ref='attr_abs.qname'>&lt;!ELEMENT</intref> &#37;abs.qname;  EMPTY >
+<phrase id='attr_abs.qname'/><intref ref='elem_abs.qname'>&lt;!ATTLIST</intref> &#37;abs.qname;        
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arg.qname'/><intref ref='attr_arg.qname'>&lt;!ELEMENT</intref> &#37;arg.qname;  EMPTY >
+<phrase id='attr_arg.qname'/><intref ref='elem_arg.qname'>&lt;!ATTLIST</intref> &#37;arg.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_real.qname'/><intref ref='attr_real.qname'>&lt;!ELEMENT</intref> &#37;real.qname;  EMPTY >
+<phrase id='attr_real.qname'/><intref ref='elem_real.qname'>&lt;!ATTLIST</intref> &#37;real.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_imaginary.qname'/><intref ref='attr_imaginary.qname'>&lt;!ELEMENT</intref> &#37;imaginary.qname;  EMPTY >
+<phrase id='attr_imaginary.qname'/><intref ref='elem_imaginary.qname'>&lt;!ATTLIST</intref> &#37;imaginary.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_conjugate.qname'/><intref ref='attr_conjugate.qname'>&lt;!ELEMENT</intref> &#37;conjugate.qname;  EMPTY >
+<phrase id='attr_conjugate.qname'/><intref ref='elem_conjugate.qname'>&lt;!ATTLIST</intref> &#37;conjugate.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_factorial.qname'/><intref ref='attr_factorial.qname'>&lt;!ELEMENT</intref> &#37;factorial.qname;  EMPTY >
+<phrase id='attr_factorial.qname'/><intref ref='elem_factorial.qname'>&lt;!ATTLIST</intref> &#37;factorial.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+
+<phrase id='elem_floor.qname'/><intref ref='attr_floor.qname'>&lt;!ELEMENT</intref> &#37;floor.qname;  EMPTY >
+<phrase id='attr_floor.qname'/><intref ref='elem_floor.qname'>&lt;!ATTLIST</intref> &#37;floor.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_ceiling.qname'/><intref ref='attr_ceiling.qname'>&lt;!ELEMENT</intref> &#37;ceiling.qname;  EMPTY >
+<phrase id='attr_ceiling.qname'/><intref ref='elem_ceiling.qname'>&lt;!ATTLIST</intref> &#37;ceiling.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+<phrase id='pent_carithop1or2ary'/>&lt;!ENTITY % carithop1or2ary          
+     "&#37;minus.qname;" >
+
+<phrase id='elem_minus.qname'/><intref ref='attr_minus.qname'>&lt;!ELEMENT</intref> &#37;minus.qname;  EMPTY >
+<phrase id='attr_minus.qname'/><intref ref='elem_minus.qname'>&lt;!ATTLIST</intref> &#37;minus.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_carithop2ary'/>&lt;!ENTITY % carithop2ary             
+     "&#37;quotient.qname; | &#37;divide.qname; | &#37;power.qname; | &#37;rem.qname;" >
+
+<phrase id='elem_quotient.qname'/><intref ref='attr_quotient.qname'>&lt;!ELEMENT</intref> &#37;quotient.qname;  EMPTY >
+<phrase id='attr_quotient.qname'/><intref ref='elem_quotient.qname'>&lt;!ATTLIST</intref> &#37;quotient.qname;       
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_divide.qname'/><intref ref='attr_divide.qname'>&lt;!ELEMENT</intref> &#37;divide.qname;  EMPTY >
+<phrase id='attr_divide.qname'/><intref ref='elem_divide.qname'>&lt;!ATTLIST</intref> &#37;divide.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_power.qname'/><intref ref='attr_power.qname'>&lt;!ELEMENT</intref> &#37;power.qname;  EMPTY >
+<phrase id='attr_power.qname'/><intref ref='elem_power.qname'>&lt;!ATTLIST</intref> &#37;power.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_rem.qname'/><intref ref='attr_rem.qname'>&lt;!ELEMENT</intref> &#37;rem.qname;  EMPTY >
+<phrase id='attr_rem.qname'/><intref ref='elem_rem.qname'>&lt;!ATTLIST</intref> &#37;rem.qname;       
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_carithopnary'/>&lt;!ENTITY % carithopnary             
+     "&#37;plus.qname; | &#37;times.qname; | &#37;max.qname; 
+      | &#37;min.qname; | &#37;gcd.qname; | &#37;lcm.qname;" >
+
+<phrase id='elem_plus.qname'/><intref ref='attr_plus.qname'>&lt;!ELEMENT</intref> &#37;plus.qname;  EMPTY >
+<phrase id='attr_plus.qname'/><intref ref='elem_plus.qname'>&lt;!ATTLIST</intref> &#37;plus.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_max.qname'/><intref ref='attr_max.qname'>&lt;!ELEMENT</intref> &#37;max.qname;  EMPTY >
+<phrase id='attr_max.qname'/><intref ref='elem_max.qname'>&lt;!ATTLIST</intref> &#37;max.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_min.qname'/><intref ref='attr_min.qname'>&lt;!ELEMENT</intref> &#37;min.qname;  EMPTY >
+<phrase id='attr_min.qname'/><intref ref='elem_min.qname'>&lt;!ATTLIST</intref> &#37;min.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_times.qname'/><intref ref='attr_times.qname'>&lt;!ELEMENT</intref> &#37;times.qname;  EMPTY >
+<phrase id='attr_times.qname'/><intref ref='elem_times.qname'>&lt;!ATTLIST</intref> &#37;times.qname;      
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_gcd.qname'/><intref ref='attr_gcd.qname'>&lt;!ELEMENT</intref> &#37;gcd.qname;  EMPTY >
+<phrase id='attr_gcd.qname'/><intref ref='elem_gcd.qname'>&lt;!ATTLIST</intref> &#37;gcd.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_lcm.qname'/><intref ref='attr_lcm.qname'>&lt;!ELEMENT</intref> &#37;lcm.qname;  EMPTY >
+<phrase id='attr_lcm.qname'/><intref ref='elem_lcm.qname'>&lt;!ATTLIST</intref> &#37;lcm.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_carithoproot'/>&lt;!ENTITY % carithoproot             
+     "&#37;root.qname;" >
+
+<phrase id='elem_root.qname'/><intref ref='attr_root.qname'>&lt;!ELEMENT</intref> &#37;root.qname;  EMPTY >
+<phrase id='attr_root.qname'/><intref ref='elem_root.qname'>&lt;!ATTLIST</intref> &#37;root.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_clogicopquant'/>&lt;!ENTITY % clogicopquant            
+     "%exists.qname; | &#37;forall.qname;" >
+
+<phrase id='elem_exists.qname'/><intref ref='attr_exists.qname'>&lt;!ELEMENT</intref> %exists.qname;  EMPTY >
+<phrase id='attr_exists.qname'/><intref ref='elem_exists.qname'>&lt;!ATTLIST</intref> %exists.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_forall.qname'/><intref ref='attr_forall.qname'>&lt;!ELEMENT</intref> &#37;forall.qname;  EMPTY >
+<phrase id='attr_forall.qname'/><intref ref='elem_forall.qname'>&lt;!ATTLIST</intref> &#37;forall.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_clogicopnary'/>&lt;!ENTITY % clogicopnary             
+     "&#37;and.qname; | &#37;or.qname; | &#37;xor.qname;" >
+
+<phrase id='elem_and.qname'/><intref ref='attr_and.qname'>&lt;!ELEMENT</intref> &#37;and.qname;  EMPTY >
+<phrase id='attr_and.qname'/><intref ref='elem_and.qname'>&lt;!ATTLIST</intref> &#37;and.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_or.qname'/><intref ref='attr_or.qname'>&lt;!ELEMENT</intref> &#37;or.qname;  EMPTY >
+<phrase id='attr_or.qname'/><intref ref='elem_or.qname'>&lt;!ATTLIST</intref> &#37;or.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_xor.qname'/><intref ref='attr_xor.qname'>&lt;!ELEMENT</intref> &#37;xor.qname;  EMPTY >
+<phrase id='attr_xor.qname'/><intref ref='elem_xor.qname'>&lt;!ATTLIST</intref> &#37;xor.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_clogicop1ary'/>&lt;!ENTITY % clogicop1ary             
+     "&#37;not.qname;" >
+
+<phrase id='elem_not.qname'/><intref ref='attr_not.qname'>&lt;!ELEMENT</intref> &#37;not.qname;  EMPTY >
+<phrase id='attr_not.qname'/><intref ref='elem_not.qname'>&lt;!ATTLIST</intref> &#37;not.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_clogicop2ary'/>&lt;!ENTITY % clogicop2ary             
+     "&#37;implies.qname;" >
+
+<phrase id='elem_implies.qname'/><intref ref='attr_implies.qname'>&lt;!ELEMENT</intref> &#37;implies.qname;  EMPTY >
+<phrase id='attr_implies.qname'/><intref ref='elem_implies.qname'>&lt;!ATTLIST</intref> &#37;implies.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_ccalcop'/>&lt;!ENTITY % ccalcop                  
+     "&#37;log.qname; | &#37;int.qname; | &#37;diff.qname; | &#37;partialdiff.qname; |
+      &#37;divergence.qname; | &#37;grad.qname; | &#37;curl.qname; | &#37;laplacian.qname;" >
+
+<phrase id='elem_divergence.qname'/><intref ref='attr_divergence.qname'>&lt;!ELEMENT</intref> &#37;divergence.qname;  EMPTY >
+<phrase id='attr_divergence.qname'/><intref ref='elem_divergence.qname'>&lt;!ATTLIST</intref> &#37;divergence.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_grad.qname'/><intref ref='attr_grad.qname'>&lt;!ELEMENT</intref> &#37;grad.qname;  EMPTY >
+<phrase id='attr_grad.qname'/><intref ref='elem_grad.qname'>&lt;!ATTLIST</intref> &#37;grad.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_curl.qname'/><intref ref='attr_curl.qname'>&lt;!ELEMENT</intref> &#37;curl.qname;  EMPTY >
+<phrase id='attr_curl.qname'/><intref ref='elem_curl.qname'>&lt;!ATTLIST</intref> &#37;curl.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_laplacian.qname'/><intref ref='attr_laplacian.qname'>&lt;!ELEMENT</intref> &#37;laplacian.qname;  EMPTY >
+<phrase id='attr_laplacian.qname'/><intref ref='elem_laplacian.qname'>&lt;!ATTLIST</intref> &#37;laplacian.qname;     
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_log.qname'/><intref ref='attr_log.qname'>&lt;!ELEMENT</intref> &#37;log.qname;  EMPTY >
+<phrase id='attr_log.qname'/><intref ref='elem_log.qname'>&lt;!ATTLIST</intref> &#37;log.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_int.qname'/><intref ref='attr_int.qname'>&lt;!ELEMENT</intref> &#37;int.qname;  EMPTY >
+<phrase id='attr_int.qname'/><intref ref='elem_int.qname'>&lt;!ATTLIST</intref> &#37;int.qname;    
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_diff.qname'/><intref ref='attr_diff.qname'>&lt;!ELEMENT</intref> &#37;diff.qname;  EMPTY >
+<phrase id='attr_diff.qname'/><intref ref='elem_diff.qname'>&lt;!ATTLIST</intref> &#37;diff.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_partialdiff.qname'/><intref ref='attr_partialdiff.qname'>&lt;!ELEMENT</intref> &#37;partialdiff.qname;  EMPTY >
+<phrase id='attr_partialdiff.qname'/><intref ref='elem_partialdiff.qname'>&lt;!ATTLIST</intref> &#37;partialdiff.qname;  
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_ccalcop1ary'/>&lt;!ENTITY % ccalcop1ary              
+     "&#37;ln.qname;" >
+
+<phrase id='elem_ln.qname'/><intref ref='attr_ln.qname'>&lt;!ELEMENT</intref> &#37;ln.qname;  EMPTY >
+<phrase id='attr_ln.qname'/><intref ref='elem_ln.qname'>&lt;!ATTLIST</intref> &#37;ln.qname;   
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_csetop1ary'/>&lt;!ENTITY % csetop1ary               
+     "&#37;card.qname;" >
+
+<phrase id='elem_card.qname'/><intref ref='attr_card.qname'>&lt;!ELEMENT</intref> &#37;card.qname;  EMPTY >
+<phrase id='attr_card.qname'/><intref ref='elem_card.qname'>&lt;!ATTLIST</intref> &#37;card.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_csetop2ary'/>&lt;!ENTITY % csetop2ary               
+     "&#37;setdiff.qname;" >
+
+<phrase id='elem_setdiff.qname'/><intref ref='attr_setdiff.qname'>&lt;!ELEMENT</intref> &#37;setdiff.qname;  EMPTY >
+<phrase id='attr_setdiff.qname'/><intref ref='elem_setdiff.qname'>&lt;!ATTLIST</intref> &#37;setdiff.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_csetopnary'/>&lt;!ENTITY % csetopnary               
+     "&#37;union.qname; | &#37;intersect.qname; | &#37;cartesianproduct.qname; " >
+
+<phrase id='elem_union.qname'/><intref ref='attr_union.qname'>&lt;!ELEMENT</intref> &#37;union.qname;  EMPTY >
+<phrase id='attr_union.qname'/><intref ref='elem_union.qname'>&lt;!ATTLIST</intref> &#37;union.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_intersect.qname'/><intref ref='attr_intersect.qname'>&lt;!ELEMENT</intref> &#37;intersect.qname;  EMPTY >
+<phrase id='attr_intersect.qname'/><intref ref='elem_intersect.qname'>&lt;!ATTLIST</intref> &#37;intersect.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_cartesianproduct.qname'/><intref ref='attr_cartesianproduct.qname'>&lt;!ELEMENT</intref> &#37;cartesianproduct.qname;  EMPTY >
+<phrase id='attr_cartesianproduct.qname'/><intref ref='elem_cartesianproduct.qname'>&lt;!ATTLIST</intref> &#37;cartesianproduct.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_cseqop'/>&lt;!ENTITY % cseqop                   
+     "&#37;sum.qname; | &#37;product.qname; | &#37;limit.qname;" >
+
+<phrase id='elem_sum.qname'/><intref ref='attr_sum.qname'>&lt;!ELEMENT</intref> &#37;sum.qname;  EMPTY >
+<phrase id='attr_sum.qname'/><intref ref='elem_sum.qname'>&lt;!ATTLIST</intref> &#37;sum.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_product.qname'/><intref ref='attr_product.qname'>&lt;!ELEMENT</intref> &#37;product.qname;  EMPTY >
+<phrase id='attr_product.qname'/><intref ref='elem_product.qname'>&lt;!ATTLIST</intref> &#37;product.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_limit.qname'/><intref ref='attr_limit.qname'>&lt;!ELEMENT</intref> &#37;limit.qname;  EMPTY >
+<phrase id='attr_limit.qname'/><intref ref='elem_limit.qname'>&lt;!ATTLIST</intref> &#37;limit.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_ctrigop'/>&lt;!ENTITY % ctrigop                  
+     "&#37;sin.qname; | &#37;cos.qname; | &#37;tan.qname; 
+      | &#37;sec.qname; | &#37;csc.qname; | &#37;cot.qname; 
+      | &#37;sinh.qname; | &#37;cosh.qname; | &#37;tanh.qname; 
+      | &#37;sech.qname; | &#37;csch.qname; | &#37;coth.qname; 
+      | &#37;arcsin.qname; | &#37;arccos.qname; | &#37;arctan.qname;
+      | &#37;arccosh.qname; | &#37;arccot.qname; | &#37;arccoth.qname;
+      | &#37;arccsc.qname; | &#37;arccsch.qname; | &#37;arcsec.qname;
+      | &#37;arcsech.qname; | &#37;arcsinh.qname; | &#37;arctanh.qname;
+      " >
+
+<phrase id='elem_sin.qname'/><intref ref='attr_sin.qname'>&lt;!ELEMENT</intref> &#37;sin.qname;  EMPTY >
+<phrase id='attr_sin.qname'/><intref ref='elem_sin.qname'>&lt;!ATTLIST</intref> &#37;sin.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_cos.qname'/><intref ref='attr_cos.qname'>&lt;!ELEMENT</intref> &#37;cos.qname;  EMPTY >
+<phrase id='attr_cos.qname'/><intref ref='elem_cos.qname'>&lt;!ATTLIST</intref> &#37;cos.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_tan.qname'/><intref ref='attr_tan.qname'>&lt;!ELEMENT</intref> &#37;tan.qname;  EMPTY >
+<phrase id='attr_tan.qname'/><intref ref='elem_tan.qname'>&lt;!ATTLIST</intref> &#37;tan.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_sec.qname'/><intref ref='attr_sec.qname'>&lt;!ELEMENT</intref> &#37;sec.qname;  EMPTY >
+<phrase id='attr_sec.qname'/><intref ref='elem_sec.qname'>&lt;!ATTLIST</intref> &#37;sec.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_csc.qname'/><intref ref='attr_csc.qname'>&lt;!ELEMENT</intref> &#37;csc.qname;  EMPTY >
+<phrase id='attr_csc.qname'/><intref ref='elem_csc.qname'>&lt;!ATTLIST</intref> &#37;csc.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_cot.qname'/><intref ref='attr_cot.qname'>&lt;!ELEMENT</intref> &#37;cot.qname;  EMPTY >
+<phrase id='attr_cot.qname'/><intref ref='elem_cot.qname'>&lt;!ATTLIST</intref> &#37;cot.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_sinh.qname'/><intref ref='attr_sinh.qname'>&lt;!ELEMENT</intref> &#37;sinh.qname;  EMPTY >
+<phrase id='attr_sinh.qname'/><intref ref='elem_sinh.qname'>&lt;!ATTLIST</intref> &#37;sinh.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_cosh.qname'/><intref ref='attr_cosh.qname'>&lt;!ELEMENT</intref> &#37;cosh.qname;  EMPTY >
+<phrase id='attr_cosh.qname'/><intref ref='elem_cosh.qname'>&lt;!ATTLIST</intref> &#37;cosh.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_tanh.qname'/><intref ref='attr_tanh.qname'>&lt;!ELEMENT</intref> &#37;tanh.qname;  EMPTY >
+<phrase id='attr_tanh.qname'/><intref ref='elem_tanh.qname'>&lt;!ATTLIST</intref> &#37;tanh.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_sech.qname'/><intref ref='attr_sech.qname'>&lt;!ELEMENT</intref> &#37;sech.qname;  EMPTY >
+<phrase id='attr_sech.qname'/><intref ref='elem_sech.qname'>&lt;!ATTLIST</intref> &#37;sech.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_csch.qname'/><intref ref='attr_csch.qname'>&lt;!ELEMENT</intref> &#37;csch.qname;  EMPTY >
+<phrase id='attr_csch.qname'/><intref ref='elem_csch.qname'>&lt;!ATTLIST</intref> &#37;csch.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_coth.qname'/><intref ref='attr_coth.qname'>&lt;!ELEMENT</intref> &#37;coth.qname;  EMPTY >
+<phrase id='attr_coth.qname'/><intref ref='elem_coth.qname'>&lt;!ATTLIST</intref> &#37;coth.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arcsin.qname'/><intref ref='attr_arcsin.qname'>&lt;!ELEMENT</intref> &#37;arcsin.qname;  EMPTY >
+<phrase id='attr_arcsin.qname'/><intref ref='elem_arcsin.qname'>&lt;!ATTLIST</intref> &#37;arcsin.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arccos.qname'/><intref ref='attr_arccos.qname'>&lt;!ELEMENT</intref> &#37;arccos.qname;  EMPTY >
+<phrase id='attr_arccos.qname'/><intref ref='elem_arccos.qname'>&lt;!ATTLIST</intref> &#37;arccos.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arctan.qname'/><intref ref='attr_arctan.qname'>&lt;!ELEMENT</intref> &#37;arctan.qname;  EMPTY >
+<phrase id='attr_arctan.qname'/><intref ref='elem_arctan.qname'>&lt;!ATTLIST</intref> &#37;arctan.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arccosh.qname'/><intref ref='attr_arccosh.qname'>&lt;!ELEMENT</intref> &#37;arccosh.qname;  EMPTY >
+<phrase id='attr_arccosh.qname'/><intref ref='elem_arccosh.qname'>&lt;!ATTLIST</intref> &#37;arccosh.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+
+<phrase id='elem_arccot.qname'/><intref ref='attr_arccot.qname'>&lt;!ELEMENT</intref> &#37;arccot.qname;  EMPTY >
+<phrase id='attr_arccot.qname'/><intref ref='elem_arccot.qname'>&lt;!ATTLIST</intref> &#37;arccot.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arccoth.qname'/><intref ref='attr_arccoth.qname'>&lt;!ELEMENT</intref> &#37;arccoth.qname;  EMPTY >
+<phrase id='attr_arccoth.qname'/><intref ref='elem_arccoth.qname'>&lt;!ATTLIST</intref> &#37;arccoth.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+
+<phrase id='elem_arccsc.qname'/><intref ref='attr_arccsc.qname'>&lt;!ELEMENT</intref> &#37;arccsc.qname;  EMPTY >
+<phrase id='attr_arccsc.qname'/><intref ref='elem_arccsc.qname'>&lt;!ATTLIST</intref> &#37;arccsc.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arccsch.qname'/><intref ref='attr_arccsch.qname'>&lt;!ELEMENT</intref> &#37;arccsch.qname;  EMPTY >
+<phrase id='attr_arccsch.qname'/><intref ref='elem_arccsch.qname'>&lt;!ATTLIST</intref> &#37;arccsch.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arcsec.qname'/><intref ref='attr_arcsec.qname'>&lt;!ELEMENT</intref> &#37;arcsec.qname;  EMPTY >
+<phrase id='attr_arcsec.qname'/><intref ref='elem_arcsec.qname'>&lt;!ATTLIST</intref> &#37;arcsec.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arcsech.qname'/><intref ref='attr_arcsech.qname'>&lt;!ELEMENT</intref> &#37;arcsech.qname;  EMPTY >
+<phrase id='attr_arcsech.qname'/><intref ref='elem_arcsech.qname'>&lt;!ATTLIST</intref> &#37;arcsech.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arcsinh.qname'/><intref ref='attr_arcsinh.qname'>&lt;!ELEMENT</intref> &#37;arcsinh.qname;  EMPTY >
+<phrase id='attr_arcsinh.qname'/><intref ref='elem_arcsinh.qname'>&lt;!ATTLIST</intref> &#37;arcsinh.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_arctanh.qname'/><intref ref='attr_arctanh.qname'>&lt;!ELEMENT</intref> &#37;arctanh.qname;  EMPTY >
+<phrase id='attr_arctanh.qname'/><intref ref='elem_arctanh.qname'>&lt;!ATTLIST</intref> &#37;arctanh.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+
+
+<phrase id='pent_cstatopnary'/>&lt;!ENTITY % cstatopnary              
+     "&#37;mean.qname; | &#37;sdev.qname; |
+      &#37;variance.qname; | &#37;median.qname; |
+      &#37;mode.qname;" >
+
+<phrase id='elem_mean.qname'/><intref ref='attr_mean.qname'>&lt;!ELEMENT</intref> &#37;mean.qname;  EMPTY >
+<phrase id='attr_mean.qname'/><intref ref='elem_mean.qname'>&lt;!ATTLIST</intref> &#37;mean.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_sdev.qname'/><intref ref='attr_sdev.qname'>&lt;!ELEMENT</intref> &#37;sdev.qname;  EMPTY >
+<phrase id='attr_sdev.qname'/><intref ref='elem_sdev.qname'>&lt;!ATTLIST</intref> &#37;sdev.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_variance.qname'/><intref ref='attr_variance.qname'>&lt;!ELEMENT</intref> &#37;variance.qname;  EMPTY >
+<phrase id='attr_variance.qname'/><intref ref='elem_variance.qname'>&lt;!ATTLIST</intref> &#37;variance.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_median.qname'/><intref ref='attr_median.qname'>&lt;!ELEMENT</intref> &#37;median.qname;  EMPTY >
+<phrase id='attr_median.qname'/><intref ref='elem_median.qname'>&lt;!ATTLIST</intref> &#37;median.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_mode.qname'/><intref ref='attr_mode.qname'>&lt;!ELEMENT</intref> &#37;mode.qname;  EMPTY >
+<phrase id='attr_mode.qname'/><intref ref='elem_mode.qname'>&lt;!ATTLIST</intref> &#37;mode.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_cstatopmoment'/>&lt;!ENTITY % cstatopmoment            
+     "&#37;moment.qname;" >
+
+<phrase id='elem_moment.qname'/><intref ref='attr_moment.qname'>&lt;!ELEMENT</intref> &#37;moment.qname;  EMPTY >
+<phrase id='attr_moment.qname'/><intref ref='elem_moment.qname'>&lt;!ATTLIST</intref> &#37;moment.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_clalgop1ary'/>&lt;!ENTITY % clalgop1ary              
+     "&#37;determinant.qname; |
+      &#37;transpose.qname;" >
+
+<phrase id='elem_determinant.qname'/><intref ref='attr_determinant.qname'>&lt;!ELEMENT</intref> &#37;determinant.qname;  EMPTY >
+<phrase id='attr_determinant.qname'/><intref ref='elem_determinant.qname'>&lt;!ATTLIST</intref> &#37;determinant.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_transpose.qname'/><intref ref='attr_transpose.qname'>&lt;!ELEMENT</intref> &#37;transpose.qname;  EMPTY >
+<phrase id='attr_transpose.qname'/><intref ref='elem_transpose.qname'>&lt;!ATTLIST</intref> &#37;transpose.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_clalgop2ary'/>&lt;!ENTITY % clalgop2ary              
+     "&#37;vectorproduct.qname; 
+      | &#37;scalarproduct.qname; 
+      | &#37;outerproduct.qname;" >
+
+<phrase id='elem_vectorproduct.qname'/><intref ref='attr_vectorproduct.qname'>&lt;!ELEMENT</intref> &#37;vectorproduct.qname;  EMPTY >
+<phrase id='attr_vectorproduct.qname'/><intref ref='elem_vectorproduct.qname'>&lt;!ATTLIST</intref> &#37;vectorproduct.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_scalarproduct.qname'/><intref ref='attr_scalarproduct.qname'>&lt;!ELEMENT</intref> &#37;scalarproduct.qname;  EMPTY >
+<phrase id='attr_scalarproduct.qname'/><intref ref='elem_scalarproduct.qname'>&lt;!ATTLIST</intref> &#37;scalarproduct.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_outerproduct.qname'/><intref ref='attr_outerproduct.qname'>&lt;!ELEMENT</intref> &#37;outerproduct.qname;  EMPTY >
+<phrase id='attr_outerproduct.qname'/><intref ref='elem_outerproduct.qname'>&lt;!ATTLIST</intref> &#37;outerproduct.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_clalgopnary'/>&lt;!ENTITY % clalgopnary              
+     "&#37;selector.qname;" >
+
+<phrase id='elem_selector.qname'/><intref ref='attr_selector.qname'>&lt;!ELEMENT</intref> &#37;selector.qname;  EMPTY >
+<phrase id='attr_selector.qname'/><intref ref='elem_selector.qname'>&lt;!ATTLIST</intref> &#37;selector.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+&lt;!-- Content elements: relations -->
+
+<phrase id='pent_cgenrel2ary'/>&lt;!ENTITY % cgenrel2ary             
+     "&#37;neq.qname; | &#37;factorof.qname;" >
+
+<phrase id='elem_neq.qname'/><intref ref='attr_neq.qname'>&lt;!ELEMENT</intref> &#37;neq.qname;  EMPTY >
+<phrase id='attr_neq.qname'/><intref ref='elem_neq.qname'>&lt;!ATTLIST</intref> &#37;neq.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_factorof.qname'/><intref ref='attr_factorof.qname'>&lt;!ELEMENT</intref> &#37;factorof.qname;  EMPTY >
+<phrase id='attr_factorof.qname'/><intref ref='elem_factorof.qname'>&lt;!ATTLIST</intref> &#37;factorof.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_cgenrelnary'/>&lt;!ENTITY % cgenrelnary              
+     "%eq.qname; | &#37;leq.qname; | &#37;lt.qname; | &#37;geq.qname; 
+      | &#37;gt.qname;| %equivalent.qname; | &#37;approx.qname;" >
+
+<phrase id='elem_eq.qname'/><intref ref='attr_eq.qname'>&lt;!ELEMENT</intref> %eq.qname;  EMPTY >
+<phrase id='attr_eq.qname'/><intref ref='elem_eq.qname'>&lt;!ATTLIST</intref> %eq.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_equivalent.qname'/><intref ref='attr_equivalent.qname'>&lt;!ELEMENT</intref> %equivalent.qname;  EMPTY >
+<phrase id='attr_equivalent.qname'/><intref ref='elem_equivalent.qname'>&lt;!ATTLIST</intref> %equivalent.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_approx.qname'/><intref ref='attr_approx.qname'>&lt;!ELEMENT</intref> &#37;approx.qname;  EMPTY >
+<phrase id='attr_approx.qname'/><intref ref='elem_approx.qname'>&lt;!ATTLIST</intref> &#37;approx.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_gt.qname'/><intref ref='attr_gt.qname'>&lt;!ELEMENT</intref> &#37;gt.qname;  EMPTY >
+<phrase id='attr_gt.qname'/><intref ref='elem_gt.qname'>&lt;!ATTLIST</intref> &#37;gt.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_lt.qname'/><intref ref='attr_lt.qname'>&lt;!ELEMENT</intref> &#37;lt.qname;  EMPTY >
+<phrase id='attr_lt.qname'/><intref ref='elem_lt.qname'>&lt;!ATTLIST</intref> &#37;lt.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_geq.qname'/><intref ref='attr_geq.qname'>&lt;!ELEMENT</intref> &#37;geq.qname;  EMPTY >
+<phrase id='attr_geq.qname'/><intref ref='elem_geq.qname'>&lt;!ATTLIST</intref> &#37;geq.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_leq.qname'/><intref ref='attr_leq.qname'>&lt;!ELEMENT</intref> &#37;leq.qname;  EMPTY >
+<phrase id='attr_leq.qname'/><intref ref='elem_leq.qname'>&lt;!ATTLIST</intref> &#37;leq.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_csetrel2ary'/>&lt;!ENTITY % csetrel2ary              
+     "&#37;in.qname; | &#37;notin.qname; | &#37;notsubset.qname; | &#37;notprsubset.qname;" >
+
+<phrase id='elem_in.qname'/><intref ref='attr_in.qname'>&lt;!ELEMENT</intref> &#37;in.qname;  EMPTY >
+<phrase id='attr_in.qname'/><intref ref='elem_in.qname'>&lt;!ATTLIST</intref> &#37;in.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_notin.qname'/><intref ref='attr_notin.qname'>&lt;!ELEMENT</intref> &#37;notin.qname;  EMPTY >
+<phrase id='attr_notin.qname'/><intref ref='elem_notin.qname'>&lt;!ATTLIST</intref> &#37;notin.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_notsubset.qname'/><intref ref='attr_notsubset.qname'>&lt;!ELEMENT</intref> &#37;notsubset.qname;  EMPTY >
+<phrase id='attr_notsubset.qname'/><intref ref='elem_notsubset.qname'>&lt;!ATTLIST</intref> &#37;notsubset.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_notprsubset.qname'/><intref ref='attr_notprsubset.qname'>&lt;!ELEMENT</intref> &#37;notprsubset.qname;  EMPTY >
+<phrase id='attr_notprsubset.qname'/><intref ref='elem_notprsubset.qname'>&lt;!ATTLIST</intref> &#37;notprsubset.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_csetrelnary'/>&lt;!ENTITY % csetrelnary       
+     "&#37;subset.qname; | &#37;prsubset.qname;" >
+
+<phrase id='elem_subset.qname'/><intref ref='attr_subset.qname'>&lt;!ELEMENT</intref> &#37;subset.qname;  EMPTY >
+<phrase id='attr_subset.qname'/><intref ref='elem_subset.qname'>&lt;!ATTLIST</intref> &#37;subset.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='elem_prsubset.qname'/><intref ref='attr_prsubset.qname'>&lt;!ELEMENT</intref> &#37;prsubset.qname;  EMPTY >
+<phrase id='attr_prsubset.qname'/><intref ref='elem_prsubset.qname'>&lt;!ATTLIST</intref> &#37;prsubset.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+>
+
+<phrase id='pent_cseqrel2ary'/>&lt;!ENTITY % cseqrel2ary              
+     "&#37;tendsto.qname;" >
+
+<phrase id='elem_tendsto.qname'/><intref ref='attr_tendsto.qname'>&lt;!ELEMENT</intref> &#37;tendsto.qname;  EMPTY >
+<phrase id='attr_tendsto.qname'/><intref ref='elem_tendsto.qname'>&lt;!ATTLIST</intref> &#37;tendsto.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+      <intref ref='pent_att_definition'>%att-definition;</intref>
+      <intref ref='pent_att_encoding'>%att-encoding;</intref>
+      <intref ref='pent_att_type'>%att-type;</intref>
+>
+
+&lt;!-- Content elements: quantifiers -->
+
+<phrase id='pent_cquantifier'/>&lt;!ENTITY % cquantifier            
+     "&#37;lowlimit.qname; | &#37;uplimit.qname; | &#37;bvar.qname; 
+      | &#37;degree.qname; | &#37;logbase.qname;
+      | &#37;momentabout.qname; | &#37;domainofapplication.qname; " >
+
+<phrase id='attr_lowlimit.qname'/><intref ref='elem_lowlimit.qname'>&lt;!ATTLIST</intref> &#37;lowlimit.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_uplimit.qname'/><intref ref='elem_uplimit.qname'>&lt;!ATTLIST</intref> &#37;uplimit.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_bvar.qname'/><intref ref='elem_bvar.qname'>&lt;!ATTLIST</intref> &#37;bvar.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_degree.qname'/><intref ref='elem_degree.qname'>&lt;!ATTLIST</intref> &#37;degree.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_logbase.qname'/><intref ref='elem_logbase.qname'>&lt;!ATTLIST</intref> &#37;logbase.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_momentabout.qname'/><intref ref='elem_momentabout.qname'>&lt;!ATTLIST</intref> &#37;momentabout.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+<phrase id='attr_domainofapplication.qname'/><intref ref='elem_domainofapplication.qname'>&lt;!ATTLIST</intref> &#37;domainofapplication.qname;
+      <intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+>
+
+&lt;!-- Operator groups -->
+
+<phrase id='pent_cop1ary'/>&lt;!ENTITY % cop1ary                  
+     "<intref ref='pent_cfuncop1ary'>%cfuncop1ary;</intref> | <intref ref='pent_carithop1ary'>%carithop1ary;</intref> | <intref ref='pent_clogicop1ary'>%clogicop1ary;</intref> |
+      <intref ref='pent_ccalcop1ary'>%ccalcop1ary;</intref> | <intref ref='pent_ctrigop'>%ctrigop;</intref> | <intref ref='pent_clalgop1ary'>%clalgop1ary;</intref> |
+      <intref ref='pent_csetop1ary'>%csetop1ary;</intref>" >
+
+<phrase id='pent_cop2ary'/>&lt;!ENTITY % cop2ary                  
+     "<intref ref='pent_carithop2ary'>%carithop2ary;</intref> | <intref ref='pent_clogicop2ary'>%clogicop2ary;</intref>| <intref ref='pent_clalgop2ary'>%clalgop2ary;</intref> | <intref ref='pent_csetop2ary'>%csetop2ary;</intref>" >
+
+<phrase id='pent_copnary'/>&lt;!ENTITY % copnary                  
+     "<intref ref='pent_cfuncopnary'>%cfuncopnary;</intref> | <intref ref='pent_carithopnary'>%carithopnary;</intref> | <intref ref='pent_clogicopnary'>%clogicopnary;</intref> |
+      <intref ref='pent_csetopnary'>%csetopnary;</intref> | <intref ref='pent_cstatopnary'>%cstatopnary;</intref> | <intref ref='pent_clalgopnary'>%clalgopnary;</intref>" >
+
+<phrase id='pent_copmisc'/>&lt;!ENTITY % copmisc                  
+     "<intref ref='pent_carithoproot'>%carithoproot;</intref> | <intref ref='pent_carithop1or2ary'>%carithop1or2ary;</intref> | <intref ref='pent_ccalcop'>%ccalcop;</intref> |
+      <intref ref='pent_cseqop'>%cseqop;</intref> | <intref ref='pent_cstatopmoment'>%cstatopmoment;</intref> | <intref ref='pent_clogicopquant'>%clogicopquant;</intref>" >
+
+&lt;!-- Relation groups -->
+
+<phrase id='pent_crel2ary'/>&lt;!ENTITY % crel2ary                 
+     "<intref ref='pent_cgenrel2ary'>%cgenrel2ary;</intref> | <intref ref='pent_csetrel2ary'>%csetrel2ary;</intref> | <intref ref='pent_cseqrel2ary'>%cseqrel2ary;</intref>" >
+
+<phrase id='pent_crelnary'/>&lt;!ENTITY % crelnary                 
+     "<intref ref='pent_cgenrelnary'>%cgenrelnary;</intref> | <intref ref='pent_csetrelnary'>%csetrelnary;</intref>" >
+
+&lt;!-- Content constructs: all -->
+
+<phrase id='pent_Content'/>&lt;!ENTITY % Content                  
+     "<intref ref='pent_ctoken'>%ctoken;</intref> | <intref ref='pent_cspecial'>%cspecial;</intref> | <intref ref='pent_cother'>%cother;</intref> | <intref ref='pent_csemantics'>%csemantics;</intref> | <intref ref='pent_c0ary'>%c0ary;</intref>
+      | <intref ref='pent_cconstructor'>%cconstructor;</intref> | <intref ref='pent_cquantifier'>%cquantifier;</intref> | <intref ref='pent_cop1ary'>%cop1ary;</intref> | <intref ref='pent_cop2ary'>%cop2ary;</intref> 
+      | <intref ref='pent_copnary'>%copnary;</intref> |<intref ref='pent_copmisc'>%copmisc;</intref> | <intref ref='pent_crel2ary'>%crel2ary;</intref> | <intref ref='pent_crelnary'>%crelnary;</intref>" >
+
+&lt;!-- Content constructs for substitution in presentation structures -->
+
+<phrase id='pent_ContInPres'/>&lt;!ENTITY % ContInPres               
+     "&#37;ci.qname; |&#37;csymbol.qname;| &#37;cn.qname; | <intref ref='pent_c0ary'>%c0ary;</intref> |
+      &#37;apply.qname; | &#37;fn.qname; |
+      &#37;lambda.qname; | &#37;reln.qname; |
+      <intref ref='pent_cconstructor'>%cconstructor;</intref> |
+      &#37;semantics.qname; |&#37;declare.qname;" >
+
+&lt;!-- ............................................................. -->
+&lt;!-- Recursive definition for content of expressions. Include
+     presentation constructs at lowest level so presentation
+     layout schemata hold presentation or content elements.
+     Include content constructs at lowest level so content
+     elements hold PCDATA or presentation elements at leaf
+     level (for permitted substitutable elements in context)
+-->
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+&lt;!-- in strict mode don't allow presentation in content
+     except where allowed by chapter 5:
+     ci, cn, csymbol, semantics
+-->
+  &lt;!ENTITY % ContentExpression  "(<intref ref='pent_Content'>%Content;</intref>)*" >
+  &lt;!ENTITY % semanticsContentExpression        
+       "(<intref ref='pent_Content'>%Content;</intref> | <intref ref='pent_PresInCont'>%PresInCont;</intref> |
+         &#37;annotation.qname; | &#37;annotation-xml.qname;)*" >
+]]&gt;</phrase>
+<phrase id='pent_ContentExpression'/>&lt;!ENTITY % ContentExpression        
+     "(<intref ref='pent_Content'>%Content;</intref> | <intref ref='pent_PresInCont'>%PresInCont;</intref>)*" >
+<phrase id='pent_semanticsContentExpression'/>&lt;!ENTITY % semanticsContentExpression    "<intref ref='pent_ContentExpression'>%ContentExpression;</intref>">    
+
+
+<phrase id='pent_PresExpression'/>&lt;!ENTITY % PresExpression      
+     "(<intref ref='pent_Presentation'>%Presentation;</intref> | <intref ref='pent_ContInPres'>%ContInPres;</intref>)*" >
+<phrase id='pent_MathExpression'/>&lt;!ENTITY % MathExpression           
+     "(<intref ref='pent_PresInCont'>%PresInCont;</intref> | <intref ref='pent_ContInPres'>%ContInPres;</intref>)*" >
+
+&lt;!-- PCDATA or MathML character elements -->
+<phrase id='pent_MathMLCharacters'/>&lt;!ENTITY % MathMLCharacters         
+     "#PCDATA | &#37;mglyph.qname; " >
+
+&lt;!-- Content elements: tokens                       -->
+&lt;!-- (may contain embedded presentation constructs) -->
+
+<phrase id='elem_ci.qname'/><intref ref='attr_ci.qname'>&lt;!ELEMENT</intref> &#37;ci.qname;                 (<intref ref='pent_MathMLCharacters'>%MathMLCharacters;</intref> | <intref ref='pent_PresInCont'>%PresInCont;</intref>)* >
+<phrase id='elem_csymbol.qname'/><intref ref='attr_csymbol.qname'>&lt;!ELEMENT</intref> &#37;csymbol.qname;            (<intref ref='pent_MathMLCharacters'>%MathMLCharacters;</intref> | <intref ref='pent_PresInCont'>%PresInCont;</intref>)* >
+<phrase id='elem_cn.qname'/><intref ref='attr_cn.qname'>&lt;!ELEMENT</intref> &#37;cn.qname;                 (<intref ref='pent_MathMLCharacters'>%MathMLCharacters;</intref> | &#37;sep.qname; | <intref ref='pent_PresInCont'>%PresInCont;</intref>)* >
+
+&lt;!-- Content elements: special -->
+
+<phrase id='elem_apply.qname'/><intref ref='attr_apply.qname'>&lt;!ELEMENT</intref> &#37;apply.qname;              (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_reln.qname'/><intref ref='attr_reln.qname'>&lt;!ELEMENT</intref> &#37;reln.qname;               (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_lambda.qname'/><intref ref='attr_lambda.qname'>&lt;!ELEMENT</intref> &#37;lambda.qname;             (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+
+&lt;!-- Content elements: other -->
+
+<phrase id='elem_condition.qname'/><intref ref='attr_condition.qname'>&lt;!ELEMENT</intref> &#37;condition.qname;          (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_declare.qname'/><intref ref='attr_declare.qname'>&lt;!ELEMENT</intref> &#37;declare.qname;            (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+
+&lt;!-- Content elements: semantics -->
+
+<phrase id='elem_semantics.qname'/><intref ref='attr_semantics.qname'>&lt;!ELEMENT</intref> &#37;semantics.qname;          (<intref ref='pent_semanticsContentExpression'>%semanticsContentExpression;</intref>) >
+<phrase id='pent_Annotation.content'/>&lt;!ENTITY % Annotation.content  "( #PCDATA )" >
+<phrase id='elem_annotation.qname'/><intref ref='attr_annotation.qname'>&lt;!ELEMENT</intref> &#37;annotation.qname;         <intref ref='pent_Annotation.content'>%Annotation.content;</intref> >
+
+<phrase id='pent_Annotation_xml.content'/>&lt;!ENTITY % Annotation-xml.content "ANY" >
+<phrase id='elem_annotation_xml.qname'/><intref ref='attr_annotation_xml.qname'>&lt;!ELEMENT</intref> &#37;annotation-xml.qname;     <intref ref='pent_Annotation_xml.content'>%Annotation-xml.content;</intref> >
+
+&lt;!-- Content elements: constructors -->
+
+<phrase id='elem_interval.qname'/><intref ref='attr_interval.qname'>&lt;!ELEMENT</intref> &#37;interval.qname;           (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_set.qname'/><intref ref='attr_set.qname'>&lt;!ELEMENT</intref> &#37;set.qname;                (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_list.qname'/><intref ref='attr_list.qname'>&lt;!ELEMENT</intref> &#37;list.qname;               (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_vector.qname'/><intref ref='attr_vector.qname'>&lt;!ELEMENT</intref> &#37;vector.qname;             (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_matrix.qname'/><intref ref='attr_matrix.qname'>&lt;!ELEMENT</intref> &#37;matrix.qname;             (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_matrixrow.qname'/><intref ref='attr_matrixrow.qname'>&lt;!ELEMENT</intref> &#37;matrixrow.qname;          (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+
+<phrase id='elem_piecewise.qname'/><intref ref='attr_piecewise.qname'>&lt;!ELEMENT</intref> &#37;piecewise.qname;          ((&#37;piece.qname;)*, (&#37;otherwise.qname;)? ) >
+<phrase id='elem_piece.qname'/><intref ref='attr_piece.qname'>&lt;!ELEMENT</intref> &#37;piece.qname;              (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_otherwise.qname'/><intref ref='attr_otherwise.qname'>&lt;!ELEMENT</intref> &#37;otherwise.qname;          (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+
+&lt;!-- Content elements: operator (user-defined) -->
+
+<phrase id='elem_fn.qname'/><intref ref='attr_fn.qname'>&lt;!ELEMENT</intref> &#37;fn.qname;                 (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+
+&lt;!-- Content elements: quantifiers -->
+
+<phrase id='elem_lowlimit.qname'/><intref ref='attr_lowlimit.qname'>&lt;!ELEMENT</intref> &#37;lowlimit.qname;           (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_uplimit.qname'/><intref ref='attr_uplimit.qname'>&lt;!ELEMENT</intref> &#37;uplimit.qname;            (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_bvar.qname'/><intref ref='attr_bvar.qname'>&lt;!ELEMENT</intref> &#37;bvar.qname;               (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_degree.qname'/><intref ref='attr_degree.qname'>&lt;!ELEMENT</intref> &#37;degree.qname;             (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_logbase.qname'/><intref ref='attr_logbase.qname'>&lt;!ELEMENT</intref> &#37;logbase.qname;            (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_momentabout.qname'/><intref ref='attr_momentabout.qname'>&lt;!ELEMENT</intref> &#37;momentabout.qname;        (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+<phrase id='elem_domainofapplication.qname'/><intref ref='attr_domainofapplication.qname'>&lt;!ELEMENT</intref> &#37;domainofapplication.qname; (<intref ref='pent_ContentExpression'>%ContentExpression;</intref>) >
+
+&lt;!-- ............................................................. -->
+&lt;!-- Presentation layout schemata contain tokens,
+     layout and content schemata.
+-->
+
+
+
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+&lt;!-- In strict mode enforce mfrac has exactly two children
+      same for msub etc -->
+  &lt;!ENTITY % onePresExpression
+       "(<intref ref='pent_Presentation'>%Presentation;</intref> | <intref ref='pent_ContInPres'>%ContInPres;</intref>)" >
+  &lt;!ENTITY % twoPresExpression
+       "(<intref ref='pent_onePresExpression'>%onePresExpression;</intref>,<intref ref='pent_onePresExpression'>%onePresExpression;</intref>)" >
+  &lt;!ENTITY % threePresExpression
+       "(<intref ref='pent_onePresExpression'>%onePresExpression;</intref>,<intref ref='pent_onePresExpression'>%onePresExpression;</intref>,<intref ref='pent_onePresExpression'>%onePresExpression;</intref>)" >
+  &lt;!ENTITY % mtrPresExpression
+       "(&#37;mtr.qname;|&#37;mlabeledtr.qname;)*" >
+  &lt;!ENTITY % mtdPresExpression
+       "(&#37;mtd.qname;)*" >
+  &lt;!ENTITY % prscrPresExpression " (<intref ref='pent_onePresExpression'>%onePresExpression;</intref>,
+  ((<intref ref='pent_onePresExpression'>%onePresExpression;</intref>|&#37;none.qname;),(<intref ref='pent_onePresExpression'>%onePresExpression;</intref>|&#37;none.qname;))*,
+  (&#37;mprescripts.qname;,
+  ((<intref ref='pent_onePresExpression'>%onePresExpression;</intref>|&#37;none.qname;),(<intref ref='pent_onePresExpression'>%onePresExpression;</intref>|&#37;none.qname;))*)?
+  )">
+]]&gt;</phrase>
+
+
+&lt;!-- By default keep them as they were in MathML 2.0  -->
+<phrase id='pent_onePresExpression'/>&lt;!ENTITY % onePresExpression   "<intref ref='pent_PresExpression'>%PresExpression;</intref>">
+<phrase id='pent_twoPresExpression'/>&lt;!ENTITY % twoPresExpression   "<intref ref='pent_PresExpression'>%PresExpression;</intref>">
+<phrase id='pent_threePresExpression'/>&lt;!ENTITY % threePresExpression "<intref ref='pent_PresExpression'>%PresExpression;</intref>">
+<phrase id='pent_mtrPresExpression'/>&lt;!ENTITY % mtrPresExpression   "<intref ref='pent_PresExpression'>%PresExpression;</intref>">
+<phrase id='pent_mtdPresExpression'/>&lt;!ENTITY % mtdPresExpression   "<intref ref='pent_PresExpression'>%PresExpression;</intref>">
+<phrase id='pent_prscrPresExpression'/>&lt;!ENTITY % prscrPresExpression "<intref ref='pent_PresExpression'>%PresExpression;</intref>">
+
+<phrase id='elem_mstyle.qname'/><intref ref='attr_mstyle.qname'>&lt;!ELEMENT</intref> &#37;mstyle.qname;             (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+<phrase id='elem_merror.qname'/><intref ref='attr_merror.qname'>&lt;!ELEMENT</intref> &#37;merror.qname;             (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+<phrase id='elem_mphantom.qname'/><intref ref='attr_mphantom.qname'>&lt;!ELEMENT</intref> &#37;mphantom.qname;           (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+<phrase id='elem_mrow.qname'/><intref ref='attr_mrow.qname'>&lt;!ELEMENT</intref> &#37;mrow.qname;               (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+<phrase id='elem_mfrac.qname'/><intref ref='attr_mfrac.qname'>&lt;!ELEMENT</intref> &#37;mfrac.qname;              (<intref ref='pent_twoPresExpression'>%twoPresExpression;</intref>) >
+<phrase id='elem_msqrt.qname'/><intref ref='attr_msqrt.qname'>&lt;!ELEMENT</intref> &#37;msqrt.qname;              (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+<phrase id='elem_menclose.qname'/><intref ref='attr_menclose.qname'>&lt;!ELEMENT</intref> &#37;menclose.qname;           (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+<phrase id='elem_mroot.qname'/><intref ref='attr_mroot.qname'>&lt;!ELEMENT</intref> &#37;mroot.qname;              (<intref ref='pent_twoPresExpression'>%twoPresExpression;</intref>) >
+<phrase id='elem_msub.qname'/><intref ref='attr_msub.qname'>&lt;!ELEMENT</intref> &#37;msub.qname;               (<intref ref='pent_twoPresExpression'>%twoPresExpression;</intref>) >
+<phrase id='elem_msup.qname'/><intref ref='attr_msup.qname'>&lt;!ELEMENT</intref> &#37;msup.qname;               (<intref ref='pent_twoPresExpression'>%twoPresExpression;</intref>) >
+<phrase id='elem_msubsup.qname'/><intref ref='attr_msubsup.qname'>&lt;!ELEMENT</intref> &#37;msubsup.qname;            (<intref ref='pent_threePresExpression'>%threePresExpression;</intref>) >
+<phrase id='elem_mmultiscripts.qname'/><intref ref='attr_mmultiscripts.qname'>&lt;!ELEMENT</intref> &#37;mmultiscripts.qname;      (<intref ref='pent_prscrPresExpression'>%prscrPresExpression;</intref>) >
+<phrase id='elem_munder.qname'/><intref ref='attr_munder.qname'>&lt;!ELEMENT</intref> &#37;munder.qname;             (<intref ref='pent_twoPresExpression'>%twoPresExpression;</intref>) >
+<phrase id='elem_mover.qname'/><intref ref='attr_mover.qname'>&lt;!ELEMENT</intref> &#37;mover.qname;              (<intref ref='pent_twoPresExpression'>%twoPresExpression;</intref>) >
+<phrase id='elem_munderover.qname'/><intref ref='attr_munderover.qname'>&lt;!ELEMENT</intref> &#37;munderover.qname;         (<intref ref='pent_threePresExpression'>%threePresExpression;</intref>) >
+<phrase id='elem_mtable.qname'/><intref ref='attr_mtable.qname'>&lt;!ELEMENT</intref> &#37;mtable.qname;             (<intref ref='pent_mtrPresExpression'>%mtrPresExpression;</intref>) >
+<phrase id='elem_mtr.qname'/><intref ref='attr_mtr.qname'>&lt;!ELEMENT</intref> &#37;mtr.qname;                (<intref ref='pent_mtdPresExpression'>%mtdPresExpression;</intref>) >
+<phrase id='elem_mlabeledtr.qname'/><intref ref='attr_mlabeledtr.qname'>&lt;!ELEMENT</intref> &#37;mlabeledtr.qname;         (<intref ref='pent_mtdPresExpression'>%mtdPresExpression;</intref>) >
+<phrase id='elem_mtd.qname'/><intref ref='attr_mtd.qname'>&lt;!ELEMENT</intref> &#37;mtd.qname;                (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+<phrase id='elem_maction.qname'/><intref ref='attr_maction.qname'>&lt;!ELEMENT</intref> &#37;maction.qname;            (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+<phrase id='elem_mfenced.qname'/><intref ref='attr_mfenced.qname'>&lt;!ELEMENT</intref> &#37;mfenced.qname;            (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+<phrase id='elem_mpadded.qname'/><intref ref='attr_mpadded.qname'>&lt;!ELEMENT</intref> &#37;mpadded.qname;            (<intref ref='pent_PresExpression'>%PresExpression;</intref>) >
+
+&lt;!-- Presentation elements contain PCDATA or malignmark constructs. -->
+
+<phrase id='elem_mi.qname'/><intref ref='attr_mi.qname'>&lt;!ELEMENT</intref> &#37;mi.qname;                 (<intref ref='pent_MathMLCharacters'>%MathMLCharacters;</intref> |
+      &#37;malignmark.qname;)* >
+<phrase id='elem_mn.qname'/><intref ref='attr_mn.qname'>&lt;!ELEMENT</intref> &#37;mn.qname;                 (<intref ref='pent_MathMLCharacters'>%MathMLCharacters;</intref> |
+      &#37;malignmark.qname;)* >
+<phrase id='elem_mo.qname'/><intref ref='attr_mo.qname'>&lt;!ELEMENT</intref> &#37;mo.qname;                 (<intref ref='pent_MathMLCharacters'>%MathMLCharacters;</intref> |
+      &#37;malignmark.qname;)* >
+<phrase id='elem_mtext.qname'/><intref ref='attr_mtext.qname'>&lt;!ELEMENT</intref> &#37;mtext.qname;              (<intref ref='pent_MathMLCharacters'>%MathMLCharacters;</intref> |
+      &#37;malignmark.qname;)* >
+<phrase id='elem_ms.qname'/><intref ref='attr_ms.qname'>&lt;!ELEMENT</intref> &#37;ms.qname;                 (<intref ref='pent_MathMLCharacters'>%MathMLCharacters;</intref> |
+      &#37;malignmark.qname;)* >
+
+&lt;!-- Browser interface definition  ............................... -->
+
+&lt;!-- Attributes for top-level element "math" -->
+
+<phrase id='pent_att_macros'/>&lt;!ENTITY % att-macros               
+     "macros       CDATA                    #IMPLIED" >
+<phrase id='pent_att_mode'/>&lt;!ENTITY % att-mode                 
+     "mode         CDATA                    #IMPLIED" >
+<phrase diff='add'>&lt;![<intref ref='pent_MathMLstrict'>%MathMLstrict;</intref>[
+  &lt;!ENTITY % att-display
+     "display      ( block | inline )                    'inline'" >
+]]&gt;</phrase>
+<phrase id='pent_att_display'/>&lt;!ENTITY % att-display                
+     "display      CDATA                    #IMPLIED" >
+
+<phrase id='pent_att_schemalocation'/>&lt;!ENTITY % att-schemalocation               
+<phrase diff="add">     "<intref ref='pent_mathml_qname.module'>%Schema.prefix;</intref>:schemaLocation CDATA  #IMPLIED"></phrase>
+
+<phrase id='pent_att_topinfo'/>&lt;!ENTITY % att-topinfo          
+     "<intref ref='pent_MATHML.Common.attrib'>%MATHML.Common.attrib;</intref>
+<phrase diff="add">      <intref ref='pent_att_schemalocation'>%att-schemalocation;</intref></phrase>
+      <intref ref='pent_att_macros'>%att-macros;</intref>
+      <intref ref='pent_att_mode'>%att-mode;</intref>
+      <intref ref='pent_att_display'>%att-display;</intref>" >
+
+&lt;!-- Attributes for browser interface element -->
+
+<phrase id='pent_att_baseline'/>&lt;!ENTITY % att-baseline             
+     "baseline     CDATA                    #IMPLIED" >
+<phrase id='pent_att_overflow'/>&lt;!ENTITY % att-overflow            
+     "overflow  ( scroll | elide | truncate | scale ) 'scroll'" >
+<phrase id='pent_att_altimg'/>&lt;!ENTITY % att-altimg               
+     "altimg       CDATA                    #IMPLIED" >
+<phrase id='pent_att_alttext'/>&lt;!ENTITY % att-alttext           
+     "alttext      CDATA                    #IMPLIED" >
+
+<phrase id='pent_att_browif'/>&lt;!ENTITY % att-browif           
+     "<intref ref='pent_att_type'>%att-type;</intref>
+      <intref ref='pent_att_name'>%att-name;</intref>
+      <intref ref='pent_att_height'>%att-height;</intref>
+      <intref ref='pent_att_width'>%att-width;</intref>
+      <intref ref='pent_att_baseline'>%att-baseline;</intref>
+      <intref ref='pent_att_overflow'>%att-overflow;</intref>
+      <intref ref='pent_att_altimg'>%att-altimg;</intref>
+      <intref ref='pent_att_alttext'>%att-alttext;</intref>" >
+
+&lt;!-- ............................................................. -->
+&lt;!-- The top-level element "math" contains MathML encoded
+     mathematics. The "math" element has the browser info
+     attributes iff it is also the browser interface element.
+-->
+
+<phrase id='elem_math.qname'/><intref ref='attr_math.qname'>&lt;!ELEMENT</intref> &#37;math.qname;               (<intref ref='pent_MathExpression'>%MathExpression;</intref>) >
+
+<phrase id='attr_math.qname'/><intref ref='elem_math.qname'>&lt;!ATTLIST</intref> &#37;math.qname;
+      <intref ref='pent_att_topinfo'>%att-topinfo;</intref>
+      <intref ref='pent_att_browif'>%att-browif;</intref> >
+
+&lt;!-- MathML Character Entities .............................................. -->
+<phrase id='pent_mathml_charent.module'/>&lt;!ENTITY % mathml-charent.module "INCLUDE" >
+<phrase>&lt;![<intref ref='pent_mathml_charent.module'>%mathml-charent.module;</intref>[
+&lt;!-- Entity sets from ISO Technical Report 9573-13 ..... -->
+
+<phrase id='pent_ent_isoamsa'/>&lt;!ENTITY % ent-isoamsa
+      PUBLIC "-//W3C//ENTITIES Added Math Symbols: Arrow Relations for MathML 2.0//EN"
+             "iso9573-13/isoamsa.ent" >
+<intref ref='chars_entity_tables'>%ent-isoamsa;</intref>
+
+<phrase id='pent_ent_isoamsb'/>&lt;!ENTITY % ent-isoamsb
+      PUBLIC "-//W3C//ENTITIES Added Math Symbols: Binary Operators for MathML 2.0//EN"
+             "iso9573-13/isoamsb.ent" >
+<intref ref='chars_entity_tables'>%ent-isoamsb;</intref>
+
+<phrase id='pent_ent_isoamsc'/>&lt;!ENTITY % ent-isoamsc
+      PUBLIC "-//W3C//ENTITIES Added Math Symbols: Delimiters for MathML 2.0//EN"
+             "iso9573-13/isoamsc.ent" >
+<intref ref='chars_entity_tables'>%ent-isoamsc;</intref>
+
+<phrase id='pent_ent_isoamsn'/>&lt;!ENTITY % ent-isoamsn
+      PUBLIC "-//W3C//ENTITIES Added Math Symbols: Negated Relations for MathML 2.0//EN"
+             "iso9573-13/isoamsn.ent" >
+<intref ref='chars_entity_tables'>%ent-isoamsn;</intref>
+
+<phrase id='pent_ent_isoamso'/>&lt;!ENTITY % ent-isoamso
+      PUBLIC "-//W3C//ENTITIES Added Math Symbols: Ordinary for MathML 2.0//EN"
+             "iso9573-13/isoamso.ent" >
+<intref ref='chars_entity_tables'>%ent-isoamso;</intref>
+
+<phrase id='pent_ent_isoamsr'/>&lt;!ENTITY % ent-isoamsr
+      PUBLIC "-//W3C//ENTITIES Added Math Symbols: Relations for MathML 2.0//EN"
+             "iso9573-13/isoamsr.ent" >
+<intref ref='chars_entity_tables'>%ent-isoamsr;</intref>
+
+<phrase id='pent_ent_isogrk3'/>&lt;!ENTITY % ent-isogrk3
+      PUBLIC "-//W3C//ENTITIES Greek Symbols for MathML 2.0//EN"
+             "iso9573-13/isogrk3.ent" >
+<intref ref='chars_entity_tables'>%ent-isogrk3;</intref>
+
+<phrase id='pent_ent_isomfrk'/>&lt;!ENTITY % ent-isomfrk
+      PUBLIC "-//W3C//ENTITIES Math Alphabets: Fraktur for MathML 2.0//EN"
+             "iso9573-13/isomfrk.ent" >
+<intref ref='chars_entity_tables'>%ent-isomfrk;</intref>
+
+<phrase id='pent_ent_isomopf'/>&lt;!ENTITY % ent-isomopf
+      PUBLIC "-//W3C//ENTITIES Math Alphabets: Open Face for MathML 2.0//EN"
+             "iso9573-13/isomopf.ent" >
+<intref ref='chars_entity_tables'>%ent-isomopf;</intref>
+
+<phrase id='pent_ent_isomscr'/>&lt;!ENTITY % ent-isomscr
+      PUBLIC "-//W3C//ENTITIES Math Alphabets: Script for MathML 2.0//EN"
+             "iso9573-13/isomscr.ent" >
+<intref ref='chars_entity_tables'>%ent-isomscr;</intref>
+
+<phrase id='pent_ent_isotech'/>&lt;!ENTITY % ent-isotech
+      PUBLIC "-//W3C//ENTITIES General Technical for MathML 2.0//EN"
+             "iso9573-13/isotech.ent" >
+<intref ref='chars_entity_tables'>%ent-isotech;</intref>
+
+&lt;!-- Entity sets from informative annex to ISO 8879:1986 (SGML) ....... -->
+
+<phrase id='pent_ent_isobox'/>&lt;!ENTITY % ent-isobox
+      PUBLIC "-//W3C//ENTITIES Box and Line Drawing for MathML 2.0//EN"
+             "iso8879/isobox.ent" >
+<intref ref='chars_entity_tables'>%ent-isobox;</intref>
+
+<phrase id='pent_ent_isocyr1'/>&lt;!ENTITY % ent-isocyr1
+      PUBLIC "-//W3C//ENTITIES Russian Cyrillic for MathML 2.0//EN"
+             "iso8879/isocyr1.ent" >
+<intref ref='chars_entity_tables'>%ent-isocyr1;</intref>
+
+<phrase id='pent_ent_isocyr2'/>&lt;!ENTITY % ent-isocyr2
+      PUBLIC "-//W3C//ENTITIES Non-Russian Cyrillic for MathML 2.0//EN"
+             "iso8879/isocyr2.ent" >
+<intref ref='chars_entity_tables'>%ent-isocyr2;</intref>
+
+<phrase id='pent_ent_isodia'/>&lt;!ENTITY % ent-isodia
+      PUBLIC "-//W3C//ENTITIES Diacritical Marks for MathML 2.0//EN"
+             "iso8879/isodia.ent" >
+<intref ref='chars_entity_tables'>%ent-isodia;</intref>
+
+<phrase id='pent_ent_isolat1'/>&lt;!ENTITY % ent-isolat1
+      PUBLIC "-//W3C//ENTITIES Added Latin 1 for MathML 2.0//EN"
+             "iso8879/isolat1.ent" >
+<intref ref='chars_entity_tables'>%ent-isolat1;</intref>
+
+<phrase id='pent_ent_isolat2'/>&lt;!ENTITY % ent-isolat2
+      PUBLIC "-//W3C//ENTITIES Added Latin 2 for MathML 2.0//EN"
+             "iso8879/isolat2.ent" >
+<intref ref='chars_entity_tables'>%ent-isolat2;</intref>
+
+<phrase id='pent_ent_isonum'/>&lt;!ENTITY % ent-isonum
+      PUBLIC "-//W3C//ENTITIES Numeric and Special Graphic for MathML 2.0//EN"
+             "iso8879/isonum.ent" >
+<intref ref='chars_entity_tables'>%ent-isonum;</intref>
+
+<phrase id='pent_ent_isopub'/>&lt;!ENTITY % ent-isopub
+      PUBLIC "-//W3C//ENTITIES Publishing for MathML 2.0//EN"
+             "iso8879/isopub.ent" >
+<intref ref='chars_entity_tables'>%ent-isopub;</intref>
+
+&lt;!-- New characters defined by MathML ............................ -->
+
+<phrase id='pent_ent_mmlextra'/>&lt;!ENTITY % ent-mmlextra
+      PUBLIC "-//W3C//ENTITIES Extra for MathML 2.0//EN"
+             "mathml/mmlextra.ent" >
+<intref ref='chars_entity_tables'>%ent-mmlextra;</intref>
+
+&lt;!-- MathML aliases for characters defined above ................. -->
+
+<phrase id='pent_ent_mmlalias'/>&lt;!ENTITY % ent-mmlalias
+      PUBLIC "-//W3C//ENTITIES Aliases for MathML 2.0//EN"
+             "mathml/mmlalias.ent" >
+<intref ref='chars_entity_tables'>%ent-mmlalias;</intref>
+
+&lt;!-- end of MathML Character Entity section -->]]&gt;</phrase>
+
+&lt;!-- Revision History:
+
+       Initial draft (syntax = XML) 1997-05-09
+          Stephen Buswell
+       Revised 1997-05-14
+          Robert Miner
+       Revised 1997-06-29 and 1997-07-02
+          Stephen Buswell
+       Revised 1997-12-15
+          Stephen Buswell
+       Revised 1998-02-08
+          Stephen Buswell
+       Revised 1998-04-04
+          Stephen Buswell
+       Entities and small revisions 1999-02-21
+          David Carlisle
+       Added attribute definitionURL to ci and cn 1999-10-11
+          Nico Poppelier
+       Additions for MathML 2  1999-12-16
+          David Carlisle
+       Namespace support 2000-01-14
+          David Carlisle
+       XHTML Compatibility 2000-02-23
+          Murray Altheim
+       New content elements 2000-03-26
+          David Carlisle
+       Further revisions for MathML2 CR draft 2000-07-11
+          David Carlisle
+<phrase diff="add">       Further revisions for MathML2 CR draft 2000-10-31</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Revisions for Unicode 3.2  2002-05-21</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Add width and side attributes to mtable (to align with the specification)  2002-06-05</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Use %XLINK.prefix rather than hardwired xlink:, add xlink:type 2002-06-12</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Add missing numalign and denomalign attributes for mfrac 2002-07-05</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Add MathMLstrict entity and related extra constraints 2002-12-05</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Add support for xi:schemaLocation 2003-04-05</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Removed actiontype from mstyle (to match spec) 2003-04-07</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Additional constraints for MathMLstrict code (From Simon</phrase>
+<phrase diff="add">          Pepping on www-math list) 2003-05-22</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Add missing minlabelspacing attribute (From Simon</phrase>
+<phrase diff="add">          Pepping on www-math list) 2003-05-22</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Add missing height and depth attributes to mstyle (From Simon</phrase>
+<phrase diff="add">          Pepping on www-math list) 2003-06-30</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+<phrase diff="add">       Removed restricted menclose notation checking from MathMLstrict 2003-09-08</phrase>
+<phrase diff="add">          David Carlisle</phrase>
+
+-->
+
+&lt;!-- end of MathML 2.0 DTD  ................................................ -->
+&lt;!-- ....................................................................... -->
+</eg>
+
+</div3>
+</div2>
+
+<div2 diff="add" id="parsing_usingxsd">
+<head>Using the MathML XML Schema</head>
+
+<p>MathML fragments can be validated using the XML Schema for MathML,
+located at <loc
+href="http://www.w3.org/Math/XMLSchema/mathml2/mathml2.xsd">http://www.w3.org/Math/XMLSchema/mathml2/mathml2.xsd</loc>. The
+provided schema allows checking a MathML fragment in a stricter way
+than by performing DTD validation, in particular constrained attribute
+values such as <intref
+ref="presm_mfrac"><att>linethickness</att></intref> are enforced by
+the schema. Additionally, XML Schemas have the advantage over DTDs of
+supporting the XML namespaces mechanism.  Thus a MathML fragment can
+declare any namespace prefix (and possibly more than one), without the
+requirement that the author indicate it using a parameter entity, as
+described above.</p>
+
+<p>In its current version the schema does not declare deprecated
+markup such as the <el>fn</el> element, so documents using such
+deprecated features will be declared invalid.</p>
+
+<div3 id="parsing_schemalocation">
+<head>Associating the MathML schema with MathML fragments</head>
+
+<p>Similarly to the DOCTYPE declaration used in documents, it is possible to link a MathML fragment to the XML Schema, as shown below.</p>
+
+<eg role="mathml-fragment"><![CDATA[<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.w3.org/1998/Math/MathML
+            http://www.w3.org/Math/XMLSchema/mathml2/mathml2.xsd">
+...
+</mml:math>]]></eg>
+
+<p>The <att>xsi:schemaLocation</att> attribute belongs to the XML Schema
+instance namespace, defined in <bibref ref="XMLSchemas"/>.  The value
+of the attribute is a pair of URIs: the first is the MathML namespace
+URI and the second is the location of the schema for that
+namespace. The second URI may be changed to that of a local copy if
+required.</p>
+
+<p>As the XML Schema specification indicates, the use of the
+<att>schemaLocation</att> attribute is only a hint for schema
+processors: validation by a MathML-aware processor can be performed
+without requiring that the <att>schemaLocation</att> attribute be
+declared in the instance. Moreover, a processor can even ignore or
+override the specified schema URI, if it is directed to.</p>
+
+<p>Note that the file <code>mathml.xsd</code> at the URI given above
+is only the main body of the schema, and is one of many files that
+constitute the MathML XML Schema. However the complete set of files is
+available as a <loc
+href="http://www.w3.org/Math/XMLSchema/mathml2.tgz">gzipped tar archive</loc>
+for local use.</p>
+
+</div3>
+
+
+<div3 id="parsing-charents"><head>Character entity references</head>
+
+<p>Although validating a MathML fragment with the XML Schema provided
+performs more checks regarding the structure of the fragment than the
+DTD, DTD processing is still necessary if the MathML markup contains
+entity references for characters and symbols, as XML Schema does not
+provide a mechanism for expanding named entities.  Therefore the
+MathML DOCTYPE declaration must still be present if one wishes to use
+entities for mathematical symbols, such as
+<code>&amp;DifferentialD;</code>. An example of a MathML document
+linking to both the MathML DTD and the XML Schema is shown below.</p>
+
+<eg role="mathml-fragment"><![CDATA[<!DOCTYPE mml:math 
+    PUBLIC "-//W3C//DTD MathML 2.0//EN"
+           "http://www.w3.org/Math/DTD/mathml2/mathml2.dtd" [
+    <!ENTITY % MATHML.prefixed "INCLUDE">
+    <!ENTITY % MATHML.prefix "mml">
+]>
+
+<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/1998/Math/MathML
+            http://www.w3.org/Math/XMLSchema/mathml2/mathml2.xsd">
+...
+    <mml:mo> &DifferentialD; </mml:mo>
+...
+</mml:math>]]></eg>
+
+<p>The use of character references to represent characters and
+symbols, such as <code>&amp;#x2146;</code> (which is equivalent
+<code>to &amp;DifferentialD;</code>) does not necessitate the use of a
+DOCTYPE declaration.</p>
+
+</div3>
+
+</div2>
+
+</div1>
+

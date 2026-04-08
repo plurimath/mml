@@ -1,0 +1,551 @@
+<inform-div1 id="oper-dict" role="appendixf"><head>Operator Dictionary</head>
+<!-- $Id: operator-dict.xml,v 1.23 2003/08/20 14:24:42 davidc Exp $ -->
+
+<p>The following table gives the suggested dictionary of rendering
+properties for operators, fences, separators, and accents in MathML, all of
+which are represented by <el>mo</el> elements. For brevity,
+all such elements will be called simply <quote>operators</quote> in this
+Appendix.</p>
+
+<div2 id="oper-dict_format"><head>Format of operator dictionary entries</head>
+
+<p>The operators are divided into groups, which are separated by blank
+lines in the listing below. The grouping, and the order of the groups, is
+significant for the proper grouping of sub-expressions using <el role="starttag">mrow</el> (<specref ref="presm_mrow"/>); the rule described
+there is especially relevant to the automatic generation of MathML by
+conversion from other formats for displayed mathematics, such as &TeX;,
+which do not always specify how sub-expressions nest.</p>
+
+<p>The format of the table entries is: the <el role="starttag">mo</el>
+element content between double quotes (start and end tags not shown),
+followed by the attribute list in XML format, starting with the
+<att>form</att> attribute, followed by the default rendering
+attributes which should be used for <el>mo</el> elements
+with the given content and <att>form</att> attribute.</p>
+
+<p>Any attribute not listed for some entry has its default value,
+which is given in parentheses in the table of attributes in <specref
+ref="presm_mo"/>.</p>
+
+<p>Note that the characters &amp; and &lt; are represented in the
+following table entries by the entity references
+<kw role="entity">amp</kw> and <kw role="entity">lt</kw> respectively,
+as would be necessary if they appeared in the content of an actual
+<el>mo</el> element (or any other MathML or XML
+element).</p>
+
+<!-- It would be nice to show them as themselves, for clarity   -->
+<!-- but this would use &amp; inconsistently, since some        -->
+<!-- extended characters have to be shown as entity references. -->
+
+<p>For example, the first entry,
+<eg><![CDATA[
+"(" form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em"
+]]></eg>
+could be expressed as an <el>mo</el> element by:
+<eg role='mathml'><![CDATA[
+<mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em"> ( </mo>
+]]></eg>
+(note the lack of double quotes around the content, and the
+whitespace added around the content for readability, which is optional
+in MathML).</p>
+
+<p>This entry means that, for MathML renderers which use this
+suggested operator dictionary, giving the element
+<code>&lt;mo form="prefix"> ( &lt;/mo></code>
+alone, or simply
+<code>&lt;mo> ( &lt;/mo></code>
+in a position for which
+<code>form="prefix"</code>
+would be inferred (see below), is equivalent to giving the element
+with all attributes as shown above.</p>
+</div2>
+
+<div2 id="oper-dict_index"><head>Indexing of operator dictionary</head>
+
+<p>Note that the dictionary is indexed not just by the element
+content, but by the element content and <att>form</att> attribute
+value, together. Operators with more than one possible form have more
+than one entry. The MathML specification describes how the renderer
+chooses (<quote>infers</quote>) which form to use when no <att>form</att>
+attribute is given; see <specref ref="presm_formdefval"/>. </p>
+
+<p>Having made that choice, or with the <att>form</att> attribute
+explicitly specified in the <el role="starttag">mo</el> element's start
+tag, the MathML renderer uses the remaining attributes from the
+dictionary entry for the appropriate single form of that operator,
+ignoring the entries for the other possible forms.</p>
+</div2>
+
+<div2 id="oper-dict_names"><head>Choice of entity names</head>
+
+<p>Extended characters in MathML (and in the operator dictionary
+below) are represented by XML-style entity references using the syntax
+<kw role="entity">character-name</kw> the complete list of characters and
+character names is given in <specref ref="chars"/>. Many characters can be referred
+to by more than one name; often, memorable names composed of full
+words have been provided in MathML, as well as one or more names used
+in other standards, such as Unicode. The characters in the operators
+in this dictionary are generally listed under their full-word names
+when these exist. For example, the integral operator is named below by
+the one-character sequence <kw role="entity">Integral</kw>, but
+could equally well be named <kw role="entity">int</kw>. The choice
+of name for a given character in MathML has no effect on its
+rendering.</p>
+
+<p>It is intended that every entity named below appears somewhere in
+<specref ref="chars"/>. If this is not true, it is an error in this
+specification. If such an error exists, the abovementioned chapter should
+be taken as definitive, rather than this appendix.</p>
+</div2>
+
+<div2 id="oper-dict_space"><head>Notes on <att>lspace</att> and 
+<att>rspace</att> attributes</head>
+
+<p>The values for <att>lspace</att> and <att>rspace</att> given here range from 0 to 
+<attval>verythickmathspace</attval>, which has a default value
+of 6/18 em.
+For the invisible operators whose content is <kw
+role="entity">InvisibleTimes</kw> or <kw role="entity">ApplyFunction</kw>,
+it is suggested that MathML renderers choose spacing in a context-sensitive
+way (which is an exception to the static values given in the following
+table). For <code><![CDATA[<mo>&ApplyFunction;</mo>]]></code>, the total
+spacing (<attval>lspace</attval>+<attval>rspace</attval>) in
+expressions such as <quote>sin <var>x</var></quote> (where the right operand
+doesn't start with a fence) should be greater than zero; for
+<code><![CDATA[<mo>&InvisibleTimes;</mo>]]></code>, the total spacing
+should be greater than zero when both operands (or the nearest tokens on
+either side, if on the baseline) are identifiers displayed in a non-slanted
+font (i.e. under the suggested rules, when both operands are
+multi-character identifiers).</p>
+
+<p>Some renderers may wish to use no spacing for most operators
+appearing in scripts (i.e. when <att>scriptlevel</att> is greater
+than 0; see <specref ref="presm_mstyle"/>), as is the case in &TeX;.</p>
+</div2>
+
+<div2 id="oper-dict_entries"><head>Operator dictionary entries</head>
+<eg><![CDATA[
+"("                                  form="prefix"  fence="true" stretchy="true"  lspace="0em" rspace="0em"
+")"                                  form="postfix" fence="true" stretchy="true"  lspace="0em" rspace="0em"
+"["                                  form="prefix"  fence="true" stretchy="true"  lspace="0em" rspace="0em"
+"]"                                  form="postfix" fence="true" stretchy="true"  lspace="0em" rspace="0em"
+"{"                                  form="prefix"  fence="true" stretchy="true"  lspace="0em" rspace="0em"
+"}"                                  form="postfix" fence="true" stretchy="true"  lspace="0em" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&CloseCurlyDoubleQuote;"            form="postfix" fence="true"  lspace="0em" rspace="0em"
+"&CloseCurlyQuote;"                  form="postfix" fence="true"  lspace="0em" rspace="0em"
+"&LeftAngleBracket;"                 form="prefix"  fence="true" stretchy="true"  lspace="0em" rspace="0em""]]><phrase diff="del"><![CDATA[
+"&LeftBracketingBar;"                form="prefix"  fence="true" stretchy="true"  lspace="0em" rspace="0em"]]></phrase><![CDATA[
+"&LeftCeiling;"                      form="prefix"  fence="true" stretchy="true"  lspace="0em" rspace="0em"
+"&LeftDoubleBracket;"                form="prefix"  fence="true" stretchy="true"  lspace="0em" rspace="0em"]]><phrase diff="del"><![CDATA[
+"&LeftDoubleBracketingBar;"          form="prefix"  fence="true" stretchy="true"  lspace="0em" rspace="0em"]]></phrase><![CDATA[
+"&LeftFloor;"                        form="prefix"  fence="true" stretchy="true"  lspace="0em" rspace="0em"
+"&OpenCurlyDoubleQuote;"             form="prefix"  fence="true"  lspace="0em" rspace="0em"
+"&OpenCurlyQuote;"                   form="prefix"  fence="true"  lspace="0em" rspace="0em"
+"&RightAngleBracket;"                form="postfix" fence="true" stretchy="true"  lspace="0em" rspace="0em"]]><phrase diff="del"><![CDATA[
+"&RightBracketingBar;"               form="postfix" fence="true" stretchy="true"  lspace="0em" rspace="0em"]]></phrase><![CDATA[
+"&RightCeiling;"                     form="postfix" fence="true" stretchy="true"  lspace="0em" rspace="0em"
+"&RightDoubleBracket;"               form="postfix" fence="true" stretchy="true"  lspace="0em" rspace="0em"]]><phrase diff="del"><![CDATA[
+"&RightDoubleBracketingBar;"         form="postfix" fence="true" stretchy="true"  lspace="0em" rspace="0em"]]></phrase><![CDATA[
+"&RightFloor;"                       form="postfix" fence="true" stretchy="true"  lspace="0em" rspace="0em"]]><phrase diff="del"><![CDATA[
+"&LeftSkeleton;"                     form="prefix"  fence="true"  lspace="0em" rspace="0em"
+"&RightSkeleton;"                    form="postfix" fence="true"  lspace="0em" rspace="0em"]]></phrase>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&InvisibleComma;"                   form="infix"   separator="true"  lspace="0em" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+","                                  form="infix"   separator="true"  lspace="0em" rspace="verythickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&HorizontalLine;"                   form="infix"   stretchy="true" minsize="0"  lspace="0em" rspace="0em"
+"&VerticalLine;"                     form="infix"   stretchy="true" minsize="0"  lspace="0em" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+";"                                  form="infix"   separator="true"  lspace="0em" rspace="thickmathspace"
+";"                                  form="postfix" separator="true"  lspace="0em" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+":="                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Assign;"                           form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Because;"                          form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Therefore;"                        form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&VerticalSeparator;"                form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"//"                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Colon;"                            form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&amp;"                              form="prefix"   lspace="0em" rspace="thickmathspace"
+"&amp;"                              form="postfix"  lspace="thickmathspace" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"*="                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"-="                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"+="                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"/="                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"->"                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+":"                                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+".."                                 form="postfix"  lspace="mediummathspace" rspace="0em"
+"..."                                form="postfix"  lspace="mediummathspace" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&SuchThat;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&DoubleLeftTee;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&DoubleRightTee;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&DownTee;"                          form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LeftTee;"                          form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&RightTee;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Implies;"                          form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&RoundImplies;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"|"                                  form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"||"                                 form="infix"    lspace="mediummathspace" rspace="mediummathspace"
+"&Or;"                               form="infix"   stretchy="true"  lspace="mediummathspace" rspace="mediummathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&amp;&amp;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&And;"                              form="infix"   stretchy="true"  lspace="mediummathspace" rspace="mediummathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&amp;"                              form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"!"                                  form="prefix"   lspace="0em" rspace="thickmathspace"
+"&Not;"                              form="prefix"   lspace="0em" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Exists;"                           form="prefix"   lspace="0em" rspace="thickmathspace"
+"&ForAll;"                           form="prefix"   lspace="0em" rspace="thickmathspace"
+"&NotExists;"                        form="prefix"   lspace="0em" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Element;"                          form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotElement;"                       form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotReverseElement;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSquareSubset;"                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSquareSubsetEqual;"             form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSquareSuperset;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSquareSupersetEqual;"           form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSubset;"                        form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSubsetEqual;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSuperset;"                      form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSupersetEqual;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&ReverseElement;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&SquareSubset;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&SquareSubsetEqual;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&SquareSuperset;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&SquareSupersetEqual;"              form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Subset;"                           form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&SubsetEqual;"                      form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Superset;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&SupersetEqual;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&DoubleLeftArrow;"                  form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&DoubleLeftRightArrow;"             form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&DoubleRightArrow;"                 form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&DownLeftRightVector;"              form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&DownLeftTeeVector;"                form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&DownLeftVector;"                   form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&DownLeftVectorBar;"                form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&DownRightTeeVector;"               form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&DownRightVector;"                  form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&DownRightVectorBar;"               form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LeftArrow;"                        form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LeftArrowBar;"                     form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LeftArrowRightArrow;"              form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LeftRightArrow;"                   form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LeftRightVector;"                  form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LeftTeeArrow;"                     form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LeftTeeVector;"                    form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LeftVector;"                       form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LeftVectorBar;"                    form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LowerLeftArrow;"                   form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&LowerRightArrow;"                  form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&RightArrow;"                       form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&RightArrowBar;"                    form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&RightArrowLeftArrow;"              form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&RightTeeArrow;"                    form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&RightTeeVector;"                   form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&RightVector;"                      form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&RightVectorBar;"                   form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&ShortLeftArrow;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&ShortRightArrow;"                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&UpperLeftArrow;"                   form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&UpperRightArrow;"                  form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"="                                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&lt;"                               form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+">"                                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"!="                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"=="                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&lt;="                              form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+">="                                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Congruent;"                        form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&CupCap;"                           form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&DotEqual;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&DoubleVerticalBar;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Equal;"                            form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&EqualTilde;"                       form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Equilibrium;"                      form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&GreaterEqual;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&GreaterEqualLess;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&GreaterFullEqual;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&GreaterGreater;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&GreaterLess;"                      form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&GreaterSlantEqual;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&GreaterTilde;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&HumpDownHump;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&HumpEqual;"                        form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LeftTriangle;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LeftTriangleBar;"                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LeftTriangleEqual;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&le;"                               form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LessEqualGreater;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LessFullEqual;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LessGreater;"                      form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LessLess;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LessSlantEqual;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&LessTilde;"                        form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NestedGreaterGreater;"             form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NestedLessLess;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotCongruent;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotCupCap;"                        form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotDoubleVerticalBar;"             form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotEqual;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotEqualTilde;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotGreater;"                       form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotGreaterEqual;"                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotGreaterFullEqual;"              form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotGreaterGreater;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotGreaterLess;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotGreaterSlantEqual;"             form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotGreaterTilde;"                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotHumpDownHump;"                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotHumpEqual;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotLeftTriangle;"                  form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotLeftTriangleBar;"               form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotLeftTriangleEqual;"             form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotLess;"                          form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotLessEqual;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]><phrase diff="del"><![CDATA[
+"&NotLessFullEqual;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]></phrase><![CDATA[
+"&NotLessGreater;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotLessLess;"                      form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotLessSlantEqual;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotLessTilde;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotNestedGreaterGreater;"          form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotNestedLessLess;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotPrecedes;"                      form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotPrecedesEqual;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotPrecedesSlantEqual;"            form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]><phrase diff="del"><![CDATA[
+"&NotPrecedesTilde;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]></phrase><![CDATA[
+"&NotRightTriangle;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotRightTriangleBar;"              form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotRightTriangleEqual;"            form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSucceeds;"                      form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSucceedsEqual;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSucceedsSlantEqual;"            form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotSucceedsTilde;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotTilde;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotTildeEqual;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotTildeFullEqual;"                form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotTildeTilde;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&NotVerticalBar;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Precedes;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&PrecedesEqual;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&PrecedesSlantEqual;"               form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&PrecedesTilde;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Proportion;"                       form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Proportional;"                     form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&ReverseEquilibrium;"               form="infix"   stretchy="true"  lspace="thickmathspace" rspace="thickmathspace"
+"&RightTriangle;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&RightTriangleBar;"                 form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&RightTriangleEqual;"               form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Succeeds;"                         form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&SucceedsEqual;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&SucceedsSlantEqual;"               form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&SucceedsTilde;"                    form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&Tilde;"                            form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&TildeEqual;"                       form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&TildeFullEqual;"                   form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&TildeTilde;"                       form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&UpTee;"                            form="infix"    lspace="thickmathspace" rspace="thickmathspace"
+"&VerticalBar;"                      form="infix"    lspace="thickmathspace" rspace="thickmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&SquareUnion;"                      form="infix"   stretchy="true"  lspace="mediummathspace" rspace="mediummathspace"
+"&Union;"                            form="infix"   stretchy="true"  lspace="mediummathspace" rspace="mediummathspace"
+"&UnionPlus;"                        form="infix"   stretchy="true"  lspace="mediummathspace" rspace="mediummathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"-"                                  form="infix"    lspace="mediummathspace" rspace="mediummathspace"
+"+"                                  form="infix"    lspace="mediummathspace" rspace="mediummathspace"
+"&Intersection;"                     form="infix"   stretchy="true"  lspace="mediummathspace" rspace="mediummathspace"
+"&MinusPlus;"                        form="infix"    lspace="mediummathspace" rspace="mediummathspace"
+"&PlusMinus;"                        form="infix"    lspace="mediummathspace" rspace="mediummathspace"
+"&SquareIntersection;"               form="infix"   stretchy="true"  lspace="mediummathspace" rspace="mediummathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Vee;"                              form="prefix"  largeop="true" movablelimits="true" stretchy="true"  lspace="0em" rspace="thinmathspace"
+"&CircleMinus;"                      form="prefix"  largeop="true" movablelimits="true"  lspace="0em" rspace="thinmathspace"
+"&CirclePlus;"                       form="prefix"  largeop="true" movablelimits="true"  lspace="0em" rspace="thinmathspace"
+"&Sum;"                              form="prefix"  largeop="true" movablelimits="true" stretchy="true"  lspace="0em" rspace="thinmathspace"
+"&Union;"                            form="prefix"  largeop="true" movablelimits="true" stretchy="true"  lspace="0em" rspace="thinmathspace"
+"&UnionPlus;"                        form="prefix"  largeop="true" movablelimits="true" stretchy="true"  lspace="0em" rspace="thinmathspace"
+"lim"                                form="prefix"  movablelimits="true"  lspace="0em" rspace="thinmathspace"
+"max"                                form="prefix"  movablelimits="true"  lspace="0em" rspace="thinmathspace"
+"min"                                form="prefix"  movablelimits="true"  lspace="0em" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&CircleMinus;"                      form="infix"    lspace="thinmathspace" rspace="thinmathspace"
+"&CirclePlus;"                       form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&ClockwiseContourIntegral;"         form="prefix"  largeop="true" stretchy="true"  lspace="0em" rspace="0em"
+"&ContourIntegral;"                  form="prefix"  largeop="true" stretchy="true"  lspace="0em" rspace="0em"
+"&CounterClockwiseContourIntegral;"  form="prefix"  largeop="true" stretchy="true"  lspace="0em" rspace="0em"
+"&DoubleContourIntegral;"            form="prefix"  largeop="true" stretchy="true"  lspace="0em" rspace="0em"
+"&Integral;"                         form="prefix"  largeop="true" stretchy="true"  lspace="0em" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Cup;"                              form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Cap;"                              form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&VerticalTilde;"                    form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Wedge;"                            form="prefix"  largeop="true" movablelimits="true" stretchy="true"  lspace="0em" rspace="thinmathspace"
+"&CircleTimes;"                      form="prefix"  largeop="true" movablelimits="true"  lspace="0em" rspace="thinmathspace"
+"&Coproduct;"                        form="prefix"  largeop="true" movablelimits="true" stretchy="true"  lspace="0em" rspace="thinmathspace"
+"&Product;"                          form="prefix"  largeop="true" movablelimits="true" stretchy="true"  lspace="0em" rspace="thinmathspace"
+"&Intersection;"                     form="prefix"  largeop="true" movablelimits="true" stretchy="true"  lspace="0em" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Coproduct;"                        form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Star;"                             form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&CircleDot;"                        form="prefix"  largeop="true" movablelimits="true"  lspace="0em" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"*"                                  form="infix"    lspace="thinmathspace" rspace="thinmathspace"
+"&InvisibleTimes;"                   form="infix"    lspace="0em" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&CenterDot;"                        form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&CircleTimes;"                      form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Vee;"                              form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Wedge;"                            form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Diamond;"                          form="infix"    lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Backslash;"                        form="infix"   stretchy="true"  lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"/"                                  form="infix"   stretchy="true"  lspace="thinmathspace" rspace="thinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"-"                                  form="prefix"   lspace="0em" rspace="veryverythinmathspace"
+"+"                                  form="prefix"   lspace="0em" rspace="veryverythinmathspace"
+"&MinusPlus;"                        form="prefix"   lspace="0em" rspace="veryverythinmathspace"
+"&PlusMinus;"                        form="prefix"   lspace="0em" rspace="veryverythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"."                                  form="infix"    lspace="0em" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Cross;"                            form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"**"                                 form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&CircleDot;"                        form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&SmallCircle;"                      form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Square;"                           form="prefix"   lspace="0em" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Del;"                              form="prefix"   lspace="0em" rspace="verythinmathspace"
+"&PartialD;"                         form="prefix"   lspace="0em" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&CapitalDifferentialD;"             form="prefix"   lspace="0em" rspace="verythinmathspace"
+"&DifferentialD;"                    form="prefix"   lspace="0em" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Sqrt;"                             form="prefix"  stretchy="true"  lspace="0em" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&DoubleDownArrow;"                  form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&DoubleLongLeftArrow;"              form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&DoubleLongLeftRightArrow;"         form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&DoubleLongRightArrow;"             form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&DoubleUpArrow;"                    form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&DoubleUpDownArrow;"                form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&DownArrow;"                        form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&DownArrowBar;"                     form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&DownArrowUpArrow;"                 form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&DownTeeArrow;"                     form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LeftDownTeeVector;"                form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LeftDownVector;"                   form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LeftDownVectorBar;"                form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LeftUpDownVector;"                 form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LeftUpTeeVector;"                  form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LeftUpVector;"                     form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LeftUpVectorBar;"                  form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LongLeftArrow;"                    form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LongLeftRightArrow;"               form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&LongRightArrow;"                   form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&ReverseUpEquilibrium;"             form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&RightDownTeeVector;"               form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&RightDownVector;"                  form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&RightDownVectorBar;"               form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&RightUpDownVector;"                form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&RightUpTeeVector;"                 form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&RightUpVector;"                    form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&RightUpVectorBar;"                 form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&ShortDownArrow;"                   form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"
+"&ShortUpArrow;"                     form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"
+"&UpArrow;"                          form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&UpArrowBar;"                       form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&UpArrowDownArrow;"                 form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&UpDownArrow;"                      form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&UpEquilibrium;"                    form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"
+"&UpTeeArrow;"                       form="infix"   stretchy="true"  lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"^"                                  form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&lt;>"                              form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"'"                                  form="postfix"  lspace="verythinmathspace" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"!"                                  form="postfix"  lspace="verythinmathspace" rspace="0em"
+"!!"                                 form="postfix"  lspace="verythinmathspace" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"~"                                  form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"@"                                  form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"--"                                 form="postfix"  lspace="verythinmathspace" rspace="0em"
+"--"                                 form="prefix"   lspace="0em" rspace="verythinmathspace"
+"++"                                 form="postfix"  lspace="verythinmathspace" rspace="0em"
+"++"                                 form="prefix"   lspace="0em" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&ApplyFunction;"                    form="infix"    lspace="0em" rspace="0em"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"?"                                  form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"_"                                  form="infix"    lspace="verythinmathspace" rspace="verythinmathspace"]]>
+<phrase diff="add">&#160;&#160;&#160;&#160;</phrase><![CDATA[
+"&Breve;"                            form="postfix" accent="true"  lspace="0em" rspace="0em"
+"&Cedilla;"                          form="postfix" accent="true"  lspace="0em" rspace="0em"
+"&DiacriticalGrave;"                 form="postfix" accent="true"  lspace="0em" rspace="0em"
+"&DiacriticalDot;"                   form="postfix" accent="true"  lspace="0em" rspace="0em"
+"&DiacriticalDoubleAcute;"           form="postfix" accent="true"  lspace="0em" rspace="0em"
+"&]]><phrase diff="del">Diacritical</phrase><![CDATA[LeftArrow;"                        form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&]]><phrase diff="del">Diacritical</phrase><![CDATA[LeftRightArrow;"                   form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&]]><phrase diff="del">Diacritical</phrase><![CDATA[LeftRightVector;"                  form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&]]><phrase diff="del">Diacritical</phrase><![CDATA[LeftVector;"                       form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&DiacriticalAcute;"                 form="postfix" accent="true"  lspace="0em" rspace="0em"
+"&]]><phrase diff="del">Diacritical</phrase><![CDATA[RightArrow;"                       form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&]]><phrase diff="del">Diacritical</phrase><![CDATA[RightVector;"                      form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&DiacriticalTilde;"                 form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&DoubleDot;"                        form="postfix" accent="true"  lspace="0em" rspace="0em"
+"&DownBreve;"                        form="postfix" accent="true"  lspace="0em" rspace="0em"
+"&Hacek;"                            form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&Hat;"                              form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&OverBar;"                          form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&OverBrace;"                        form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&OverBracket;"                      form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&OverParenthesis;"                  form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&TripleDot;"                        form="postfix" accent="true"  lspace="0em" rspace="0em"
+"&UnderBar;"                         form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&UnderBrace;"                       form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&UnderBracket;"                     form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+"&UnderParenthesis;"                 form="postfix" accent="true" stretchy="true"  lspace="0em" rspace="0em"
+]]></eg>
+
+</div2>
+</inform-div1>

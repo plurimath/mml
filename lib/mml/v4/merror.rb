@@ -10,6 +10,5 @@ module Mml
         namespace Namespace
       end
     end
-    Configuration.register_model(Merror, id: :merror)
   end
 end

@@ -1,0 +1,31 @@
+# frozen_string_literal: true
+
+module Mml
+  module Base
+    module Content
+      module Csymbol
+        def self.included(klass)
+          klass.class_eval do
+            attribute :type, :string
+            attribute :definition_url, :string
+            attribute :encoding_value, :string
+            attribute :cd, :string
+            attribute :value, :string
+
+            xml do
+              namespace Mml::Namespace
+              element "csymbol"
+              mixed_content
+
+              map_content to: :value
+              map_attribute "type", to: :type
+              map_attribute "definitionURL", to: :definition_url
+              map_attribute "encoding", to: :encoding_value
+              map_attribute "cd", to: :cd
+            end
+          end
+        end
+      end
+    end
+  end
+end

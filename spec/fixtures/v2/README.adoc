@@ -1,0 +1,7 @@
+= W3C Official MathML v2 test suite
+
+From https://www.w3.org/Math/testsuite/mml2-testsuite/index.html
+
+The archive is downloaded from:
+
+* https://www.w3.org/Math/testsuite/mml2-testsuite/testsuite.zip

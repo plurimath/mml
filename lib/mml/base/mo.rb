@@ -12,7 +12,6 @@ module Mml
           attribute :mathbackground, :string
           attribute :mathvariant, :string
           attribute :mathsize, :string
-          attribute :dir, :string
           attribute :form, :string
           attribute :lspace, :string
           attribute :rspace, :string
@@ -41,7 +40,6 @@ module Mml
             element "mo"
 
             map_content to: :value
-            map_attribute "dir", to: :dir
             map_attribute "form", to: :form
             map_attribute "accent", to: :accent
             map_attribute "lspace", to: :lspace

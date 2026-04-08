@@ -1,0 +1,724 @@
+<div1 id="intro" role="chapter1"><head>Introduction</head>
+<!-- $Id: introduction.xml,v 1.43 2003/09/08 13:04:48 davidc Exp $ -->
+
+<div2 id="intro_notation"><head>Mathematics and its Notation</head>
+
+<p>A distinguishing feature of mathematics is the use of a complex and
+highly evolved system of two-dimensional symbolic notations.  As
+J.R.&nbsp;Pierce has written in his book on communication theory,
+mathematics and its notations should not be viewed as one and the same
+thing <bibref ref="Pierce1961"/>. Mathematical ideas exist independently of
+the notations that represent them. However, the relation between meaning
+and notation is subtle, and part of the power of mathematics to describe
+and analyze derives from its ability to represent and manipulate ideas in
+symbolic form. The challenge in putting mathematics on the World Wide Web
+is to capture both notation and content (that is, meaning) in such a way
+that documents can utilize the highly-evolved notational forms of written
+and printed mathematics, and the potential for interconnectivity in
+electronic media.</p>
+
+<p>Mathematical notations are constantly evolving as people continue
+to make innovations in ways of approaching and expressing ideas. Even
+the commonplace notations of arithmetic have gone through an amazing
+variety of styles, including many defunct ones advocated by leading
+mathematical figures of their day <bibref ref="Cajori1928"/>. Modern
+mathematical notation is the product of centuries of refinement, and
+the notational conventions for high-quality typesetting are quite
+complicated. For example, variables and letters which stand for
+numbers are usually typeset today in a special mathematical italic
+font subtly distinct from the usual text italic. Spacing around
+symbols for operations such as +, -, &times; and / is slightly
+different from that of text, to reflect conventions about operator
+precedence. Entire books have been devoted to the conventions of
+mathematical typesetting, from the alignment of superscripts and
+subscripts, to rules for choosing parenthesis sizes, and on to
+specialized notational practices for subfields of mathematics (for
+instance, <bibref ref="Chaundy1954"/>, <bibref
+ref="Swanson1979"/>, <bibref ref="Swanson1999"/>, <bibref
+ref="Higham1993"/>, or in the &TeX; literature <bibref
+ref="Knuth1986"/> and <bibref ref="Spivak1986"/>).</p>
+
+<p>Notational conventions in mathematics, and in printed text in general,
+guide the eye and make printed expressions much easier to read and
+understand. Though we usually take them for granted, we rely on
+hundreds of conventions such as paragraphs, capital letters, font
+families and cases, and even the device of decimal-like numbering of
+sections such as we are using in this document (an invention due to
+G.&nbsp;Peano, who is probably better known for his axioms for the
+natural numbers).  Such notational conventions are perhaps even more important
+for electronic media, where one must contend with the difficulties of
+on-screen reading.</p>
+
+<p>However, there is more to putting mathematics on the Web
+than merely finding ways of displaying traditional
+mathematical notation in a Web browser. The Web represents a
+fundamental change in the underlying metaphor for knowledge
+storage, a change in which <emph>interconnectivity</emph>
+plays a central role. It is becoming increasingly important to
+find ways of communicating mathematics which facilitate
+automatic processing, searching and indexing, and reuse in
+other mathematical applications and contexts. With this
+advance in communication technology, there is an opportunity
+to expand our ability to represent, encode, and ultimately to
+communicate our mathematical insights and understanding with
+each other. We believe that MathML is an important step in
+developing mathematics on the Web.</p>
+</div2>
+
+<div2 id="intro_origin"><head>Origins and Goals</head>
+
+<div3><head>The History of MathML</head>
+
+<p>The problem of encoding mathematics for computer processing
+or electronic communication is much older than the Web. The
+common practice among scientists before the Web was to write
+papers in some encoded form based on the ASCII character set,
+and e-mail them to each other. Several markup methods for
+mathematics, in particular &TeX; <bibref ref="Knuth1986"/>,
+were already in wide use in 1992 just before the Web rose to
+prominence, <bibref ref="Poppelier1992"/>.</p>
+
+<p>Since its inception, the Web has demonstrated itself to be
+a very effective method of making information available to
+widely separated groups of individuals. However, even though
+the World Wide Web was initially conceived and implemented by
+scientists for scientists, the possibilities for including
+mathematical expressions in HTML has been very limited. At
+present, most mathematics on the Web consists of text with
+images of scientific notation (in <termdef id="td-gif"
+term="Graphic Interchange Format">GIF</termdef> or <termdef
+id="td-jpeg" term="Joint Photographic Exchange
+Group">JPEG</termdef> format), which are difficult to read and
+to author, or of entire documents in <termdef id="td-pdf"
+term="Portable Document Format">PDF</termdef> form.</p> 
+
+<p>The World Wide Web Consortium (W3C) recognized that lack of
+support for scientific communication was a serious
+problem. Dave Raggett included a proposal for HTML Math in the
+HTML 3.0 working draft in 1994. A panel discussion on
+mathematical markup was held at the WWW Conference in
+Darmstadt in April 1995. In November 1995, representatives
+from Wolfram Research presented a proposal for doing mathematics in
+HTML to the W3C team. In May 1996, the Digital Library
+Initiative meeting in Champaign-Urbana played an important
+role in bringing together many interested parties. Following
+the meeting, an HTML Math Editorial Review Board was
+formed. In the intervening years, this group has grown, and
+was formally reconstituted as the first W3C Math Working Group
+in March 1997.  The second W3C Math Working Group was
+chartered in July 1998 with a term which was later extended to run
+to the end of the year 2000.</p>
+
+<p>The MathML proposal reflects the interests and expertise of
+a very diverse group. Many contributions to the development of
+MathML deserve special mention, some of which we touch on
+here. One such contribution concerns the question of
+accessibility, especially for the visually handicapped.
+T.&nbsp;V.&nbsp;Raman is particularly notable in this
+regard. Neil Soiffer and Bruce Smith from Wolfram Research
+shared their experience with the problems of representing
+mathematics in connection with the design of Mathematica 3.0;
+this expertise was an important influence in the design of the
+presentation elements. Paul Topping from Design Science also
+contributed his expertise in mathematical formatting and
+editing. MathML has benefited from the participation of a
+number of working group members involved in other mathematical
+encoding efforts in the <termdef id="td-sgml" term="Standard
+Generalized Markup Language">SGML</termdef> and
+computer-algebra communities, including Stephen Buswell from
+Stilo Technologies, Nico Poppelier at first with Elsevier
+Science, St&eacute;phane Dalmas from INRIA (Sophia Antipolis),
+Stan Devitt at first with Waterloo Maple, Angel Diaz and
+Robert S.&nbsp;Sutor from IBM, and Stephen M.&nbsp;Watt from
+the University of Western Ontario. In particular, MathML has
+been influenced by the OpenMath project, the work of the ISO
+12083 working group, and Stilo Technologies' work on a
+<quote>semantic</quote> mathematics DTD fragment. The American
+Mathematical Society has played a key role in the development
+of MathML. Among other things, it has provided two working
+group chairs: Ron Whitney led the group from May 1996 to March
+1997, and Patrick Ion, who has co-chaired the group with
+Robert Miner from The Geometry Center from March 1997 to 
+June 1998, and since July 1998 with Angel Diaz of IBM.</p>
+
+</div3>
+
+
+<div3><head>Limitations of HTML</head>
+
+<p>The demand for effective means of electronic scientific
+communication remains high. Ever increasingly, researchers,
+scientists, engineers, educators, students and technicians
+find themselves working at dispersed locations and relying on
+electronic communication. At the same time, the image-based
+methods that are currently the predominant means of
+transmitting scientific notation over the Web are primitive
+and inadequate. Document quality is poor, authoring is
+difficult, and mathematical information contained in images is
+not available for searching, indexing, or reuse in other
+applications.</p>
+
+<p>The most obvious problems with HTML for mathematical
+communication are of two types.</p>
+
+<p><emph>Display Problems.</emph> Consider the equation
+<graphic role="inline" valign="bottom"
+source="image/f1001.gif" alt="2^{2^x} = 10"/>.  This equation
+is sized to match the surrounding line in 14pt type on the
+system where it was authored. Of course, on other systems, or
+for other font sizes, the equation is too small or too
+large. A second point to observe is that the equation image
+was generated against a white background. Thus, if a reader or
+browser resets the page background to another color, the
+anti-aliasing in the image results in white
+<quote>halos</quote>. Next, consider the equation <graphic
+role="inline" valign="bottom" source="image/f1002.gif"
+alt="x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}"/>, which is an example
+with the equation's horizontal alignment axis above the tops
+of the lower-case letters in the surrounding text.</p>
+
+<p>This equation has a descender which places the baseline for
+the equation  at a  point about  a third of  the way  from the
+bottom of the image. One can pad the image like this: 
+<graphic role="inline" source="image/f1003.gif"
+alt="x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}"/>,     
+so that  the centerline of the  image and the  baseline of the
+equation   coincide,  but  this   causes  problems   with  the
+inter-line  spacing,   resulting  in  the   equation  becoming
+difficult to  read.  Moreover,  center alignment of  images is
+handled  in  slightly different  ways  by different  browsers,
+making  it  impossible   to  guarantee  proper  alignment  for
+different clients.</p>
+
+<p>Image-based equations are generally harder to see, read and
+comprehend   than  the   surrounding  text   in   the  browser
+window.  Moreover,  these   problems  become  worse  when  the
+document is printed. The resolution of the equations as images
+will be  around 70 dots  per inch, while the  surrounding text
+will  typically  be  300,  600  or more  dots  per  inch.  The
+disparity  in quality  is judged  to be  unacceptable  by most
+people.</p>
+
+<p><emph>Encoding  Problems.</emph> Consider trying  to search
+this  document  for part  of  an  equation,  for example,  the
+<quote>=10</quote> from the first equation above. In a similar
+vein,  consider  trying to  cut  and  paste  an equation  into
+another application; even more demanding is to cut and paste a
+sub-expression.  Using  image-based methods, neither  of these
+common needs can be  adequately addressed. Although the use of
+the <kw>alt</kw> attribute in the document  source can help, it is clear
+that  highly interactive  Web  documents must  provide a  more
+sophisticated  interface  between  browsers  and  mathematical
+notation.</p>
+
+<p>Another problem with encoding mathematics as images is that
+it requires more bandwidth.  Markup describing an equation is
+typically smaller and more compressible than an image of the
+equation.  In addition, by using markup-based encoding, more
+of the rendering process is moved to the client machine.</p>
+</div3>
+
+<div3><head>Requirements for Mathematics Markup</head>
+
+<p>Some display problems associated with including
+mathematical notation in HTML documents as images could be
+addressed by improving image handling by browsers. However,
+even if image handling were improved, the problem of making
+the information contained in mathematical expressions
+available to other applications would remain.  Therefore, in
+planning for the future, it is not sufficient merely to
+upgrade image-based methods.  To integrate mathematical
+material fully into Web documents, a markup-based encoding of
+mathematical notation and content is required.</p>
+
+<p>In designing any markup language, it is essential to
+consider carefully the needs of its potential users.  In the
+case of MathML, the needs of potential users cover a broad
+spectrum, from education to research, and on to commerce.</p>
+
+<p>The education community is a large and important group that
+must be able to put scientific curriculum materials on the
+Web. At the same time, educators often have limited time and
+equipment, and are severely hampered by the difficulty of
+authoring technical Web documents. Students and teachers need
+to be able to create mathematical content quickly and easily,
+using intuitive, easy-to-learn, low-cost tools.</p>
+
+<p>Electronic textbooks are another way of using the Web which will
+potentially be very important in education. Management consultant
+Peter Drucker has prophesied the end of big-campus residential higher
+education and its distribution over the Web.  Electronic textbooks
+will need to be interactive, allowing intercommunication between the
+text and scientific software and graphics.</p>
+
+<p>The academic and commercial research communities generate large
+volume of dense scientific material.  Increasingly, research
+publications are being stored in databases, such as the highly
+successful <loc href="http://xxx.lanl.gov">physics and mathematics
+preprint server and archive</loc> at Los Alamos National
+Laboratory. This is especially true in some areas of physics and
+mathematics where academic journal prices have been increasing at an
+unsustainable rate.  In addition, databases of information on
+mathematical research, such as <loc
+href="http://www.ams.org/mathscinet">Mathematical Reviews</loc> and
+<loc href="http://www.zblmath.fiz-karlsruhe.de">Zentralblatt f&uuml;r
+Mathematik</loc>, offer millions of records on the Web containing
+mathematics.</p>
+
+<p>To accommodate the research community, a design for
+mathematical markup must facilitate the maintenance and
+operation of large document collections, for which automatic
+searching and indexing are important.  Because of the large
+collection of legacy documents containing mathematics, especially in
+&TeX;, the ability to convert between existing formats and any
+new one is also very important to the research community.
+Finally, the ability to maintain information for archival
+purposes is vital to academic research.</p>
+
+<p>Corporate  and academic scientists  and engineers  also use
+technical documents  in their  work to collaborate,  to record
+results of experiments and computer simulations, and to verify
+calculations.  For  such uses,  mathematics  on  the Web  must
+provide  a standard  way of  sharing information  that  can be
+easily read, processed and generated using commonly available,
+easy-to-use tools.</p>
+
+<p>Another general design requirement is the ability to render
+mathematical  material  in  other  media  such  as  speech  or
+braille,  which  is   extremely  important  for  the  visually
+impaired.</p>
+
+<p>Commercial publishers are also involved with mathematics on
+the Web at all levels  from electronic versions of print books
+to  interactive textbooks  and academic  journals.  Publishers
+require a  method of  putting mathematics on  the Web  that is
+capable of high-quality  output, robust enough for large-scale
+commercial use, and preferably compatible with their previous,
+often SGML-based, production systems.</p>
+</div3>
+
+<div3 id="intro_goals"><head>Design Goals of MathML</head>
+
+<p>In  order  to meet  the  diverse  needs  of the  scientific
+community,  MathML  has   been  designed  with  the  following
+ultimate goals in mind.</p>
+
+<p>MathML should:
+<ulist>
+<item>
+<p>Encode mathematical material suitable for teaching
+and scientific communication at all levels.</p>
+</item>
+<item>
+<p>Encode both mathematical notation and mathematical meaning.</p>
+</item>
+<item>
+<p>Facilitate conversion to and from other mathematical
+formats, both presentational and semantic. Output formats should include:
+<ulist>
+<item>
+<p>graphical displays</p>
+</item>
+<item>
+<p>speech synthesizers</p>
+</item>
+<item>
+<p>input for computer algebra systems</p>
+</item>
+<item>
+<p>other mathematics typesetting languages, such as &TeX;</p>
+</item>
+<item>
+<p>plain text displays, e.g. VT100 emulators</p>
+</item>
+<item>
+<p>print media, including braille</p>
+</item>
+</ulist>
+</p>
+<p>It is recognized that conversion to and from other notational
+systems or media may entail loss of information in the process.</p>
+</item>
+<item>
+<p>Allow the passing of information intended for
+specific renderers and applications.</p>
+</item>
+<item>
+<p>Support efficient browsing of lengthy expressions.</p>
+</item>
+<item>
+<p>Provide for extensibility.</p>
+</item>
+<item>
+<p>Be well suited to template and other mathematics editing techniques.</p>
+</item>
+<item>
+<p>Be human legible, and simple for software to generate and process.</p>
+</item>
+</ulist>
+</p>
+
+<p>No matter how successfully  MathML may achieve its goals as
+a markup language, it is clear that MathML will only be useful
+if it is  implemented well. To this end,  the W3C Math Working
+Group has identified a short list of additional implementation
+goals. These  goals attempt to describe  concisely the minimal
+functionality MathML rendering  and processing software should
+try to provide.
+</p>
+
+<ulist>
+
+<item>
+<p>MathML expressions in HTML (and XHTML) pages should render
+properly in popular Web browsers, in accordance with reader and author
+viewing preferences, and at the highest quality possible given the
+capabilities of the platform.</p></item>
+
+<item>
+<p>HTML (and XHTML) documents containing MathML expressions should
+print properly and at high-quality printer resolutions.</p></item>
+
+<item>
+<p>MathML expressions  in Web pages  should be able to  react to
+user  gestures, such  those as  with a  mouse,  and to coordinate
+communication    with   other    applications    through   the
+browser.</p></item>
+
+<item>
+<p>Mathematical expression editors and converters should be developed
+to facilitate the creation of Web pages containing MathML
+expressions.</p></item>
+
+</ulist>
+
+<p>These goals have begun to be addressed for the near term by using embedded
+elements such as Java applets, plug-ins and ActiveX controls to render
+MathML. However, the extent to which these goals are ultimately met depends on the
+cooperation and support of browser vendors, and other software developers. The W3C
+Math Working Group has continued to work with the working groups for the Document
+Object Model (DOM) and the Extensible Style Language (XSL) to ensure that the
+needs of the scientific community will be met in the future, and feels that MathML
+2.0 shows considerable progress in this area over the situation that obtained at
+the time of the MathML 1.0 Recommendation (April 1998) <bibref diff="add"
+ref="MathML1"/>.</p>
+
+</div3>
+
+</div2>
+
+<div2 id="intro_role"><head>The Role of MathML on the Web</head>
+
+<div3><head>Layered Design of Mathematical Web Services</head>
+
+<p>The design  goals of MathML  require a system  for encoding
+mathematical  material  for  the  Web which  is  flexible  and
+extensible, suitable  for interaction with  external software,
+and  capable of  producing high-quality  rendering  in several
+media. Any markup language  that encodes enough information to
+do  all  these  tasks  well  will of  necessity  involve  some
+complexity.</p>
+
+<p>At the same time, it  is important for many groups, such as
+students, to  have simple ways  to include mathematics  in Web
+pages  by hand.  Similarly,  other groups,  such as  the &TeX;
+community, would be best served  by a system which allowed the
+direct entry of markup languages like &TeX; into Web pages. In
+general, specific user groups are better served by specialized
+kinds of input and output tailored to their needs.  Therefore,
+the  ideal system  for  communicating mathematics  on the  Web
+should provide both specialized services for input and output,
+and  general  services  for  interchange  of  information  and
+rendering to multiple media.</p>
+
+<p>In practical terms, the observation that mathematics on the
+Web  should provide  for  both specialized  and general  needs
+naturally  leads to the  idea of  a layered  architecture. One
+layer consists of powerful, general software tools exchanging,
+processing and rendering suitably encoded mathematical data. A
+second layer consists of  specialized software tools, aimed at
+specific user  groups, which are capable  of easily generating
+encoded  mathematical data  that can  then be  shared  with a
+particular audience.</p>
+
+<p>MathML is designed to  provide the encoding of mathematical
+information for the bottom,  more general layer in a two-layer
+architecture. It is intended  to encode complex notational and
+semantic    structure   in    an   explicit,    regular,   and
+easy-to-process  way  for  renderers, searching  and  indexing
+software, and other mathematical applications.</p>
+
+<p>As a consequence, raw MathML markup is <emph>not</emph>
+primarily intended for direct use by authors. While MathML is
+human-readable, which helps a lot in debugging it, in all but
+the simplest cases it is too verbose and error-prone for hand
+generation.  Instead, it is anticipated that authors will use
+equation editors, conversion programs, and other specialized
+software tools to generate MathML.  Alternatively, some
+renderers and systems supporting mathematics may convert other
+kinds of input directly included in Web pages into MathML on
+the fly, in response to a cut-and-paste operation, for
+example.</p>
+
+<p>In  some  ways, MathML  is  analogous  to other  low-level,
+communication formats such as Adobe's PostScript language. You
+can create PostScript files in a variety of ways, depending on
+your  needs; experts write  and modify  them by  hand, authors
+create  them  with   word  processors,  graphic  artists  with
+illustration programs,  and so on. Once you  have a PostScript
+file, however,  you can share  it with a very  large audience,
+since devices  which render  PostScript, such as  printers and
+screen previewers, are widely available.</p>
+
+<p>Part  of  the  reason  for  designing MathML  as  a  markup
+language for  a low-level, general, communication  layer is to
+stimulate mathematical  Web software development  in the layer
+above. MathML  provides a way of  coordinating the development
+of modular  authoring tools and rendering  software. By making
+it easier  to develop a  functional piece of a  larger system,
+MathML  can   stimulate  a  <quote>critical   mass</quote>  of
+software  development,  greatly to  the  benefit of  potential
+users of mathematics on the Web.</p>
+
+<p>One can envision a similar situation for mathematical data.
+Authors are  free to create  MathML documents using  the tools
+best  suited to  their  needs. For  example,  a student  might
+prefer to use a menu-driven equation editor that can write out
+MathML to  an XHTML  file.  A researcher  might use  a computer
+algebra  package that  automatically encodes  the mathematical
+content of  an expression, so  that it can  be cut from  a Web
+page  and  evaluated  by  a colleague.   An  academic  journal
+publisher might  use a program  that converts &TeX;  markup to
+HTML and MathML. Regardless of the method used to create a Web
+page containing MathML, once  it exists, all the advantages of
+a powerful and general communication layer become available. A
+variety of  MathML software  could all be  used with  the same
+document to  render it  in speech  or print, to  send it  to a
+computer algebra  system, or to manage  it as part  of a large
+Web  document  collection.   To  render  high-quality  printed
+mathematics the  MathML encoding will often  be converted back
+to standard  typesetting and composition  languages, including
+&TeX; which is widely appreciated  for the job it does in this
+regard. Finally, one may expect that eventually MathML will be
+integrated  into  other  arenas  where  mathematical  formulas
+occur,   such  as   spreadsheets,  statistical   packages  and
+engineering tools.</p>
+
+<p>The W3C Math Working Group has been working with vendors to ensure
+that a variety of MathML software will soon be available, including
+both rendering and authoring tools. A current list of MathML software
+is maintained on the <loc href="http://www.w3.org/Math/">public Math
+page at the World Wide Web Consortium</loc>.</p>
+</div3>
+
+<div3><head>Relation to Other Web Technology</head>
+
+<p>The original  conception  of an  HTML  Math  was  a  simple,
+straightforward  extension  to  HTML  that would  be  natively
+implemented  in   browsers.   However,  very   early  on,  the
+explosive  growth of  the Web  made  it clear  that a  general
+extension  mechanism was  required, and  that  mathematics was
+only one of many kinds  of structured data which would have to
+be integrated into the Web using such a mechanism.</p>
+
+<p>Given that MathML must integrate into the Web as an
+extension, it is extremely important that MathML, and MathML
+software, can interact well with the existing Web environment.
+In particular, MathML has been designed with three kinds of
+interaction in mind. First, in order to create mathematical
+Web content, it is important that existing mathematical markup
+languages can be converted to MathML, and that existing
+authoring tools can be modified to generate MathML.  Second,
+it must be possible to embed MathML markup seamlessly in HTML
+markup, as it evolves, in such a way that it will be
+accessible to future browsers, search engines, and all the
+kinds of Web applications which now manipulate HTML.  Finally,
+it must be possible to render MathML embedded in HTML in
+today's Web browsers in some fashion, even if it is less than
+ideal.  As HTML evolves into XHTML, all the preceding requirements
+become increasingly needed.</p>
+
+<p id="intro_bidi">The World Wide Web is a fully international and 
+collaborative movement.  Mathematics is a language used all 
+over the world.  The mathematical notation in science
+and engineering is embedded in a matrix of local natural 
+languages.  The W3C strives to be a constructive force
+in the spread of possibilities for communication throughout
+the world.  Therefore MathML will encounter problems
+of internationalization.  This version of MathML is
+not knowingly incompatible with the needs of languages
+which are written from left to right.  However the
+default orientation of MathML 2 is left-to-right, and
+it is clear that the needs for the writing of
+mathematical formulas embedded in some natural languages
+may not yet be met.  So-called bi-directional technology
+is still in development, and better support for formulas
+in that context must be a matter for future developers.
+</p>
+
+<div4><head>Existing Mathematical Markup Languages</head>
+
+<p>Perhaps the most important influence on mathematical markup
+languages of the last two decades is the &TeX; typesetting
+system developed by Donald Knuth <bibref ref="Knuth1986"/>.
+&TeX; is a de facto standard in the mathematical research
+community, and it is pervasive in the scientific community at
+large.  &TeX; sets a standard for quality of visual rendering,
+and a great deal of effort has gone into ensuring MathML can
+provide the same visual rendering quality.  Moreover, because
+of the many legacy documents in &TeX;, and because of the
+large authoring community versed in &TeX;, a priority in the
+design of MathML was the ability to convert &TeX; mathematics
+input into MathML format.  The feasibility of such conversion
+has been demonstrated by prototype software.</p>
+
+<p>Extensive work on encoding mathematics has also been done
+in the SGML community, and SGML-based encoding schemes are
+widely used by commercial publishers.  ISO 12083 is an
+important markup language which contains a DTD fragment
+primarily intended for describing the visual presentation of
+mathematical notation. Because ISO 12083 mathematical notation
+and its derivatives share many presentational aspects with
+&TeX;, and because SGML enforces structure and regularity more
+than &TeX;, much of the work in ensuring MathML is compatible
+with &TeX; also applies well to ISO 12083.</p>
+
+<p>MathML also pays particular attention to compatibility with
+other mathematical software, and in particular, with computer
+algebra systems.  Many of the presentation elements of MathML
+are derived in part from the mechanism of typesetting
+boxes. The MathML content elements are heavily indebted to the
+OpenMath project and the work by Stilo Technologies on a
+mathematical DTD fragment. The OpenMath project has close ties
+to both the SGML and computer algebra communities, and has
+laid a foundation for an SGML- and XML-based means of
+communication between mathematical software packages, amongst
+other things.  The feasibility of both generating and
+interpreting MathML in computer algebra systems has been
+demonstrated by prototype software.</p>
+
+</div4>
+
+<div4><head>HTML Extension Mechanisms</head>
+
+<p>As noted above, the success of HTML has led to enormous
+pressure to incorporate a wide variety of data types and
+software applications into the Web.  Each new format or
+application potentially places new demands on HTML and on
+browser vendors. For some time, it has been clear that a
+general extension mechanism is necessary to accommodate new
+extensions to HTML. At the very beginning, the working group
+began its work thinking of a plain extension to HTML in the
+spirit of the first mathematics support suggested for HTML
+3.2.  But for a good number of reasons, once we got into the
+details, this proved to be not so good an idea.  Since work
+first began on MathML, XML <bibref ref="XML"/>,
+has emerged as the dominant such
+general extension mechanism.</p>
+
+<p>XML stands for Extensible Markup Language.  It is designed as a
+simplified version of SGML, the meta-language used to define the
+grammar and syntax of HTML. One of the goals of XML is to be suitable
+for use on the Web, and in the context of this discussion it can be
+viewed as the general mechanism for extending HTML. As its name
+implies, extensibility is a key feature of XML; authors are free to
+declare and use new elements and attributes. At the same time, XML
+grammar and syntax rules carefully enforce regular document structure
+to facilitate automatic processing and maintenance of large document
+collections. Mathematically speaking XML is essentially a notation for
+decorated rooted planar trees, and thus of great generality as an
+encoding tool. </p>
+
+<p>Since the setting up of the first W3C Math Working Group,
+XML has garnered broad industry support, including that of
+major browser vendors. The migration of HTML to an XML form
+has been important to the W3C, and has resulted in the XHTML
+Recommendation which delivers a new modularized form of HTML.
+MathML can be viewed as another module which fits very well
+with the new XHTML.  Indeed in <specref ref="parsing_module"/>
+there is a new DTD for mathematics which is the result of
+collaboration with the W3C HTML Working Group.</p>
+
+<p>Furthermore, other applications of XML for all kinds of
+document publishing and processing promise to become
+increasingly important. Consequently, both on theoretical and
+pragmatic grounds, it has made a great deal of sense to
+specify MathML as an XML application.</p>
+
+</div4>
+
+<div4><head>Browser Extension Mechanisms</head>
+
+<p>By now,  as opposed  to the situation  when the  
+<phrase diff="chg">MathML 1.0 Recommendation <bibref diff="add" ref="MathML1"/></phrase> was adopted, the
+details of  a general model  for rendering and  processing XML
+extensions to  HTML are largely  clear. Formatting Properties,
+developed  by  the   Cascading  Style  Sheets  and  Formatting
+Properties Working  Group for  CSS and made  available through
+the  Document Object Model  (DOM), will  be applied  to MathML
+elements to obtain stylistic  control over the presentation of
+MathML.   Further development  of these  Formatting Properties
+falls within the  charters of both the CSS&amp;FP  and the XSL
+working  groups.  For an  introduction to  this topic  see the
+discussion   in   <specref   ref="interf"/>.    For   detailed
+commentary  on  how  to  render MathML  with  current  systems
+consult      the 
+<loc href="http://www.w3.org/Math/">W3C Math WG Home Page</loc>.</p>
+
+<p>Until  style  sheet mechanisms  are  capable of  delivering
+native browser  rendering of MathML, however,  it is necessary
+to extend  browser capabilities by using  embedded elements to
+render MathML. It is already possible to instruct a browser to
+use  a particular  embedded renderer  to process  embedded XML
+markup such as MathML,  and to coordinate the resulting output
+with the surrounding Web page, however the results are not yet
+entirely as one wishes. See  <specref ref="interf"/>.</p>
+
+<p>For  specialized  processing,   such  as  connecting  to  a
+computer  algebra system,  the  capability of  calling out  to
+other programs is likely to remain highly desirable.  However,
+for  such an  interaction  to be  really  satisfactory, it  is
+necessary  to define a  document object  model rich  enough to
+facilitate  complicated   interactions  between  browsers  and
+embedded elements. For this reason, the W3C Math Working Group
+has coordinated  its efforts closely with  the Document Object
+Model  (DOM)  Working Group.   The  results  are described  in
+<specref ref="dom-intro"/>.</p>
+
+<p>For    processing   by    embedded   elements,    and   for
+inter-communication  between scientific software  generally, a
+style  sheet-based layout  model  is in  some  ways less  than
+ideal. It can impose  an additional implementation burden in a
+setting  where it  may offer  few advantages,  and  it imposes
+implementation requirements  for coordination between browsers
+and embedded renderers that  will likely be unavailable in the
+immediate future.</p>
+
+<p>For  these  reasons, the  MathML  specification defines  an
+attribute-based layout model,  which has proven very effective
+for   high-quality  rendering   of   complicated  mathematical
+expressions  in several  independent  implementations.  MathML
+presentation  attributes  utilize  W3C  Formatting  Properties
+where   possible.    Also,   MathML   elements    accept   <att>class</att>, <att>style</att> and <att>id</att> attributes to  facilitate their use with
+CSS style sheets. However,  at present, there are few settings
+where   CSS  machinery  is   currently  available   to  MathML
+renderers. </p>
+
+<p>The use of CSS style sheet mechanisms has been mentioned
+above.  The mechanisms of XSL have also recently become
+available for the transformation of XML documents to effect
+their rendering.  Indeed the alternative forms of this present
+recommendation, including the definitive public HTML version,
+have been prepared from an underlying XML source using XSL
+transformation language tools.  As further developments in
+this direction become available to MathML, it is anticipated
+their use will become the dominant method of stylistic control
+of MathML presentation meant for use in rendering environments
+which support those mechanisms.</p>
+</div4>
+</div3>
+</div2>
+</div1>
+
+
+

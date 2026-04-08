@@ -10,7 +10,6 @@ module Mml
           attribute :mathbackground, :string
           attribute :mathcolor, :string
           attribute :content, :string
-          attribute :dir, :string
 
           xml do
             namespace Mml::Namespace
@@ -18,7 +17,6 @@ module Mml
             mixed_content
 
             map_content to: :content
-            map_attribute "dir", to: :dir
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground
           end

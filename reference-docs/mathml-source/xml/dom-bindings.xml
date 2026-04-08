@@ -1,0 +1,20 @@
+<inform-div1 id="dom-bindings" role="appendixe" ><head>MathML Document Object Model Bindings</head>
+<!-- $Id: dom-bindings.xml,v 1.6 2002/12/12 16:21:43 davidc Exp $ -->
+
+<div2 id="dom-bindings_IDLBinding"><head>MathML Document Object Model IDL Binding</head>
+  <p>The IDL binding is also available as an IDL file at
+<loc href="http://www.w3.org/Math/DOM/mathml2/mathml-dom.idl">http://www.w3.org/Math/DOM/mathml2/mathml-dom.idl</loc>.</p>
+  <?generate-binding?>
+</div2>
+
+<div2 id="dom-bindings_JavaBindings"><head>MathML Document Object Model Java Binding</head>
+  <p>The Java bindings are also available in zipped form at
+<loc href="http://www.w3.org/Math/DOM/mathml2/mathml-dom_java.zip">http://www.w3.org/Math/DOM/mathml2/mathml-dom_java.zip</loc>.</p>
+  <?generate-binding?>
+</div2>
+
+<div2 id="dom-bindings_ECMABinding"><head>MathML Document Object Model ECMAScript Binding</head>
+  <?generate-binding?>
+</div2>
+
+</inform-div1>

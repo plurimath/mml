@@ -19,6 +19,8 @@ RSpec.describe "Mml context support" do
     expect(math).to be_a(Mml::V3::Math)
     expect(math.mi_value.first).to be_a(Mml::V3::Mi)
   ensure
+    Mml::V2::Configuration.populate_context!
+    Mml::V3::Configuration.populate_context!
     Mml::V4::Configuration.populate_context!
   end
 
@@ -105,6 +107,37 @@ RSpec.describe "Mml context support" do
     math_has_register = Mml::V3::Math.instance_variable_defined?(:@register)
     mi_has_register = Mml::V3::Mi.instance_variable_defined?(:@register)
     expect([math_has_register, mi_has_register]).to all(be(false))
+  end
+
+  it "supports custom_models= convenience API for container element substitution" do
+    stub_const("CustomV4Mover", Class.new(Mml::V4::CommonElements))
+    Mml::V4::Configuration.custom_models = { Mml::V4::Mover => CustomV4Mover }
+
+    xml = <<~XML
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <mover>
+          <mo>∫</mo>
+          <mi>b</mi>
+        </mover>
+      </math>
+    XML
+
+    math = Mml::V4.parse(xml, context: :custom_models)
+
+    expect(math.mover_value.first).to be_a(CustomV4Mover)
+    expect(math.mover_value.first.mo_value.first.value).to eq("∫")
+    expect(math.mover_value.first.mi_value.first.value).to eq("b")
+  end
+
+  it "uses custom_models as default context without explicit context: parameter" do
+    stub_const("CustomV4Mi2", Class.new(Mml::V4::Mi))
+    Mml::V4::Configuration.custom_models = { Mml::V4::Mi => CustomV4Mi2 }
+
+    math = Mml::V4.parse(v4_xml)
+
+    expect(math.mfrac_value.first.mi_value.first).to be_a(CustomV4Mi2)
+  ensure
+    Mml::V4::Configuration.clear_custom_models
   end
 
   # rubocop:disable RSpec/ExampleLength
