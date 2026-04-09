@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mmultiscripts < Lutaml::Model::Serializable
+    class Mmultiscripts < CommonElements
       include Base::Mmultiscripts
     end
   end

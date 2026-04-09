@@ -7,6 +7,8 @@ module Mml
       autoload :Cn, "#{__dir__}/content/cn"
       autoload :Ci, "#{__dir__}/content/ci"
       autoload :Csymbol, "#{__dir__}/content/csymbol"
+      autoload :Cbytes, "#{__dir__}/content/cbytes"
+      autoload :Cs, "#{__dir__}/content/cs"
       autoload :Apply, "#{__dir__}/content/apply"
       autoload :Semantics, "#{__dir__}/content/semantics"
       autoload :Annotation, "#{__dir__}/content/annotation"

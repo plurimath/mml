@@ -2,55 +2,55 @@
 
 module Mml
   module V2
-    class Set < Lutaml::Model::Serializable
+    class Set < CommonElements
       include Base::Content::Set
     end
 
-    class Mlist < Lutaml::Model::Serializable
+    class Mlist < CommonElements
       include Base::Content::List
     end
 
-    class Union < Lutaml::Model::Serializable
+    class Union < CommonElements
       include Base::Content::Union
     end
 
-    class Intersect < Lutaml::Model::Serializable
+    class Intersect < CommonElements
       include Base::Content::Intersect
     end
 
-    class In < Lutaml::Model::Serializable
+    class In < CommonElements
       include Base::Content::In
     end
 
-    class Notin < Lutaml::Model::Serializable
+    class Notin < CommonElements
       include Base::Content::Notin
     end
 
-    class Subset < Lutaml::Model::Serializable
+    class Subset < CommonElements
       include Base::Content::Subset
     end
 
-    class Prsubset < Lutaml::Model::Serializable
+    class Prsubset < CommonElements
       include Base::Content::Prsubset
     end
 
-    class Notsubset < Lutaml::Model::Serializable
+    class Notsubset < CommonElements
       include Base::Content::Notsubset
     end
 
-    class Notprsubset < Lutaml::Model::Serializable
+    class Notprsubset < CommonElements
       include Base::Content::Notprsubset
     end
 
-    class Setdiff < Lutaml::Model::Serializable
+    class Setdiff < CommonElements
       include Base::Content::Setdiff
     end
 
-    class Card < Lutaml::Model::Serializable
+    class Card < CommonElements
       include Base::Content::Card
     end
 
-    class Cartesianproduct < Lutaml::Model::Serializable
+    class Cartesianproduct < CommonElements
       include Base::Content::Cartesianproduct
     end
   end

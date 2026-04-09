@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mpadded < Lutaml::Model::Serializable
+    class Mpadded < CommonElements
       include Base::Mpadded
     end
   end

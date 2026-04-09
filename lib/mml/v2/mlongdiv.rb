@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mlongdiv < Lutaml::Model::Serializable
+    class Mlongdiv < CommonElements
       include Base::Mlongdiv
     end
   end

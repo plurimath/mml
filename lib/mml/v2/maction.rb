@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Maction < Lutaml::Model::Serializable
+    class Maction < CommonElements
       include Base::Maction
     end
   end

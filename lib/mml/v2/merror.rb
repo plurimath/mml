@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Merror < Lutaml::Model::Serializable
+    class Merror < CommonElements
       include Base::Merror
     end
   end

@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mfrac < Lutaml::Model::Serializable
+    class Mfrac < CommonElements
       include Base::Mfrac
     end
   end

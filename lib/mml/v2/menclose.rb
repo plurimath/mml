@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Menclose < Lutaml::Model::Serializable
+    class Menclose < CommonElements
       include Base::Menclose
     end
   end

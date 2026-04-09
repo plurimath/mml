@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Msup < Lutaml::Model::Serializable
+    class Msup < CommonElements
       include Base::Msup
     end
   end

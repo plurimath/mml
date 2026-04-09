@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mroot < Lutaml::Model::Serializable
+    class Mroot < CommonElements
       include Base::Mroot
     end
   end

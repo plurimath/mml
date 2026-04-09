@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mover < Lutaml::Model::Serializable
+    class Mover < CommonElements
       include Base::Mover
     end
   end

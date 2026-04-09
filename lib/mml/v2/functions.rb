@@ -22,7 +22,7 @@ module Mml
       include Base::Content::Ident
     end
 
-    class Domainofapplication < Lutaml::Model::Serializable
+    class Domainofapplication < CommonElements
       include Base::Content::Domainofapplication
     end
   end

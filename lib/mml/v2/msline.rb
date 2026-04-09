@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Msline < Lutaml::Model::Serializable
+    class Msline < CommonElements
       include Base::Msline
     end
   end

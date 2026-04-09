@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Msrow < Lutaml::Model::Serializable
+    class Msrow < CommonElements
       include Base::Msrow
     end
   end

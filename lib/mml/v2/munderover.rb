@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Munderover < Lutaml::Model::Serializable
+    class Munderover < CommonElements
       include Base::Munderover
     end
   end

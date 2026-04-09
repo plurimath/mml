@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Msgroup < Lutaml::Model::Serializable
+    class Msgroup < CommonElements
       include Base::Msgroup
     end
   end
