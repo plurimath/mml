@@ -22,10 +22,10 @@ module Mml
             map_content to: :content
 
             map_attribute "mathbackground", to: :mathbackground
-            map_attribute "separators", to: :separators
+            map_attribute "separators", to: :separators, render_empty: true
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "close", to: :close
-            map_attribute "open", to: :open
+            map_attribute "open", to: :open, render_empty: true
           end
         end
       end

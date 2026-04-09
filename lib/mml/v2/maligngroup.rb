@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Maligngroup < Lutaml::Model::Serializable
+    class Maligngroup < CommonElements
       include Base::Maligngroup
     end
   end

@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mtd < Lutaml::Model::Serializable
+    class Mtd < CommonElements
       include Base::Mtd
     end
   end

@@ -13,6 +13,9 @@ module Mml
           attribute :rowalign, :string
           attribute :columnalign, :string
           attribute :alignmentscope, :string
+          attribute :groupalign, :string
+          attribute :displaystyle, :string
+          attribute :scriptlevel, :string
           attribute :columnwidth, :string
           attribute :width, :string
           attribute :rowspacing, :string
@@ -23,6 +26,7 @@ module Mml
           attribute :framespacing, :string
           attribute :equalrows, :string
           attribute :equalcolumns, :string
+          attribute :side, :string
           attribute :mlabeledtr_value, :mlabeledtr, collection: true
           attribute :mtr_value, :mtr, collection: true
 
@@ -37,6 +41,9 @@ module Mml
             map_attribute "rowalign", to: :rowalign
             map_attribute "columnalign", to: :columnalign
             map_attribute "alignmentscope", to: :alignmentscope
+            map_attribute "groupalign", to: :groupalign
+            map_attribute "displaystyle", to: :displaystyle
+            map_attribute "scriptlevel", to: :scriptlevel
             map_attribute "columnwidth", to: :columnwidth
             map_attribute "width", to: :width
             map_attribute "rowspacing", to: :rowspacing
@@ -47,6 +54,7 @@ module Mml
             map_attribute "framespacing", to: :framespacing
             map_attribute "equalrows", to: :equalrows
             map_attribute "equalcolumns", to: :equalcolumns
+            map_attribute "side", to: :side
             map_element "mlabeledtr", to: :mlabeledtr_value
             map_element "mtr", to: :mtr_value
           end

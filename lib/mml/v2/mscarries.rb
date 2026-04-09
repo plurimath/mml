@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mscarries < Lutaml::Model::Serializable
+    class Mscarries < CommonElements
       include Base::Mscarries
     end
   end

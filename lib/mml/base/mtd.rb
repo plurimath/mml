@@ -11,6 +11,9 @@ module Mml
           attribute :mathbackground, :string
           attribute :rowalign, :string
           attribute :columnalign, :string
+          attribute :groupalign, :string
+          attribute :rowspan, :integer
+          attribute :columnspan, :integer
 
           xml do
             namespace Mml::Namespace
@@ -21,6 +24,9 @@ module Mml
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "rowalign", to: :rowalign
             map_attribute "columnalign", to: :columnalign
+            map_attribute "groupalign", to: :groupalign
+            map_attribute "rowspan", to: :rowspan
+            map_attribute "columnspan", to: :columnspan
           end
         end
       end

@@ -53,6 +53,7 @@ module Mml
         def self.included(klass)
           klass.class_eval do
             xml do
+              namespace Mml::Namespace
               element "logbase"
               mixed_content
             end

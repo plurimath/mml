@@ -2,31 +2,31 @@
 
 module Mml
   module V2
-    class Int < Lutaml::Model::Serializable
+    class Int < CommonElements
       include Base::Content::Int
     end
 
-    class Diff < Lutaml::Model::Serializable
+    class Diff < CommonElements
       include Base::Content::Diff
     end
 
-    class Partialdiff < Lutaml::Model::Serializable
+    class Partialdiff < CommonElements
       include Base::Content::Partialdiff
     end
 
-    class Limit < Lutaml::Model::Serializable
+    class Limit < CommonElements
       include Base::Content::Limit
     end
 
-    class Lowlimit < Lutaml::Model::Serializable
+    class Lowlimit < CommonElements
       include Base::Content::Lowlimit
     end
 
-    class Uplimit < Lutaml::Model::Serializable
+    class Uplimit < CommonElements
       include Base::Content::Uplimit
     end
 
-    class Tendsto < Lutaml::Model::Serializable
+    class Tendsto < CommonElements
       include Base::Content::Tendsto
     end
   end

@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class None < Lutaml::Model::Serializable
+    class None < CommonElements
       include Base::None
     end
   end

@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mtext < Lutaml::Model::Serializable
+    class Mtext < CommonElements
       include Base::Mtext
     end
   end

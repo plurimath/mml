@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mglyph < Lutaml::Model::Serializable
+    class Mglyph < CommonElements
       include Base::Mglyph
     end
   end

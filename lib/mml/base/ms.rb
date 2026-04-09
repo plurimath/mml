@@ -25,8 +25,8 @@ module Mml
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathsize", to: :mathsize
-            map_attribute "lquote", to: :lquote
-            map_attribute "rquote", to: :rquote
+            map_attribute "lquote", to: :lquote, render_empty: true
+            map_attribute "rquote", to: :rquote, render_empty: true
           end
         end
       end

@@ -2,8 +2,9 @@
 
 module Mml
   module V2
-    class Mstyle < Lutaml::Model::Serializable
+    class Mstyle < CommonElements
       include Base::Mstyle
+      include Base::DeprecatedFontAttributes
     end
   end
 end

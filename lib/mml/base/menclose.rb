@@ -18,7 +18,7 @@ module Mml
 
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground
-            map_attribute "notation", to: :notation
+            map_attribute "notation", to: :notation, render_empty: true
           end
         end
       end

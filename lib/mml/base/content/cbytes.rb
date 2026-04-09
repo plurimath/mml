@@ -3,23 +3,17 @@
 module Mml
   module Base
     module Content
-      # annotation is a non-XML annotation for semantic markup.
-      # Used within semantics element.
-      module Annotation
+      module Cbytes
         def self.included(klass)
           klass.class_eval do
-            attribute :definition_url, :string
             attribute :encoding_value, :string
-            attribute :href, :string
             attribute :value, :string
 
             xml do
               namespace Mml::Namespace
-              element "annotation"
+              element "cbytes"
 
               map_content to: :value
-              map_attribute "href", to: :href
-              map_attribute "definitionURL", to: :definition_url
               map_attribute "encoding", to: :encoding_value
             end
           end

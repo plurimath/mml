@@ -8,7 +8,7 @@ module Mml
       def self.included(klass)
         klass.class_eval do
           attribute :displaystyle, :string
-          attribute :scriptlevel, :integer
+          attribute :scriptlevel, :string
           attribute :mathcolor, :string
           attribute :mathbackground, :string
 

@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mlabeledtr < Lutaml::Model::Serializable
+    class Mlabeledtr < CommonElements
       include Base::Mlabeledtr
     end
   end

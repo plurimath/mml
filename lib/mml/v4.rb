@@ -251,6 +251,7 @@ module Mml
     Configuration.register_model(Math,          id: :math)
 
     # Content element registrations
+    Configuration.register_model(Annotation, id: :annotation)
     Configuration.register_model(AnnotationXml, id: :"annotation-xml")
     Configuration.register_model(Apply,         id: :apply)
     Configuration.register_model(Ci,             id: :ci)

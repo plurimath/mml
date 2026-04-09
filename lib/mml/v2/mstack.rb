@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mstack < Lutaml::Model::Serializable
+    class Mstack < CommonElements
       include Base::Mstack
     end
   end

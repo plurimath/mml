@@ -26,7 +26,7 @@ module Mml
       include Base::Content::Moment
     end
 
-    class Momentabout < Lutaml::Model::Serializable
+    class Momentabout < CommonElements
       include Base::Content::Momentabout
     end
   end

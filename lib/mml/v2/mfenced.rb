@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mfenced < Lutaml::Model::Serializable
+    class Mfenced < CommonElements
       include Base::Mfenced
     end
   end

@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Munder < Lutaml::Model::Serializable
+    class Munder < CommonElements
       include Base::Munder
     end
   end

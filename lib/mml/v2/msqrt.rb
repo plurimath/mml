@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Msqrt < Lutaml::Model::Serializable
+    class Msqrt < CommonElements
       include Base::Msqrt
     end
   end

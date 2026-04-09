@@ -2,39 +2,39 @@
 
 module Mml
   module V2
-    class Vector < Lutaml::Model::Serializable
+    class Vector < CommonElements
       include Base::Content::Vector
     end
 
-    class Matrix < Lutaml::Model::Serializable
+    class Matrix < CommonElements
       include Base::Content::Matrix
     end
 
-    class Matrixrow < Lutaml::Model::Serializable
+    class Matrixrow < CommonElements
       include Base::Content::Matrixrow
     end
 
-    class Determinant < Lutaml::Model::Serializable
+    class Determinant < CommonElements
       include Base::Content::Determinant
     end
 
-    class Transpose < Lutaml::Model::Serializable
+    class Transpose < CommonElements
       include Base::Content::Transpose
     end
 
-    class Selector < Lutaml::Model::Serializable
+    class Selector < CommonElements
       include Base::Content::Selector
     end
 
-    class Vectorproduct < Lutaml::Model::Serializable
+    class Vectorproduct < CommonElements
       include Base::Content::Vectorproduct
     end
 
-    class Scalarproduct < Lutaml::Model::Serializable
+    class Scalarproduct < CommonElements
       include Base::Content::Scalarproduct
     end
 
-    class Outerproduct < Lutaml::Model::Serializable
+    class Outerproduct < CommonElements
       include Base::Content::Outerproduct
     end
   end

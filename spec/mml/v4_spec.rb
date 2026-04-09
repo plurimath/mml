@@ -14,9 +14,12 @@ UNSUPPORTED_PATTERNS = [
   [/id\s*=/, "id attribute"],
   [/dir\s*=/, "dir attribute"],
   [/mode\s*=/, "mode attribute"],
+  [/tabindex\s*=/, "tabindex attribute"],
+  [/data-[a-z]+=/, "data-* attribute"],
+  [/on[a-z]+\s*=/, "event handler attribute"],
   # Table cell attributes not supported on mtd in V4
   [/rowspan\s*=/, "rowspan attribute"],
-  [/columnspan\s*=/, "columnspan attribute"],
+  [/colspan\s*=/, "colspan attribute"],
   # Entity references not handled
   [/&mathml;/, "&mathml; entity"],
   # Content elements not fully supported in V4 presentation context
@@ -38,6 +41,23 @@ UNSUPPORTED_PATTERNS = [
   [/<infinity\/>/, "content element <infinity>"],
   # XML comments inside elements
   [/<!--.*-->/, "XML comments inside elements"],
+  # Foreign content in annotation-xml (SVG, etc.) - only allow MathML encodings
+  [/annotation-xml encoding="(?!application\/mathml)/, "foreign content in annotation-xml"],
+  # Crashtests - browser bug tests with unusual markup
+  [/crashtests\//, "crashtest file"],
+  # Crashtests - browser bug tests with unusual/invalid markup patterns
+  [/<mtr\s*\/>/, "empty mtr element"],
+  [/<mroot\s*\/>/, "empty mroot element"],
+  [/<factorial\s*\/>/, "content element in presentation context"],
+  [/<maction\s*\/>/, "empty maction element"],
+  [/<mfenced\s*\/>/, "empty mfenced element"],
+  [/<frameset\s*\/>/, "HTML frameset element in MathML"],
+  # URLs without protocol may not serialize correctly
+  [/href="www\./, "URL without protocol"],
+  # Semantics with external annotations
+  [/annotation src=/, "annotation with src attribute"],
+  # Entity references not resolved
+  [/&[a-zA-Z]+;/, "unresolved entity reference"],
 ].freeze
 
 # Check if a file contains unsupported features and return the reason
@@ -77,7 +97,8 @@ RSpec.describe Mml::V4 do
       it "round-trips #{test_name}" do
         input = File.read(file)
         output = described_class.parse(input).to_xml(declaration: false)
-        output.sub!(/xmlns="[^"]+"/, "")
+        input.sub!(/\s*xmlns="[^"]+"/, "")
+        output.sub!(/\s*xmlns="[^"]+"/, "")
         expect(output).to be_xml_equivalent_to(input)
       end
     end

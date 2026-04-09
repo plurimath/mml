@@ -17,7 +17,7 @@ module Mml
     end
     Configuration.register_model(Log, id: :log)
 
-    class Logbase < Lutaml::Model::Serializable
+    class Logbase < CommonElements
       include Base::Content::Logbase
     end
     Configuration.register_model(Logbase, id: :logbase)

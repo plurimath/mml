@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Malignmark < Lutaml::Model::Serializable
+    class Malignmark < CommonElements
       include Base::Malignmark
     end
   end

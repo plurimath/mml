@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Semantics < Lutaml::Model::Serializable
+    class Semantics < CommonElements
       include Base::Semantics
     end
   end

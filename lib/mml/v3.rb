@@ -54,6 +54,8 @@ require_relative "v3/math"
 
 # Content elements - must be eagerly loaded for Configuration.register_model
 require_relative "v3/apply"
+require_relative "v3/cbytes"
+require_relative "v3/cs"
 require_relative "v3/ci"
 require_relative "v3/cn"
 require_relative "v3/csymbol"

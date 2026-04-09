@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mspace < Lutaml::Model::Serializable
+    class Mspace < CommonElements
       include Base::Mspace
     end
   end

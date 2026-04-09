@@ -2,7 +2,7 @@
 
 module Mml
   module V2
-    class Mphantom < Lutaml::Model::Serializable
+    class Mphantom < CommonElements
       include Base::Mphantom
     end
   end

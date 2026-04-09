@@ -15,6 +15,7 @@ module Mml
           attribute :valign, :string
           attribute :mathvariant, :string
           attribute :mathbackground, :string
+          attribute :fontfamily, :string
 
           attribute :mathsize, :string
           attribute :mathcolor, :string
@@ -31,6 +32,7 @@ module Mml
             map_attribute "valign", to: :valign
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "mathbackground", to: :mathbackground
+            map_attribute "fontfamily", to: :fontfamily
 
             map_attribute "mathsize", to: :mathsize
             map_attribute "mathcolor", to: :mathcolor

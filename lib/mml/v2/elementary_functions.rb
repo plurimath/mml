@@ -2,119 +2,119 @@
 
 module Mml
   module V2
-    class Exp < Lutaml::Model::Serializable
+    class Exp < CommonElements
       include Base::Content::Exp
     end
 
-    class Ln < Lutaml::Model::Serializable
+    class Ln < CommonElements
       include Base::Content::Ln
     end
 
-    class Log < Lutaml::Model::Serializable
+    class Log < CommonElements
       include Base::Content::Log
     end
 
-    class Logbase < Lutaml::Model::Serializable
+    class Logbase < CommonElements
       include Base::Content::Logbase
     end
 
     # Trigonometric
-    class Sin < Lutaml::Model::Serializable
+    class Sin < CommonElements
       include Base::Content::Sin
     end
 
-    class Cos < Lutaml::Model::Serializable
+    class Cos < CommonElements
       include Base::Content::Cos
     end
 
-    class Tan < Lutaml::Model::Serializable
+    class Tan < CommonElements
       include Base::Content::Tan
     end
 
-    class Sec < Lutaml::Model::Serializable
+    class Sec < CommonElements
       include Base::Content::Sec
     end
 
-    class Csc < Lutaml::Model::Serializable
+    class Csc < CommonElements
       include Base::Content::Csc
     end
 
-    class Cot < Lutaml::Model::Serializable
+    class Cot < CommonElements
       include Base::Content::Cot
     end
 
     # Inverse trigonometric
-    class Arcsin < Lutaml::Model::Serializable
+    class Arcsin < CommonElements
       include Base::Content::Arcsin
     end
 
-    class Arccos < Lutaml::Model::Serializable
+    class Arccos < CommonElements
       include Base::Content::Arccos
     end
 
-    class Arctan < Lutaml::Model::Serializable
+    class Arctan < CommonElements
       include Base::Content::Arctan
     end
 
-    class Arccot < Lutaml::Model::Serializable
+    class Arccot < CommonElements
       include Base::Content::Arccot
     end
 
-    class Arccsc < Lutaml::Model::Serializable
+    class Arccsc < CommonElements
       include Base::Content::Arccsc
     end
 
-    class Arcsec < Lutaml::Model::Serializable
+    class Arcsec < CommonElements
       include Base::Content::Arcsec
     end
 
     # Hyperbolic
-    class Sinh < Lutaml::Model::Serializable
+    class Sinh < CommonElements
       include Base::Content::Sinh
     end
 
-    class Cosh < Lutaml::Model::Serializable
+    class Cosh < CommonElements
       include Base::Content::Cosh
     end
 
-    class Tanh < Lutaml::Model::Serializable
+    class Tanh < CommonElements
       include Base::Content::Tanh
     end
 
-    class Sech < Lutaml::Model::Serializable
+    class Sech < CommonElements
       include Base::Content::Sech
     end
 
-    class Csch < Lutaml::Model::Serializable
+    class Csch < CommonElements
       include Base::Content::Csch
     end
 
-    class Coth < Lutaml::Model::Serializable
+    class Coth < CommonElements
       include Base::Content::Coth
     end
 
     # Inverse hyperbolic
-    class Arcsinh < Lutaml::Model::Serializable
+    class Arcsinh < CommonElements
       include Base::Content::Arcsinh
     end
 
-    class Arccosh < Lutaml::Model::Serializable
+    class Arccosh < CommonElements
       include Base::Content::Arccosh
     end
 
-    class Arctanh < Lutaml::Model::Serializable
+    class Arctanh < CommonElements
       include Base::Content::Arctanh
     end
 
-    class Arccoth < Lutaml::Model::Serializable
+    class Arccoth < CommonElements
       include Base::Content::Arccoth
     end
 
-    class Arccsch < Lutaml::Model::Serializable
+    class Arccsch < CommonElements
       include Base::Content::Arccsch
     end
 
-    class Arcsech < Lutaml::Model::Serializable
+    class Arcsech < CommonElements
       include Base::Content::Arcsech
     end
   end
