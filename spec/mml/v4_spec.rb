@@ -42,7 +42,8 @@ UNSUPPORTED_PATTERNS = [
   # XML comments inside elements
   [/<!--.*-->/, "XML comments inside elements"],
   # Foreign content in annotation-xml (SVG, etc.) - only allow MathML encodings
-  [/annotation-xml encoding="(?!application\/mathml)/, "foreign content in annotation-xml"],
+  [/annotation-xml encoding="(?!application\/mathml)/,
+   "foreign content in annotation-xml"],
   # Crashtests - browser bug tests with unusual markup
   [/crashtests\//, "crashtest file"],
   # Crashtests - browser bug tests with unusual/invalid markup patterns
@@ -92,6 +93,7 @@ RSpec.describe Mml::V4 do
       file_content = File.read(file)
       reason = unsupported_reason(file_content)
       next if reason # Skip unsupported patterns entirely
+
       test_name = file.sub("./spec/fixtures/mmlcore-testsuite/mathml/", "")
 
       it "round-trips #{test_name}" do

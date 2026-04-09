@@ -101,7 +101,8 @@ RSpec.describe Mml::V3 do
         "./spec/fixtures/mml3-testsuite/Math/testsuite/build/main/", ""
       )
 
-      it "rejects invalid MathML in #{test_name}", skip: "Parser does not validate MathML schema compliance" do
+      it "rejects invalid MathML in #{test_name}",
+         skip: "Parser does not validate MathML schema compliance" do
         input = File.read(file)
         expect { described_class.parse(input) }.to raise_error
       end
