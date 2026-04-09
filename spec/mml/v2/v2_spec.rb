@@ -61,7 +61,7 @@ XSD_INVALID_FILES = begin
   if File.exist?(skip_file)
     keys = YAML.load_file(skip_file).keys
     # Convert "testsuite/Content/..." to "Content/..." to match spec path
-    keys.map { |k| k.sub(/^testsuite\//, "") }.to_set
+    keys.to_set { |k| k.sub(/^testsuite\//, "") }
   else
     Set.new
   end

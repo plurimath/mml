@@ -32,7 +32,7 @@ def extract_mathml(content)
   math_xml = math_match[0]
 
   # If it already has xmlns, return as-is
-  return math_xml if math_xml.include?('xmlns=')
+  return math_xml if math_xml.include?("xmlns=")
 
   # If it's in an HTML wrapper, extract just the math
   # Check for various wrapper patterns
@@ -51,7 +51,7 @@ def process_file(file_path)
   return nil unless mathml
 
   # Add MathML namespace if missing
-  unless mathml.include?('xmlns=')
+  unless mathml.include?("xmlns=")
     mathml = mathml.sub(/<math\b/, '<math xmlns="http://www.w3.org/1998/Math/MathML"')
   end
 
@@ -59,9 +59,6 @@ def process_file(file_path)
 end
 
 def main
-  puts "Pre-processing MathML fixture files..."
-  puts "=" * 50
-
   fixture_dirs = {
     "mml2-testsuite" => "testsuite",
     "mml3-testsuite" => "Math/testsuite/build/main",
@@ -90,7 +87,7 @@ def main
       stats[fixture_dir][:processed] += 1
 
       if mathml
-        File.write(out_path, mathml + "\n")
+        File.write(out_path, "#{mathml}\n")
         stats[fixture_dir][:cleaned] += 1
       else
         # Could not extract MathML - file may be truly unsupported
@@ -99,14 +96,7 @@ def main
         File.write(out_path, File.read(file))
       end
     end
-
-    puts "\n#{fixture_dir}:"
-    puts "  Processed: #{stats[fixture_dir][:processed]}"
-    puts "  Cleaned:   #{stats[fixture_dir][:cleaned]}"
-    puts "  Skipped:   #{stats[fixture_dir][:skipped]}"
   end
-
-  puts "\nCleaned fixtures written to: #{OUTPUT_DIR}"
 end
 
 main

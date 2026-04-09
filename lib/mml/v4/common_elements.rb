@@ -12,7 +12,8 @@ module Mml
       attribute :reln_value, :reln, collection: true
       attribute :declare_value, :declare, collection: true
       attribute :share_value, :share, collection: true
-      attribute :domainofapplication_value, :domainofapplication, collection: true
+      attribute :domainofapplication_value, :domainofapplication,
+                collection: true
       attribute :logbase_value, :logbase, collection: true
       attribute :annotation_value, :annotation, collection: true
 
