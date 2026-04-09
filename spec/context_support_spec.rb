@@ -145,7 +145,7 @@ RSpec.describe "Mml context support" do
     Mml::V3::Configuration.context
     math = Mml::V3::Math.new(
       lutaml_register: Mml::V3::Configuration.context_id,
-      mi_value: [Mml::V3::Mi.new(value: "x")],
+      mi_value: [Mml::V3::Mi.new(value: "x", lutaml_register: Mml::V3::Configuration.context_id)],
     )
 
     expect(math.to_xml).to be_xml_equivalent_to(v3_xml)
@@ -156,7 +156,7 @@ RSpec.describe "Mml context support" do
     Mml::V4::Configuration.context
     math = Mml::V4::Math.new(
       lutaml_register: Mml::V4::Configuration.context_id,
-      mi_value: [Mml::V4::Mi.new(value: "x")],
+      mi_value: [Mml::V4::Mi.new(value: "x", lutaml_register: Mml::V4::Configuration.context_id)],
     )
 
     expect(math.to_xml).to be_xml_equivalent_to(v3_xml)

@@ -26,7 +26,7 @@ class MathmlValidator
     @schema_path = if schema_rel_path
                      File.join(SCHEMA_DIR,
                                schema_rel_path)
-                                      end
+                   end
     @fixture_dir = File.join(FIXTURES_DIR, fixture_dir_name)
     @invalid_files = {}
   end
@@ -56,16 +56,13 @@ class MathmlValidator
 
   def run
     unless schema_available?
-      
       return
     end
 
-    
     Dir.chdir(File.dirname(@schema_path)) do
       schema_doc = Nokogiri::XML::Schema(File.read(File.basename(@schema_path)))
 
       mml_files = collect_mml_files
-      
 
       valid_count = 0
       invalid_count = 0
@@ -83,8 +80,6 @@ class MathmlValidator
           valid_count += 1
         end
       end
-
-      
     end
   end
 
@@ -95,20 +90,15 @@ class MathmlValidator
                             "invalid_#{@fixture_dir_name}_cleaned_by_xsd.yaml")
     FileUtils.mkdir_p(OUTPUT_DIR)
     File.write(output_path, YAML.dump(@invalid_files))
-    
   end
 end
 
 def main
-  
-  
-
   fixture_dirs = %w[mml2-testsuite mml3-testsuite]
 
   all_invalid = {}
 
   fixture_dirs.each do |dir|
-    
     validator = MathmlValidator.new(dir)
     validator.run
     validator.save_results
@@ -116,8 +106,8 @@ def main
   end
 
   if all_invalid.any?
-    
-    
+    puts "\n" + "=" * 50
+    puts "Summary by error type:"
 
     by_error = Hash.new { |h, k| h[k] = [] }
     all_invalid.each do |file, errors|
@@ -125,13 +115,13 @@ def main
     end
 
     by_error.each do |error, files|
-      
-      files.first(5).each { |f|  }
-       if files.length > 5
+      puts "\n  #{error}:"
+      files.first(5).each { |f| puts "    - #{f}" }
+      puts "    ... and #{files.length - 5} more" if files.length > 5
     end
   end
 
-  
+  puts "\nValidation complete."
 end
 
 main

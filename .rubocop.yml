@@ -15,3 +15,4 @@ AllCops:
     - 'spec/fixtures/mml2-testsuite/**/*'
     - 'spec/fixtures/mml3-testsuite/**/*'
     - 'spec/fixtures/mmlcore-testsuite/**/*'
+    - 'spec/tasks/**/*'

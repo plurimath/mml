@@ -36,7 +36,7 @@ RSpec.describe Mml::V3::Mstyle do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               '<mstyle scriptlevel="1"><mi>y</mi></mstyle></math>'
       math = Mml.parse(input)
-      expect(math.mstyle_value.first.scriptlevel).to eq(1)
+      expect(math.mstyle_value.first.scriptlevel).to eq("1")
     end
 
     it "preserves multiple style attributes" do
