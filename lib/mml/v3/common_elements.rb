@@ -8,6 +8,7 @@ module Mml
       end
 
       attribute :cbytes_value, :cbytes, collection: true
+      attribute :cerror_value, :cerror, collection: true
       attribute :cs_value, :cs, collection: true
       attribute :factorof_value, :factorof, collection: true
       attribute :limit_value, :limit, collection: true
@@ -23,6 +24,7 @@ module Mml
 
       xml do
         map_element "cbytes", to: :cbytes_value
+        map_element "cerror", to: :cerror_value
         map_element "cs", to: :cs_value
         map_element "factorof", to: :factorof_value
         map_element "limit", to: :limit_value

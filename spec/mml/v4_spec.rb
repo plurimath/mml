@@ -22,22 +22,6 @@ UNSUPPORTED_PATTERNS_V4 = [
   [/colspan\s*=/, "colspan attribute"],
   # Entity references not handled
   [/&mathml;/, "&mathml; entity"],
-  # Content elements not fully supported in V4 presentation context
-  [/<infinity\/>/, "content element <infinity>"],
-  [/<integers\/>/, "content element <integers>"],
-  [/<rationals\/>/, "content element <rationals>"],
-  [/<reals\/>/, "content element <reals>"],
-  [/<complexes\/>/, "content element <complexes>"],
-  [/<primes\/>/, "content element <primes>"],
-  [/<naturalnumbers\/>/, "content element <naturalnumbers>"],
-  [/<exponentiale\/>/, "content element <exponentiale>"],
-  [/<imaginaryi\/>/, "content element <imaginaryi>"],
-  [/<eulergamma\/>/, "content element <eulergamma>"],
-  [/<pi\/>/, "content element <pi>"],
-  [/<true\/>/, "content element <true>"],
-  [/<false\/>/, "content element <false>"],
-  [/<notanumber\/>/, "content element <notanumber>"],
-  [/<emptyset\/>/, "content element <emptyset>"],
   # XML comments inside elements
   [/<!--.*-->/, "XML comments inside elements"],
   # Foreign content in annotation-xml (SVG, etc.) - only allow MathML encodings
