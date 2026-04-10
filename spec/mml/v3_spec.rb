@@ -7,8 +7,6 @@ require "canon"
 # These patterns identify Content MathML elements that V3 truly does not support.
 # Elements that previously lost child content have been fixed to extend CommonElements.
 UNSUPPORTED_PATTERNS_V3 = [
-  # cerror is not implemented
-  [/<cerror[\/\s>]/, "content element <cerror> not supported in V3"],
   # share element uses href references that require XInclude (not supported)
   [/<share[\/\s>]/, "content element <share> requires XInclude support"],
   # HTML elements not valid in MathML
@@ -25,22 +23,6 @@ UNSUPPORTED_PATTERNS_V3 = [
   # Foreign namespace attributes (dsi:background, etc.)
   [/:background/, "foreign namespace attribute"],
   [/:color/, "foreign namespace attribute"],
-  # Content elements not fully supported in V3 presentation context
-  [/<infinity\/>/, "content element <infinity>"],
-  [/<integers\/>/, "content element <integers>"],
-  [/<rationals\/>/, "content element <rationals>"],
-  [/<reals\/>/, "content element <reals>"],
-  [/<complexes\/>/, "content element <complexes>"],
-  [/<primes\/>/, "content element <primes>"],
-  [/<naturalnumbers\/>/, "content element <naturalnumbers>"],
-  [/<exponentiale\/>/, "content element <exponentiale>"],
-  [/<imaginaryi\/>/, "content element <imaginaryi>"],
-  [/<eulergamma\/>/, "content element <eulergamma>"],
-  [/<pi\/>/, "content element <pi>"],
-  [/<true\/>/, "content element <true>"],
-  [/<false\/>/, "content element <false>"],
-  [/<notanumber\/>/, "content element <notanumber>"],
-  [/<emptyset\/>/, "content element <emptyset>"],
   # XML comments inside elements
   [/<!--.*-->/, "XML comments inside elements"],
   # ErrorHandling tests contain intentionally invalid MathML - filter out, will test separately

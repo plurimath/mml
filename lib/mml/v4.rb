@@ -63,8 +63,11 @@ module Mml
     autoload :AnnotationXml, "mml/v4/annotation_xml"
     autoload :Annotation, "mml/v4/annotation"
     autoload :Apply, "mml/v4/apply"
+    autoload :Cbytes, "mml/v4/cbytes"
+    autoload :Cerror, "mml/v4/cerror"
     autoload :Ci,           "mml/v4/ci"
     autoload :Cn,           "mml/v4/cn"
+    autoload :Cs, "mml/v4/cs"
     autoload :Csymbol,      "mml/v4/csymbol"
     autoload :Bvar,         "mml/v4/constructs"
     autoload :Condition,    "mml/v4/constructs"
@@ -133,8 +136,11 @@ module Mml
     autoload :Cartesianproduct, "mml/v4/sets"
     autoload :Diff,         "mml/v4/calculus"
     autoload :Partialdiff,  "mml/v4/calculus"
+    autoload :Factorof,     "mml/v4/factorof"
     autoload :Int,          "mml/v4/calculus"
+    autoload :Limit,        "mml/v4/limit"
     autoload :Lowlimit,     "mml/v4/calculus"
+    autoload :Tendsto,      "mml/v4/tendsto"
     autoload :Uplimit,      "mml/v4/calculus"
     autoload :Divergence,   "mml/v4/vector_calculus"
     autoload :Grad,         "mml/v4/vector_calculus"
@@ -254,9 +260,12 @@ module Mml
     Configuration.register_model(Annotation, id: :annotation)
     Configuration.register_model(AnnotationXml, id: :"annotation-xml")
     Configuration.register_model(Apply,         id: :apply)
+    Configuration.register_model(Cbytes, id: :cbytes)
+    Configuration.register_model(Cerror, id: :cerror)
     Configuration.register_model(Ci,             id: :ci)
     Configuration.register_model(Cn,             id: :cn)
-    Configuration.register_model(Csymbol,        id: :csymbol)
+    Configuration.register_model(Cs, id: :cs)
+    Configuration.register_model(Csymbol, id: :csymbol)
 
     # Constructs (bvar, condition, interval, lambda, inverse, degree, piecewise, piece, otherwise, sep, bind)
     Configuration.register_model(Bvar, id: :bvar)
@@ -319,6 +328,7 @@ module Mml
     Configuration.register_model(Geq,         id: :geq)
     Configuration.register_model(Equivalent, id: :equivalent)
     Configuration.register_model(Approx, id: :approx)
+    Configuration.register_model(Factorof, id: :factorof)
 
     # Sets (13 - uses List not Mlist)
     Configuration.register_model(Set, id: :set)
@@ -339,7 +349,9 @@ module Mml
     Configuration.register_model(Diff,         id: :diff)
     Configuration.register_model(Partialdiff,  id: :partialdiff)
     Configuration.register_model(Int, id: :int)
+    Configuration.register_model(Limit, id: :limit)
     Configuration.register_model(Lowlimit, id: :lowlimit)
+    Configuration.register_model(Tendsto, id: :tendsto)
     Configuration.register_model(Uplimit, id: :uplimit)
 
     # Vector Calculus (4)
