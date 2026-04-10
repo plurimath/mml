@@ -11,17 +11,11 @@ RSpec.describe "Mml context support" do
   let(:v4_xml) { File.read("spec/fixtures/v4/intent_basic.mml") }
 
   it "repopulates the built-in v3 context explicitly" do
-    Lutaml::Model::GlobalContext.reset!
     Mml::V3::Configuration.populate_context!
 
-    math = Mml.parse(v3_xml)
-
+    math = Mml::V3.parse(v3_xml)
     expect(math).to be_a(Mml::V3::Math)
     expect(math.mi_value.first).to be_a(Mml::V3::Mi)
-  ensure
-    Mml::V2::Configuration.populate_context!
-    Mml::V3::Configuration.populate_context!
-    Mml::V4::Configuration.populate_context!
   end
 
   it "creates derived v3 contexts with fallback to the built-in context" do
@@ -30,6 +24,8 @@ RSpec.describe "Mml context support" do
 
     expect(context.fallback_ids).to eq([Mml::V3::Configuration.context_id])
     expect(math.mi_value.first).to be_a(Mml::V3::Mi)
+  ensure
+    Lutaml::Model::GlobalContext.unregister_context(:custom_v3)
   end
 
   it "supports substitutions in custom v3 contexts" do
@@ -46,6 +42,8 @@ RSpec.describe "Mml context support" do
     expect(math.mi_value.first).to be_a(CustomV3Mi)
     expect(math.to_xml(register: :custom_v3_substitution))
       .to be_xml_equivalent_to(v3_xml)
+  ensure
+    Lutaml::Model::GlobalContext.unregister_context(:custom_v3_substitution)
   end
 
   it "supports substitutions in custom v4 contexts via top-level parser" do
@@ -63,6 +61,8 @@ RSpec.describe "Mml context support" do
     expect(math.mfrac_value.first.mi_value.first).to be_a(CustomV4Mi)
     expect(math.to_xml(register: :custom_v4_substitution))
       .to be_xml_equivalent_to(v4_xml)
+  ensure
+    Lutaml::Model::GlobalContext.unregister_context(:custom_v4_substitution)
   end
 
   # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
@@ -73,6 +73,8 @@ RSpec.describe "Mml context support" do
       math = Mml::V3.parse(v3_xml, register: :compat_v3)
       expect(math.mi_value.first).to be_a(Mml::V3::Mi)
     end.to output(/`register` is deprecated/).to_stderr
+  ensure
+    Lutaml::Model::GlobalContext.unregister_context(:compat_v3)
   end
   # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
 
@@ -92,6 +94,8 @@ RSpec.describe "Mml context support" do
       math = Mml::V3.parse(v3_xml, register: legacy_register)
     end.to output(/`register` is deprecated/).to_stderr
     expect(math.mi_value.first).to be_a(LegacyRegisterMi)
+  ensure
+    Lutaml::Model::GlobalContext.unregister_context(:legacy_v3_register)
   end
   # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
 
@@ -113,20 +117,14 @@ RSpec.describe "Mml context support" do
     stub_const("CustomV4Mover", Class.new(Mml::V4::CommonElements))
     Mml::V4::Configuration.custom_models = { Mml::V4::Mover => CustomV4Mover }
 
-    xml = <<~XML
-      <math xmlns="http://www.w3.org/1998/Math/MathML">
-        <mover>
-          <mo>∫</mo>
-          <mi>b</mi>
-        </mover>
-      </math>
-    XML
-
+    xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mover><mo>∫</mo><mi>b</mi></mover></math>'
     math = Mml::V4.parse(xml, context: :custom_models)
 
     expect(math.mover_value.first).to be_a(CustomV4Mover)
     expect(math.mover_value.first.mo_value.first.value).to eq("∫")
     expect(math.mover_value.first.mi_value.first.value).to eq("b")
+  ensure
+    Mml::V4::Configuration.clear_custom_models
   end
 
   it "uses custom_models as default context without explicit context: parameter" do

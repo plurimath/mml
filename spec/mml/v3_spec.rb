@@ -6,7 +6,7 @@ require "canon"
 # Patterns of unsupported features in mml3-testsuite files:
 # These patterns identify Content MathML elements that V3 truly does not support.
 # Elements that previously lost child content have been fixed to extend CommonElements.
-UNSUPPORTED_PATTERNS = [
+UNSUPPORTED_PATTERNS_V3 = [
   # cerror is not implemented
   [/<cerror[\/\s>]/, "content element <cerror> not supported in V3"],
   # share element uses href references that require XInclude (not supported)
@@ -48,8 +48,8 @@ UNSUPPORTED_PATTERNS = [
 ].freeze
 
 # Check if a file contains unsupported features and return the reason
-def unsupported_reason(content)
-  UNSUPPORTED_PATTERNS.each do |pattern, reason|
+def unsupported_reason_v3(content)
+  UNSUPPORTED_PATTERNS_V3.each do |pattern, reason|
     return reason if pattern.match?(content)
   end
   nil
@@ -76,7 +76,7 @@ RSpec.describe Mml::V3 do
       next if file.include?("ErrorHandling/")
 
       file_content = File.read(file)
-      reason = unsupported_reason(file_content)
+      reason = unsupported_reason_v3(file_content)
       next if reason # Skip unsupported patterns entirely
 
       test_name = file.sub(

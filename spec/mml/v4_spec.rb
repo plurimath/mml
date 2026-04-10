@@ -4,7 +4,7 @@ require "spec_helper"
 require "canon"
 
 # Patterns of unsupported features in WPT test files:
-UNSUPPORTED_PATTERNS = [
+UNSUPPORTED_PATTERNS_V4 = [
   # HTML elements not valid in MathML (check for span element - self-closing or with content)
   [/<\/span>/, "HTML <span> elements"],
   [/<span[\/\s>]/, "HTML <span> elements"],
@@ -38,7 +38,6 @@ UNSUPPORTED_PATTERNS = [
   [/<false\/>/, "content element <false>"],
   [/<notanumber\/>/, "content element <notanumber>"],
   [/<emptyset\/>/, "content element <emptyset>"],
-  [/<infinity\/>/, "content element <infinity>"],
   # XML comments inside elements
   [/<!--.*-->/, "XML comments inside elements"],
   # Foreign content in annotation-xml (SVG, etc.) - only allow MathML encodings
@@ -62,8 +61,8 @@ UNSUPPORTED_PATTERNS = [
 ].freeze
 
 # Check if a file contains unsupported features and return the reason
-def unsupported_reason(content)
-  UNSUPPORTED_PATTERNS.each do |pattern, reason|
+def unsupported_reason_v4(content)
+  UNSUPPORTED_PATTERNS_V4.each do |pattern, reason|
     return reason if pattern.match?(content)
   end
   nil
@@ -91,7 +90,7 @@ RSpec.describe Mml::V4 do
   context "with mmlcore-testsuite files" do
     Dir.glob("./spec/fixtures/mmlcore-testsuite/mathml/**/*.mml").each do |file|
       file_content = File.read(file)
-      reason = unsupported_reason(file_content)
+      reason = unsupported_reason_v4(file_content)
       next if reason # Skip unsupported patterns entirely
 
       test_name = file.sub("./spec/fixtures/mmlcore-testsuite/mathml/", "")
