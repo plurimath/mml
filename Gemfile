@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
-
 gemspec
-git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gem "canon"
 gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
