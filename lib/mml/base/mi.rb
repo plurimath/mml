@@ -12,7 +12,6 @@ module Mml
           attribute :mathcolor, :string
           attribute :mathvariant, :string
           attribute :mathbackground, :string
-          attribute :href, :string
           attribute :mglyph_value, :mglyph, collection: true
           attribute :lang, :string
 
@@ -26,7 +25,6 @@ module Mml
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "mathbackground", to: :mathbackground
-            map_attribute "href", to: :href
             map_attribute "xml:lang", to: :lang
             map_element "mglyph", to: :mglyph_value
           end

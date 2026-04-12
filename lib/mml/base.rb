@@ -43,6 +43,7 @@ module Mml
     autoload :Munderover, "#{__dir__}/base/munderover"
     autoload :None, "#{__dir__}/base/none"
     autoload :Semantics, "#{__dir__}/base/semantics"
+    autoload :CommonAttributes, "#{__dir__}/base/common_attributes"
     autoload :UniversalPresentationAttributes,
              "#{__dir__}/base/universal_presentation_attributes"
     autoload :V3Common, "#{__dir__}/base/v3_common"

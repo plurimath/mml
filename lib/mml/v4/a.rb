@@ -5,7 +5,6 @@ module Mml
     class A < CommonElements
       include Base::V4Attributes
 
-      attribute :href, :string
       attribute :hreflang, :string
 
       xml do
@@ -13,7 +12,6 @@ module Mml
         element "a"
         mixed_content
 
-        map_attribute "href", to: :href
         map_attribute "hreflang", to: :hreflang
       end
     end

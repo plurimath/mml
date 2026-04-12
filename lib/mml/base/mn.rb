@@ -12,7 +12,6 @@ module Mml
           attribute :mathbackground, :string
           attribute :mathvariant, :string
           attribute :mathsize, :string
-          attribute :href, :string
           attribute :mglyph_value, :mglyph, collection: true
 
           xml do
@@ -25,7 +24,6 @@ module Mml
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "mathsize", to: :mathsize
-            map_attribute "href", to: :href
             map_element "mglyph", to: :mglyph_value
           end
         end

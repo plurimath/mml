@@ -9,7 +9,6 @@ module Mml
         klass.class_eval do
           attribute :display, :string
           attribute :macros, :string
-          attribute :href, :string
           attribute :lang, :string
           attribute :bevelled, :string
           attribute :mathsize, :string
@@ -37,7 +36,6 @@ module Mml
 
             map_attribute :display, to: :display
             map_attribute :macros, to: :macros
-            map_attribute "href", to: :href
             map_attribute "xml:lang", to: :lang
             map_attribute "bevelled", to: :bevelled
             map_attribute "mathsize", to: :mathsize

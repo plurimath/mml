@@ -9,9 +9,6 @@ UNSUPPORTED_PATTERNS_V4 = [
   [/<\/span>/, "HTML <span> elements"],
   [/<span[\/\s>]/, "HTML <span> elements"],
   # HTML attributes not valid in MathML V4
-  [/style\s*=/, "style attribute"],
-  [/class\s*=/, "class attribute"],
-  [/id\s*=/, "id attribute"],
   [/dir\s*=/, "dir attribute"],
   [/mode\s*=/, "mode attribute"],
   [/tabindex\s*=/, "tabindex attribute"],

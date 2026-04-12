@@ -4,6 +4,8 @@ require "lutaml/model"
 
 module Mml
   class CommonElements < Lutaml::Model::Serializable
+    include Base::CommonAttributes
+
     # Presentation elements
     attribute :mmultiscripts_value, :mmultiscripts, collection: true
     attribute :maligngroup_value, :maligngroup, collection: true
