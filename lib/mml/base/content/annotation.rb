@@ -10,7 +10,6 @@ module Mml
           klass.class_eval do
             attribute :definition_url, :string
             attribute :encoding_value, :string
-            attribute :href, :string
             attribute :value, :string
 
             xml do
@@ -18,7 +17,6 @@ module Mml
               element "annotation"
 
               map_content to: :value
-              map_attribute "href", to: :href
               map_attribute "definitionURL", to: :definition_url
               map_attribute "encoding", to: :encoding_value
             end

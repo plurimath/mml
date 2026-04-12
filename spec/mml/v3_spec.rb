@@ -13,9 +13,6 @@ UNSUPPORTED_PATTERNS_V3 = [
   [/<\/span>/, "HTML <span> elements"],
   [/<span[\/\s>]/, "HTML <span> elements"],
   # HTML attributes not valid in MathML V3
-  [/style\s*=/, "style attribute"],
-  [/class\s*=/, "class attribute"],
-  [/id\s*=/, "id attribute"],
   [/dir\s*=/, "dir attribute"],
   [/mode\s*=/, "mode attribute"],
   # Entity references not handled

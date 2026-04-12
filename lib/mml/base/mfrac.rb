@@ -13,7 +13,6 @@ module Mml
           attribute :numalign, :string
           attribute :denomalign, :string
           attribute :bevelled, :string
-          attribute :href, :string
 
           xml do
             namespace Mml::Namespace
@@ -26,7 +25,6 @@ module Mml
             map_attribute "numalign", to: :numalign
             map_attribute "denomalign", to: :denomalign
             map_attribute "bevelled", to: :bevelled
-            map_attribute "href", to: :href
           end
         end
       end

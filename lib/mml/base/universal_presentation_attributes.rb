@@ -7,6 +7,8 @@ module Mml
     module UniversalPresentationAttributes
       def self.included(klass)
         klass.class_eval do
+          include CommonAttributes
+
           attribute :displaystyle, :string
           attribute :scriptlevel, :string
           attribute :mathcolor, :string
