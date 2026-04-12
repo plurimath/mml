@@ -17,7 +17,6 @@ module Mml
           attribute :mathbackground, :string
           attribute :fontfamily, :string
 
-          attribute :mathsize, :string
           attribute :mathcolor, :string
 
           xml do
@@ -34,7 +33,6 @@ module Mml
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "fontfamily", to: :fontfamily
 
-            map_attribute "mathsize", to: :mathsize
             map_attribute "mathcolor", to: :mathcolor
           end
         end

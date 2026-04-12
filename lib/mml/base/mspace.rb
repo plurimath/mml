@@ -10,7 +10,6 @@ module Mml
           attribute :mathcolor, :string
           attribute :mathbackground, :string
           attribute :mathvariant, :string
-          attribute :mathsize, :string
           attribute :dir, :string
           attribute :width, :string
           attribute :height, :string
@@ -31,7 +30,6 @@ module Mml
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "mathvariant", to: :mathvariant
-            map_attribute "mathsize", to: :mathsize
             map_attribute "dir", to: :dir
             map_attribute "width", to: :width
             map_attribute "height", to: :height

@@ -11,7 +11,6 @@ module Mml
           attribute :mathcolor, :string
           attribute :mathbackground, :string
           attribute :mathvariant, :string
-          attribute :mathsize, :string
           attribute :mglyph_value, :mglyph, collection: true
 
           xml do
@@ -23,7 +22,6 @@ module Mml
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "mathvariant", to: :mathvariant
-            map_attribute "mathsize", to: :mathsize
             map_element "mglyph", to: :mglyph_value
           end
         end

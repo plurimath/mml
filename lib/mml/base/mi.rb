@@ -8,7 +8,6 @@ module Mml
       def self.included(klass)
         klass.class_eval do
           attribute :value, :string
-          attribute :mathsize, :string
           attribute :mathcolor, :string
           attribute :mathvariant, :string
           attribute :mathbackground, :string
@@ -21,7 +20,6 @@ module Mml
             mixed_content
 
             map_content to: :value
-            map_attribute "mathsize", to: :mathsize
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "mathbackground", to: :mathbackground

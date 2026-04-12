@@ -11,7 +11,6 @@ module Mml
           attribute :mathcolor, :string
           attribute :mathbackground, :string
           attribute :mathvariant, :string
-          attribute :mathsize, :string
           attribute :form, :string
           attribute :lspace, :string
           attribute :rspace, :string
@@ -48,7 +47,6 @@ module Mml
             map_attribute "minsize", to: :minsize
             map_attribute "largeop", to: :largeop
             map_attribute "stretchy", to: :stretchy
-            map_attribute "mathsize", to: :mathsize
             map_attribute "linebreak", to: :linebreak
             map_attribute "symmetric", to: :symmetric
             map_attribute "mathcolor", to: :mathcolor
