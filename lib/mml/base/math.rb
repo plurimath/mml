@@ -11,7 +11,6 @@ module Mml
           attribute :macros, :string
           attribute :lang, :string
           attribute :bevelled, :string
-          attribute :mathsize, :string
           attribute :mathcolor, :string
           attribute :rowalign, :string
           attribute :columnalign, :string
@@ -38,7 +37,6 @@ module Mml
             map_attribute :macros, to: :macros
             map_attribute "xml:lang", to: :lang
             map_attribute "bevelled", to: :bevelled
-            map_attribute "mathsize", to: :mathsize
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "rowalign", to: :rowalign
             map_attribute "columnalign", to: :columnalign

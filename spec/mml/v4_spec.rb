@@ -11,7 +11,6 @@ UNSUPPORTED_PATTERNS_V4 = [
   # HTML attributes not valid in MathML V4
   [/dir\s*=/, "dir attribute"],
   [/mode\s*=/, "mode attribute"],
-  [/tabindex\s*=/, "tabindex attribute"],
   [/data-[a-z]+=/, "data-* attribute"],
   [/on[a-z]+\s*=/, "event handler attribute"],
   # Table cell attributes not supported on mtd in V4

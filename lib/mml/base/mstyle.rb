@@ -55,7 +55,6 @@ module Mml
           attribute :longdivstyle, :string
           attribute :lquote, :string
           attribute :lspace, :string
-          attribute :mathsize, :string
           attribute :mathvariant, :string
           attribute :maxsize, :string
           attribute :minsize, :string
@@ -142,7 +141,6 @@ module Mml
             map_attribute "longdivstyle", to: :longdivstyle
             map_attribute "lquote", to: :lquote
             map_attribute "lspace", to: :lspace
-            map_attribute "mathsize", to: :mathsize
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "maxsize", to: :maxsize
             map_attribute "minsize", to: :minsize

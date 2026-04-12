@@ -13,6 +13,7 @@ module Mml
           attribute :scriptlevel, :string
           attribute :mathcolor, :string
           attribute :mathbackground, :string
+          attribute :mathsize, :string
 
           xml do
             namespace Mml::Namespace
@@ -20,6 +21,7 @@ module Mml
             map_attribute "scriptlevel", to: :scriptlevel
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground
+            map_attribute "mathsize", to: :mathsize
           end
         end
       end
