@@ -27,5 +27,13 @@ RSpec.describe Mml::V4::Mstyle do
       math = Mml::V4.parse(input)
       expect(math.mstyle_value.first.displaystyle).to eq("true")
     end
+
+    it "preserves mathsize attribute" do
+      input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
+              '<mstyle mathsize="big">' \
+              "<mi>y</mi></mstyle></math>"
+      math = Mml::V4.parse(input)
+      expect(math.mstyle_value.first.mathsize).to eq("big")
+    end
   end
 end
