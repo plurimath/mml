@@ -43,10 +43,8 @@ def unsupported_reason_v4(file_path)
   # Check for data-* attributes (lutaml-model doesn't support these yet - see GH issue)
   doc.root.xpath(".//@*").each do |attr|
     return "data-* attribute not supported by lutaml-model" if attr.name.start_with?("data-")
-  end
 
-  # Check for event handler attributes on* (lutaml-model doesn't support these yet - see GH issue)
-  doc.root.xpath(".//@*").each do |attr|
+    # Check for event handler attributes on* (lutaml-model doesn't support these yet - see GH issue)
     return "event handler attribute not supported by lutaml-model" if attr.name.start_with?("on")
   end
 
