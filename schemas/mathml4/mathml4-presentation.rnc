@@ -1,0 +1,358 @@
+# MathML 4 (Presentation)
+# #######################
+
+#     Copyright 1998-2024 W3C (MIT, ERCIM, Keio, Beihang)
+# 
+#     Use and distribution of this code are permitted under the terms
+#     W3C Software Notice and License
+#     http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231
+
+default namespace m = "http://www.w3.org/1998/Math/MathML"
+namespace local = ""
+
+		      
+# MathML Core
+include "mathml4-core.rnc" {
+
+# named lengths
+length-percentage = xsd:string {
+  pattern = '\s*((-?[0-9]*([0-9]\.?|\.[0-9])[0-9]*(r?em|ex|in|cm|mm|p[xtc]|Q|v[hw]|vmin|vmax|%))|0|(negative)?((very){0,2}thi(n|ck)|medium)mathspace)\s*'
+}
+
+mpadded-length-percentage = xsd:string {
+  pattern = '\s*([\+\-]?[0-9]*([0-9]\.?|\.[0-9])[0-9]*\s*((%?\s*(height|depth|width)?)|r?em|ex|in|cm|mm|p[xtc]|Q|v[hw]|vmin|vmax|%|((negative)?((very){0,2}thi(n|ck)|medium)mathspace))?)\s*' 
+}
+
+
+}
+
+NonMathMLAtt = attribute (* - (local:* | m:*)) {xsd:string}
+					     
+MathMLPGlobalAttributes &=
+		   NonMathMLAtt*,
+		   attribute xref {text}?,
+                   attribute href {xsd:anyURI}?
+
+MathMalignExpression |= MalignExpression
+			    
+MathExpression |= PresentationExpression
+
+MstackExpression = MathMalignExpression|mscarries|msline|msrow|msgroup
+
+MsrowExpression = MathMalignExpression|none
+
+
+linestyle = "none" | "solid" | "dashed"
+
+verticalalign =
+      "top" |
+      "bottom" |
+      "center" |
+      "baseline" |
+      "axis"
+
+columnalignstyle = "left" | "center" | "right"
+
+notationstyle =
+     "longdiv" |
+     "actuarial" |
+     "radical" |
+     "box" |
+     "roundedbox" |
+     "circle" |
+     "left" |
+     "right" |
+     "top" |
+     "bottom" |
+     "updiagonalstrike" |
+     "downdiagonalstrike" |
+     "verticalstrike" |
+     "horizontalstrike" |
+     "madruwb"
+
+idref = text
+unsigned-integer = xsd:unsignedLong
+integer = xsd:integer
+number = xsd:decimal
+
+character = xsd:string {
+  pattern = '\s*\S\s*'}
+
+
+positive-integer = xsd:positiveInteger
+
+
+token.content |= mglyph|text
+
+
+
+mo.attributes &= 
+  attribute linebreak {"auto" | "newline" | "nobreak" | "goodbreak" | "badbreak"}?,
+  attribute lineleading {length-percentage}?,
+  attribute linebreakstyle {"before" | "after" | "duplicate" | "infixlinebreakstyle"}?,
+  attribute linebreakmultchar {text}?,
+  attribute indentalign {"left" | "center" | "right" | "auto" | "id"}?,
+  attribute indentshift {length-percentage}?,
+  attribute indenttarget {idref}?,
+  attribute indentalignfirst {"left" | "center" | "right" | "auto" | "id" | "indentalign"}?,
+  attribute indentshiftfirst {length-percentage | "indentshift"}?,
+  attribute indentalignlast {"left" | "center" | "right" | "auto" | "id" | "indentalign"}?,
+  attribute indentshiftlast {length-percentage | "indentshift"}?,
+  attribute accent {mathml-boolean}?,
+  attribute maxsize {"infinity"}?
+ 
+
+mspace.attributes &= 
+  attribute linebreak {"auto" | "newline" | "nobreak" | "goodbreak" | "badbreak" | "indentingnewline"}?,
+  attribute indentalign {"left" | "center" | "right" | "auto" | "id"}?,
+  attribute indentshift {length-percentage}?,
+  attribute indenttarget {idref}?,
+  attribute indentalignfirst {"left" | "center" | "right" | "auto" | "id" | "indentalign"}?,
+  attribute indentshiftfirst {length-percentage | "indentshift"}?,
+  attribute indentalignlast {"left" | "center" | "right" | "auto" | "id" | "indentalign"}?,
+  attribute indentshiftlast {length-percentage | "indentshift"}?
+
+
+ms.attributes &= 
+  attribute lquote {text}?,
+  attribute rquote {text}?
+
+
+mglyph = element mglyph {mglyph.attributes,empty}
+mglyph.attributes = 
+  MathMLPGlobalAttributes,
+  attribute src {xsd:anyURI}?,
+  attribute width {length-percentage}?,
+  attribute height {length-percentage}?,
+  attribute valign {length-percentage}?,
+  attribute alt {text}?
+
+msline = element msline {msline.attributes,empty}
+msline.attributes = 
+  MathMLPGlobalAttributes,
+  attribute position {integer}?,
+  attribute length {unsigned-integer}?,
+  attribute leftoverhang {length-percentage}?,
+  attribute rightoverhang {length-percentage}?,
+  attribute mslinethickness {length-percentage | "thin" | "medium" | "thick"}?
+
+MalignExpression = maligngroup|malignmark
+
+malignmark = element malignmark {malignmark.attributes, empty}
+malignmark.attributes =  MathMLPGlobalAttributes
+
+
+maligngroup = element maligngroup {maligngroup.attributes, empty}
+maligngroup.attributes = MathMLPGlobalAttributes
+  
+
+PresentationExpression = TokenExpression|
+                         mrow|mfrac|msqrt|mroot|mstyle|merror|mpadded|mphantom|
+                         mfenced|menclose|msub|msup|msubsup|munder|mover|munderover|
+                         mmultiscripts|mtable|mstack|mlongdiv|maction
+
+
+mrow.attributes &=
+  MathMLlink.attributes
+
+
+mfrac.attributes &= 
+  attribute numalign {"left" | "center" | "right"}?,
+  attribute denomalign {"left" | "center" | "right"}?,
+  attribute bevelled {mathml-boolean}?
+
+
+
+mstyle.attributes &= 
+  mstyle.specificattributes,
+  mstyle.generalattributes
+
+mstyle.specificattributes =
+  attribute scriptsizemultiplier {number}?,
+  attribute scriptminsize {length-percentage}?,
+  attribute infixlinebreakstyle {"before" | "after" | "duplicate"}?,
+  attribute decimalpoint {character}?
+
+mstyle.generalattributes =
+  attribute accent {mathml-boolean}?,
+  attribute accentunder {mathml-boolean}?,
+  attribute align {"left" | "right" | "center"}?,
+  attribute bevelled {mathml-boolean}?,
+  attribute charalign {"left" | "center" | "right"}?,
+  attribute charspacing {length-percentage | "loose" | "medium" | "tight"}?,
+  attribute close {text}?,
+  attribute columnalign {list {columnalignstyle+} }?,
+  attribute columnlines {list {linestyle +}}?,
+  attribute columnspacing {list {(length-percentage) +}}?,
+  attribute columnspan {positive-integer}?,
+  attribute columnwidth {list {("auto" | length-percentage | "fit") +}}?,
+  attribute crossout {list {("none" | "updiagonalstrike" | "downdiagonalstrike" | "verticalstrike" | "horizontalstrike")*}}?,
+  attribute denomalign {"left" | "center" | "right"}?,
+  attribute depth {length-percentage}?,
+  attribute dir {"ltr" | "rtl"}?,
+  attribute equalcolumns {mathml-boolean}?,
+  attribute equalrows {mathml-boolean}?,
+  attribute form {"prefix" | "infix" | "postfix"}?,
+  attribute frame {linestyle}?,
+  attribute framespacing {list {length-percentage, length-percentage}}?,
+  attribute height {length-percentage}?,
+  attribute indentalign {"left" | "center" | "right" | "auto" | "id"}?,
+  attribute indentalignfirst {"left" | "center" | "right" | "auto" | "id" | "indentalign"}?,
+  attribute indentalignlast {"left" | "center" | "right" | "auto" | "id" | "indentalign"}?,
+  attribute indentshift {length-percentage}?,
+  attribute indentshiftfirst {length-percentage | "indentshift"}?,
+  attribute indentshiftlast {length-percentage | "indentshift"}?,
+  attribute indenttarget {idref}?,
+  attribute largeop {mathml-boolean}?,
+  attribute leftoverhang {length-percentage}?,
+  attribute length {unsigned-integer}?,
+  attribute linebreak {"auto" | "newline" | "nobreak" | "goodbreak" | "badbreak"}?,
+  attribute linebreakmultchar {text}?,
+  attribute linebreakstyle {"before" | "after" | "duplicate" | "infixlinebreakstyle"}?,
+  attribute lineleading {length-percentage}?,
+  attribute linethickness {length-percentage | "thin" | "medium" | "thick"}?,
+  attribute location {"w" | "nw" | "n" | "ne" | "e" | "se" | "s" | "sw"}?,
+  attribute longdivstyle {"lefttop" | "stackedrightright" | "mediumstackedrightright" | "shortstackedrightright" | "righttop" | "left/\right" | "left)(right" | ":right=right" | "stackedleftleft" | "stackedleftlinetop"}?,
+  attribute lquote {text}?,
+  attribute lspace {length-percentage}?,
+  attribute mathsize {"small" | "normal" | "big" | length-percentage}?,
+  attribute mathvariant {"normal" | "bold" | "italic" | "bold-italic" | "double-struck" | "bold-fraktur" | "script" | "bold-script" | "fraktur" | "sans-serif" | "bold-sans-serif" | "sans-serif-italic" | "sans-serif-bold-italic" | "monospace" | "initial" | "tailed" | "looped" | "stretched"}?,
+  attribute minlabelspacing {length-percentage}?,
+  attribute minsize {length-percentage}?,
+  attribute movablelimits {mathml-boolean}?,
+  attribute mslinethickness {length-percentage | "thin" | "medium" | "thick"}?,
+  attribute notation {text}?,
+  attribute numalign {"left" | "center" | "right"}?,
+  attribute open {text}?,
+  attribute position {integer}?,
+  attribute rightoverhang {length-percentage}?,
+  attribute rowalign {list {verticalalign+} }?,
+  attribute rowlines {list {linestyle +}}?,
+  attribute rowspacing {list {(length-percentage) +}}?,
+  attribute rowspan {positive-integer}?,
+  attribute rquote {text}?,
+  attribute rspace {length-percentage}?,
+  attribute selection {positive-integer}?,
+  attribute separators {text}?,
+  attribute shift {integer}?,
+  attribute side {"left" | "right" | "leftoverlap" | "rightoverlap"}?,
+  attribute stackalign {"left" | "center" | "right" | "decimalpoint"}?,
+  attribute stretchy {mathml-boolean}?,
+  attribute subscriptshift {length-percentage}?,
+  attribute superscriptshift {length-percentage}?,
+  attribute symmetric {mathml-boolean}?,
+  attribute valign {length-percentage}?,
+  attribute width {length-percentage}?
+
+
+math.attributes &= mstyle.specificattributes
+math.attributes &= mstyle.generalattributes
+math.attributes &= attribute overflow {"linebreak" | "scroll" | "elide" | "truncate" | "scale"}?
+
+mfenced = element mfenced {mfenced.attributes, ImpliedMrow}
+mfenced.attributes = 
+  MathMLPGlobalAttributes,
+  attribute open {text}?,
+  attribute close {text}?,
+  attribute separators {text}?
+
+
+menclose = element menclose {menclose.attributes, ImpliedMrow}
+menclose.attributes = 
+  MathMLPGlobalAttributes,
+  attribute notation {text}?
+
+
+munder.attributes &= 
+  attribute align {"left" | "right" | "center"}?
+
+mover.attributes &= 
+  attribute align {"left" | "right" | "center"}?
+
+munderover.attributes &= 
+  attribute align {"left" | "right" | "center"}?
+
+msub.attributes &=
+  attribute subscriptshift {length-percentage}?
+
+msup.attributes &=
+  attribute superscriptshift {length-percentage}?
+
+msubsup.attributes &=
+  attribute subscriptshift {length-percentage}?,
+  attribute superscriptshift {length-percentage}?
+
+
+mtable.attributes &= 
+  attribute align {xsd:string {
+    pattern ='\s*(top|bottom|center|baseline|axis)(\s+-?[0-9]+)?\s*'}}?,
+  attribute rowalign {list {verticalalign+} }?,
+  attribute columnalign {list {columnalignstyle+} }?,
+  attribute columnwidth {list {("auto" | length-percentage | "fit") +}}?,
+  attribute width {"auto" | length-percentage}?,
+  attribute rowspacing {list {(length-percentage) +}}?,
+  attribute columnspacing {list {(length-percentage) +}}?,
+  attribute rowlines {list {linestyle +}}?,
+  attribute columnlines {list {linestyle +}}?,
+  attribute frame {linestyle}?,
+  attribute framespacing {list {length-percentage, length-percentage}}?,
+  attribute equalrows {mathml-boolean}?,
+  attribute equalcolumns {mathml-boolean}?,
+  attribute displaystyle {mathml-boolean}?
+
+
+mtr.attributes &= 
+  attribute rowalign {"top" | "bottom" | "center" | "baseline" | "axis"}?,
+  attribute columnalign {list {columnalignstyle+} }?
+
+
+mtd.attributes &= 
+  attribute rowalign {"top" | "bottom" | "center" | "baseline" | "axis"}?,
+  attribute columnalign {columnalignstyle}?
+
+
+mstack = element mstack {mstack.attributes, MstackExpression*}
+mstack.attributes = 
+  MathMLPGlobalAttributes,
+  attribute align {xsd:string {
+    pattern ='\s*(top|bottom|center|baseline|axis)(\s+-?[0-9]+)?\s*'}}?,
+  attribute stackalign {"left" | "center" | "right" | "decimalpoint"}?,
+  attribute charalign {"left" | "center" | "right"}?,
+  attribute charspacing {length-percentage | "loose" | "medium" | "tight"}?
+
+
+mlongdiv = element mlongdiv {mlongdiv.attributes, MstackExpression,MstackExpression,MstackExpression+}
+mlongdiv.attributes = 
+  msgroup.attributes,
+  attribute longdivstyle {"lefttop" | "stackedrightright" | "mediumstackedrightright" | "shortstackedrightright" | "righttop" | "left/\right" | "left)(right" | ":right=right" | "stackedleftleft" | "stackedleftlinetop"}?
+
+
+msgroup = element msgroup {msgroup.attributes, MstackExpression*}
+msgroup.attributes = 
+  MathMLPGlobalAttributes,
+  attribute position {integer}?,
+  attribute shift {integer}?
+
+
+msrow = element msrow {msrow.attributes, MsrowExpression*}
+msrow.attributes = 
+  MathMLPGlobalAttributes,
+  attribute position {integer}?
+
+
+mscarries = element mscarries {mscarries.attributes, (MsrowExpression|mscarry)*}
+mscarries.attributes = 
+  MathMLPGlobalAttributes,
+  attribute position {integer}?,
+  attribute location {"w" | "nw" | "n" | "ne" | "e" | "se" | "s" | "sw"}?,
+  attribute crossout {list {("none" | "updiagonalstrike" | "downdiagonalstrike" | "verticalstrike" | "horizontalstrike")*}}?,
+  attribute scriptsizemultiplier {number}?
+
+
+mscarry = element mscarry {mscarry.attributes, MsrowExpression*}
+mscarry.attributes = 
+  MathMLPGlobalAttributes,
+  attribute location {"w" | "nw" | "n" | "ne" | "e" | "se" | "s" | "sw"}?,
+  attribute crossout {list {("none" | "updiagonalstrike" | "downdiagonalstrike" | "verticalstrike" | "horizontalstrike")*}}?
+
+

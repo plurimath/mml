@@ -1,15 +1,17 @@
 = W3C MathML schemas
 
-The official MathML schemas are available at
-https://www.w3.org/Math/XMLSchema/ .
+The official MathML schemas are available from W3C.
 
-MathML v3:: https://www.w3.org/Math/XMLSchema/mathml3-xsd.zip
+MathML 4:: https://www.w3.org/TR/mathml4/. Link: https://www.w3.org/Math/RelaxNG/mathml4/*.{rnc,rng}
 
-MathML v2:: https://www.w3.org/Math/XMLSchema/mathml2.tgz
+MathML 3:: From https://www.w3.org/Math/XMLSchema/. Link: https://www.w3.org/Math/XMLSchema/mathml3-xsd.zip
+
+MathML 2:: From https://www.w3.org/Math/XMLSchema/. Link: https://www.w3.org/Math/XMLSchema/mathml2.tgz
 
 == License
 
-Copyright 1998-2003 W3C (MIT, ERCIM, Keio), All Rights Reserved. W3C
-liability, trademark, document use and software licensing rules apply. Your
-interactions with this site are in accordance with our public and Member privacy
-statements.
+Copyright 1998-2024 W3C (MIT, ERCIM, Keio)
+
+Use and distribution of this code are permitted under the terms
+W3C Software Notice and License
+http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231
