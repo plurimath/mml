@@ -9,10 +9,12 @@ module Mml
         klass.class_eval do
           attribute :display, :string
           attribute :alttext, :string
+          attribute :decimalpoint, :string
           attribute :macros, :string
           attribute :lang, :string
           attribute :bevelled, :string
           attribute :mathcolor, :string
+          attribute :mathvariant, :string
           attribute :rowalign, :string
           attribute :columnalign, :string
           attribute :rowspacing, :string
@@ -28,6 +30,8 @@ module Mml
           attribute :indentalignlast, :string
           attribute :indentshiftlast, :string
           attribute :linebreakmultchar, :string
+          attribute :linebreakstyle, :string
+          attribute :indenttarget, :string
 
           xml do
             namespace Mml::Namespace
@@ -36,10 +40,12 @@ module Mml
 
             map_attribute :display, to: :display
             map_attribute "alttext", to: :alttext
+            map_attribute "decimalpoint", to: :decimalpoint
             map_attribute :macros, to: :macros
             map_attribute "xml:lang", to: :lang
             map_attribute "bevelled", to: :bevelled
             map_attribute "mathcolor", to: :mathcolor
+            map_attribute "mathvariant", to: :mathvariant
             map_attribute "rowalign", to: :rowalign
             map_attribute "columnalign", to: :columnalign
             map_attribute "rowspacing", to: :rowspacing
@@ -54,6 +60,8 @@ module Mml
             map_attribute "indentalignlast", to: :indentalignlast
             map_attribute "indentshiftlast", to: :indentshiftlast
             map_attribute "linebreakmultchar", to: :linebreakmultchar
+            map_attribute "linebreakstyle", to: :linebreakstyle
+            map_attribute "indenttarget", to: :indenttarget
           end
         end
       end

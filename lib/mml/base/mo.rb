@@ -19,6 +19,7 @@ module Mml
           attribute :symmetric, :string
           attribute :maxsize, :string
           attribute :minsize, :string
+          attribute :fence, :string
           attribute :largeop, :string
           attribute :movablelimits, :string
           attribute :accent, :string
@@ -46,6 +47,7 @@ module Mml
             map_attribute "rspace", to: :rspace
             map_attribute "maxsize", to: :maxsize
             map_attribute "minsize", to: :minsize
+            map_attribute "fence", to: :fence
             map_attribute "largeop", to: :largeop
             map_attribute "stretchy", to: :stretchy
             map_attribute "linebreak", to: :linebreak

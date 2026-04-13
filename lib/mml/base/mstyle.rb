@@ -80,6 +80,7 @@ module Mml
           attribute :superscriptshift, :string
           attribute :symmetric, :string
           attribute :valign, :string
+          attribute :voffset, :string
           attribute :width, :string
           attribute :veryverythinmathspace, :string
           attribute :verythinmathspace, :string
@@ -166,6 +167,7 @@ module Mml
             map_attribute "superscriptshift", to: :superscriptshift
             map_attribute "symmetric", to: :symmetric
             map_attribute "valign", to: :valign
+            map_attribute "voffset", to: :voffset
             map_attribute "width", to: :width
             map_attribute "veryverythinmathspace", to: :veryverythinmathspace
             map_attribute "verythinmathspace", to: :verythinmathspace

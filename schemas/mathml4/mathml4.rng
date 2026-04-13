@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MathML 4 (full)
+  ##############
+-->
+<!--
+      Copyright 1998-2024 W3C (MIT, ERCIM, Keio)
+  
+      Use and distribution of this code are permitted under the terms
+      W3C Software Notice and License
+      http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231
+-->
+<grammar ns="http://www.w3.org/1998/Math/MathML" xmlns="http://relaxng.org/ns/structure/1.0">
+  <!-- Presentation MathML -->
+  <include href="mathml4-presentation.rng">
+    <define name="anyElement">
+      <element>
+        <anyName>
+          <except>
+            <nsName/>
+          </except>
+        </anyName>
+        <zeroOrMore>
+          <choice>
+            <attribute>
+              <anyName/>
+            </attribute>
+            <text/>
+            <ref name="anyElement"/>
+          </choice>
+        </zeroOrMore>
+      </element>
+    </define>
+  </include>
+  <!-- Content  MathML -->
+  <include href="mathml4-content.rng"/>
+</grammar>
