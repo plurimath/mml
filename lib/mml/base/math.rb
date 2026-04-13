@@ -8,6 +8,7 @@ module Mml
       def self.included(klass)
         klass.class_eval do
           attribute :display, :string
+          attribute :alttext, :string
           attribute :macros, :string
           attribute :lang, :string
           attribute :bevelled, :string
@@ -34,6 +35,7 @@ module Mml
             mixed_content
 
             map_attribute :display, to: :display
+            map_attribute "alttext", to: :alttext
             map_attribute :macros, to: :macros
             map_attribute "xml:lang", to: :lang
             map_attribute "bevelled", to: :bevelled

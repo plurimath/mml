@@ -51,5 +51,20 @@ RSpec.describe Mml::V4::Math do
       math = Mml::V4.parse(input)
       expect(math.mn_value.first.value).to eq("1")
     end
+
+    it "preserves alttext attribute" do
+      input = '<math xmlns="http://www.w3.org/1998/Math/MathML" alttext="x plus 1">' \
+              "<mi>x</mi><mo>+</mo><mn>1</mn></math>"
+      math = Mml::V4.parse(input)
+      expect(math.alttext).to eq("x plus 1")
+    end
+
+    it "round-trips alttext attribute" do
+      input = '<math xmlns="http://www.w3.org/1998/Math/MathML" alttext="fraction one half">' \
+              "<mfrac><mi>1</mi><mi>2</mi></mfrac></math>"
+      math = Mml::V4.parse(input)
+      output = math.to_xml
+      expect(output).to be_xml_equivalent_to(input)
+    end
   end
 end
