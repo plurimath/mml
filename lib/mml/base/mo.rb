@@ -11,6 +11,7 @@ module Mml
           attribute :mathcolor, :string
           attribute :mathbackground, :string
           attribute :mathvariant, :string
+          attribute :mathsize, :string
           attribute :form, :string
           attribute :lspace, :string
           attribute :rspace, :string
@@ -51,6 +52,7 @@ module Mml
             map_attribute "symmetric", to: :symmetric
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathvariant", to: :mathvariant
+            map_attribute "mathsize", to: :mathsize
             map_attribute "lineleading", to: :lineleading
             map_attribute "indentalign", to: :indentalign
             map_attribute "indentshift", to: :indentshift

@@ -13,6 +13,7 @@ UNSUPPORTED_PATTERNS_V4 = [
   [/mode\s*=/, "mode attribute"],
   [/data-[a-z]+=/, "data-* attribute"],
   [/on[a-z]+\s*=/, "event handler attribute"],
+  [/tabindex\s*=/, "tabindex attribute"],
   # Table cell attributes not supported on mtd in V4
   [/rowspan\s*=/, "rowspan attribute"],
   [/colspan\s*=/, "colspan attribute"],

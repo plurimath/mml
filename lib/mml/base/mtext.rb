@@ -11,6 +11,7 @@ module Mml
           attribute :mathcolor, :string
           attribute :mathbackground, :string
           attribute :mathvariant, :string
+          attribute :mathsize, :string
 
           xml do
             namespace Mml::Namespace
@@ -20,6 +21,7 @@ module Mml
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "mathvariant", to: :mathvariant
+            map_attribute "mathsize", to: :mathsize
           end
         end
       end

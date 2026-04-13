@@ -15,6 +15,11 @@ module Mml
           attribute :autofocus, :string
           attribute :nonce, :string
           attribute :tabindex, :string
+          attribute :aria_label, :string
+          attribute :aria_describedby, :string
+          attribute :aria_description, :string
+          attribute :aria_details, :string
+          attribute :data_other, :string
 
           xml do
             namespace Mml::Namespace
@@ -26,6 +31,11 @@ module Mml
             map_attribute "autofocus", to: :autofocus
             map_attribute "nonce", to: :nonce
             map_attribute "tabindex", to: :tabindex
+            map_attribute "aria-label", to: :aria_label
+            map_attribute "aria-describedby", to: :aria_describedby
+            map_attribute "aria-description", to: :aria_description
+            map_attribute "aria-details", to: :aria_details
+            map_attribute "data-other", to: :data_other
           end
         end
       end
