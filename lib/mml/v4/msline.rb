@@ -3,6 +3,9 @@
 module Mml
   module V4
     class Msline < Lutaml::Model::Serializable
+      def self.lutaml_default_register
+        :mml_v4
+      end
       include Base::Msline
       include Base::V4Attributes
 
