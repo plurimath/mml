@@ -3,6 +3,9 @@
 module Mml
   module V4
     class Mspace < Lutaml::Model::Serializable
+      def self.lutaml_default_register
+        :mml_v4
+      end
       include Base::Mspace
       include Base::V4Attributes
 
