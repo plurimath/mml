@@ -5,7 +5,6 @@ module Mml
     # Shared parse entrypoint for versioned modules.
     def parse(input, namespace_exist: true,
               context: Mml::UNSPECIFIED_CONTEXT, register: nil)
-      self::Configuration.adapter ||= Mml::DEFAULT_ADAPTER
       context_id = parse_context_id(context, register)
       root_class = Lutaml::Model::GlobalContext.resolve_type(
         :math,
@@ -18,14 +17,6 @@ module Mml
       )
     end
 
-    # Namespace-less MathML is normalized before handing it to lutaml-model.
-    def parse_with_no_namespace(input)
-      adapter = self::Configuration.adapter || Mml::DEFAULT_ADAPTER
-      Moxml.new(adapter).parse(input).tap do |doc|
-        doc.root.add_namespace(nil, self::Namespace.uri)
-      end.to_xml
-    end
-
     # Version modules keep their own default context id.
     def parse_context_id(context, register)
       Mml::ContextOptions.normalize_context_option(
@@ -36,11 +27,27 @@ module Mml
       )
     end
 
-    # Keep the main parse flow readable by separating namespace normalization.
+    # Inject the MathML namespace into the raw XML string before parsing.
+    # This avoids a double parse-serialize cycle (previously the code used
+    # Moxml to parse → add namespace → serialize → parse again).
+    #
+    # String-level injection is safe for well-formed MathML: the root element
+    # is always <math>. For malformed input, the subsequent from_xml parse will
+    # raise a proper error.
     def xml_input(input, namespace_exist)
       return input if namespace_exist
 
-      parse_with_no_namespace(input)
+      inject_namespace(input, self::Namespace.uri)
+    end
+
+    private
+
+    def inject_namespace(xml_string, namespace_uri)
+      # Add xmlns attribute to the <math> root element in the raw XML string.
+      # Handles both <math> and <math ...> (with existing attributes).
+      xml_string.sub(/<math([\s>])/) do
+        "<math xmlns=\"#{namespace_uri}\"#{::Regexp.last_match(1)}"
+      end
     end
   end
 end

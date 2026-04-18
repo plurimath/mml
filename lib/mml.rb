@@ -5,9 +5,22 @@ require "lutaml/model"
 module Mml
   class Error < StandardError; end
 
-  DEFAULT_ADAPTER = RUBY_ENGINE == "opal" ? :oga : :ox
   SUPPORTED_VERSIONS = [2, 3, 4].freeze
   UNSPECIFIED_CONTEXT = Object.new.freeze
+
+  # Returns the appropriate XML adapter, respecting the host application's
+  # configuration. Opal always uses Oga; CRuby delegates to
+  # Lutaml::Model::Config.xml_adapter_type so that users control the adapter
+  # from a single configuration point.
+  module_function
+
+  def default_adapter
+    if RUBY_ENGINE == "opal"
+      :oga
+    else
+      Lutaml::Model::Config.xml_adapter_type
+    end
+  end
 
   autoload :Namespace, "mml/namespace"
   autoload :CommonElements, "mml/common_elements"
@@ -16,8 +29,6 @@ module Mml
   autoload :V2, "mml/v2"
   autoload :V3, "mml/v3"
   autoload :V4, "mml/v4"
-
-  module_function
 
   def parse(
     input,
