@@ -3,8 +3,6 @@
 require "lutaml/model"
 require_relative "versioned_parser"
 
-Moxml::Config.default_adapter = Mml::DEFAULT_ADAPTER
-
 require_relative "v4/configuration"
 require_relative "v4/namespace"
 require_relative "v4/common_elements"
