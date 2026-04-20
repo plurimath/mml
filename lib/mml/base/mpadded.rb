@@ -12,6 +12,7 @@ module Mml
           attribute :voffset, :string
           attribute :height, :string
           attribute :lspace, :string
+          attribute :rspace, :string
           attribute :depth, :string
           attribute :width, :string
 
@@ -25,6 +26,7 @@ module Mml
             map_attribute "voffset", to: :voffset
             map_attribute "height", to: :height
             map_attribute "lspace", to: :lspace
+            map_attribute "rspace", to: :rspace
             map_attribute "depth", to: :depth
             map_attribute "width", to: :width
           end

@@ -9,6 +9,11 @@ module Mml
         klass.class_eval do
           attribute :dir, :string
           include V3PresentationAttributes
+
+          xml do
+            namespace Mml::Namespace
+            map_attribute "dir", to: :dir
+          end
         end
       end
     end
