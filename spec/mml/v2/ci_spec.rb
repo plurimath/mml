@@ -9,7 +9,7 @@ RSpec.describe Mml::V2::Ci do
               "<ci>x</ci></math>"
       math = Mml::V2.parse(input)
       expect(math.ci_value).not_to be_empty
-      expect(math.ci_value.first.value).to eq("x")
+      expect(math.ci_value.first.value).to eq(["x"])
     end
 
     it "preserves type attribute" do

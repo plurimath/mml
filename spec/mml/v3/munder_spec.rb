@@ -30,7 +30,7 @@ RSpec.describe Mml::V3::Munder do
               "<munder><mo>∫</mo><mi>a</mi></munder></math>"
       math = Mml.parse(input)
       expect(math.munder_value.first.mo_value.first.value).to eq("∫")
-      expect(math.munder_value.first.mi_value.first.value).to eq("a")
+      expect(math.munder_value.first.mi_value.first.value).to eq(["a"])
     end
   end
 end

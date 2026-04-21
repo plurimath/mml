@@ -21,8 +21,8 @@ RSpec.describe Mml::V4::Mfrac do
     it "extracts child elements" do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>1</mn><mn>2</mn></mfrac></math>'
       math = Mml::V4.parse(input)
-      expect(math.mfrac_value.first.mn_value.first.value).to eq("1")
-      expect(math.mfrac_value.first.mn_value.last.value).to eq("2")
+      expect(math.mfrac_value.first.mn_value.first.value).to eq(["1"])
+      expect(math.mfrac_value.first.mn_value.last.value).to eq(["2"])
     end
   end
 end

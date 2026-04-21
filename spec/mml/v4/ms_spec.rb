@@ -13,7 +13,7 @@ RSpec.describe Mml::V4::Ms do
     it "extracts string value" do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML"><ms>test</ms></math>'
       math = Mml::V4.parse(input)
-      expect(math.ms_value.first.value).to eq("test")
+      expect(math.ms_value.first.value).to eq(["test"])
     end
 
     it "preserves mathvariant attribute" do

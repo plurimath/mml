@@ -11,8 +11,7 @@ module Mml
           attribute :mathbackground, :string
           attribute :position, :integer
           attribute :shift, :integer
-          attribute :msgroup_text, :string
-
+          attribute :msgroup_text, :string, collection: true
           xml do
             namespace Mml::Namespace
             element "msgroup"

@@ -10,7 +10,7 @@ module Mml
             attribute :definition_url, :string
             attribute :enc, :string
             attribute :base, :string
-            attribute :value, :string
+            attribute :value, :string, collection: true
             attribute :sep_value, :sep, collection: true
 
             xml do

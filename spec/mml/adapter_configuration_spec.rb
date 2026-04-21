@@ -53,26 +53,26 @@ RSpec.describe "MML adapter configuration and namespace injection" do
     it "parses namespace-free MathML via V3" do
       math = Mml::V3.parse(ns_free_xml, namespace_exist: false)
       expect(math).to be_a(Mml::V3::Math)
-      expect(math.mi_value.first.value).to eq("x")
+      expect(math.mi_value.first.value).to eq(["x"])
     end
 
     it "parses namespace-free MathML via V4" do
       math = Mml::V4.parse(ns_free_xml, namespace_exist: false)
       expect(math).to be_a(Mml::V4::Math)
-      expect(math.mi_value.first.value).to eq("x")
+      expect(math.mi_value.first.value).to eq(["x"])
     end
 
     it "parses namespace-free MathML with attributes" do
       math = Mml::V3.parse(ns_free_xml_with_attrs, namespace_exist: false)
       expect(math).to be_a(Mml::V3::Math)
       expect(math.display).to eq("block")
-      expect(math.mfrac_value.first.mn_value.first.value).to eq("1")
+      expect(math.mfrac_value.first.mn_value.first.value).to eq(["1"])
     end
 
     it "parses namespace-present MathML unchanged" do
       math = Mml::V3.parse(ns_present_xml, namespace_exist: true)
       expect(math).to be_a(Mml::V3::Math)
-      expect(math.mi_value.first.value).to eq("x")
+      expect(math.mi_value.first.value).to eq(["x"])
     end
 
     it "round-trips namespace-free MathML through V3" do
@@ -92,7 +92,7 @@ RSpec.describe "MML adapter configuration and namespace injection" do
     it "injects namespace correctly via top-level Mml.parse" do
       math = Mml.parse(ns_free_xml, namespace_exist: false, version: 3)
       expect(math).to be_a(Mml::V3::Math)
-      expect(math.mi_value.first.value).to eq("x")
+      expect(math.mi_value.first.value).to eq(["x"])
     end
 
     it "handles namespace-free XML with inline text content" do
@@ -105,7 +105,7 @@ RSpec.describe "MML adapter configuration and namespace injection" do
       xml = "<math><mrow><mfrac><mi>a</mi><mi>b</mi></mfrac></mrow></math>"
       math = Mml::V3.parse(xml, namespace_exist: false)
       frac = math.mrow_value.first.mfrac_value.first
-      expect(frac.mi_value.map(&:value)).to eq(%w[a b])
+      expect(frac.mi_value.map(&:value)).to eq([%w[a], %w[b]])
     end
   end
 

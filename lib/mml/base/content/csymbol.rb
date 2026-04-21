@@ -10,8 +10,7 @@ module Mml
             attribute :definition_url, :string
             attribute :encoding_value, :string
             attribute :cd, :string
-            attribute :value, :string
-
+            attribute :value, :string, collection: true
             # Presentation elements that can appear inside csymbol
             attribute :msub_value, :msub, collection: true
             attribute :msup_value, :msup, collection: true

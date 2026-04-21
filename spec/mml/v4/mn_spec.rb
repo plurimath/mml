@@ -19,7 +19,7 @@ RSpec.describe Mml::V4::Mn do
     it "extracts numeric value" do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>42</mn></math>'
       math = Mml::V4.parse(input)
-      expect(math.mn_value.first.value).to eq("42")
+      expect(math.mn_value.first.value).to eq(["42"])
     end
 
     it "preserves mathsize attribute" do

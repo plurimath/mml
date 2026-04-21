@@ -10,7 +10,7 @@ module Mml
           attribute :mathbackground, :string
           attribute :separators, :string
           attribute :mathcolor, :string
-          attribute :content, :string
+          attribute :content, :string, collection: true
           attribute :close, :string
           attribute :open, :string
 

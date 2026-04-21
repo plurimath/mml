@@ -9,8 +9,7 @@ module Mml
         klass.class_eval do
           attribute :mathbackground, :string
           attribute :mathcolor, :string
-          attribute :content, :string
-
+          attribute :content, :string, collection: true
           xml do
             namespace Mml::Namespace
             element "mrow"

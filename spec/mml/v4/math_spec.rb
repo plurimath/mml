@@ -35,7 +35,7 @@ RSpec.describe Mml::V4::Math do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<mi>x</mi><mo>+</mo><mn>1</mn></math>"
       math = Mml::V4.parse(input)
-      expect(math.mi_value.first.value).to eq("x")
+      expect(math.mi_value.first.value).to eq(["x"])
     end
 
     it "extracts mo child element" do
@@ -49,7 +49,7 @@ RSpec.describe Mml::V4::Math do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<mi>x</mi><mo>+</mo><mn>1</mn></math>"
       math = Mml::V4.parse(input)
-      expect(math.mn_value.first.value).to eq("1")
+      expect(math.mn_value.first.value).to eq(["1"])
     end
 
     it "preserves alttext attribute" do

@@ -30,8 +30,8 @@ RSpec.describe Mml::V3::Mroot do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<mroot><mi>x</mi><mn>3</mn></mroot></math>"
       math = Mml.parse(input)
-      expect(math.mroot_value.first.mi_value.first.value).to eq("x")
-      expect(math.mroot_value.first.mn_value.first.value).to eq("3")
+      expect(math.mroot_value.first.mi_value.first.value).to eq(["x"])
+      expect(math.mroot_value.first.mn_value.first.value).to eq(["3"])
     end
   end
 end

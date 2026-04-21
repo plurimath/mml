@@ -10,7 +10,7 @@ module Mml
           attribute :mathbackground, :string
           attribute :accentunder, :string
           attribute :mathcolor, :string
-          attribute :content, :string
+          attribute :content, :string, collection: true
           attribute :align, :string
 
           xml do

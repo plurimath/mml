@@ -9,8 +9,7 @@ module Mml
             attribute :type, :string
             attribute :definition_url, :string
             attribute :encoding_value, :string
-            attribute :value, :string
-
+            attribute :value, :string, collection: true
             # Presentation elements that can appear inside ci
             attribute :msub_value, :msub, collection: true
             attribute :msup_value, :msup, collection: true
