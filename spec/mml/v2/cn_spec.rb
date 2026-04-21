@@ -9,7 +9,7 @@ RSpec.describe Mml::V2::Cn do
               "<cn>42</cn></math>"
       math = Mml::V2.parse(input)
       expect(math.cn_value).not_to be_empty
-      expect(math.cn_value.first.value).to eq("42")
+      expect(math.cn_value.first.value).to eq(["42"])
     end
 
     it "preserves type attribute" do

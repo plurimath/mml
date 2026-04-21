@@ -40,8 +40,8 @@ RSpec.describe Mml::V3::Munderover do
               "<munderover><mo>∫</mo><mi>a</mi><mi>b</mi></munderover></math>"
       math = Mml.parse(input)
       expect(math.munderover_value.first.mo_value.first.value).to eq("∫")
-      expect(math.munderover_value.first.mi_value.first.value).to eq("a")
-      expect(math.munderover_value.first.mi_value.last.value).to eq("b")
+      expect(math.munderover_value.first.mi_value.first.value).to eq(["a"])
+      expect(math.munderover_value.first.mi_value.last.value).to eq(["b"])
     end
   end
 end

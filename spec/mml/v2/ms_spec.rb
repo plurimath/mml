@@ -15,7 +15,7 @@ RSpec.describe Mml::V2::Ms do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<ms>hello</ms></math>"
       math = Mml::V2.parse(input)
-      expect(math.ms_value.first.value).to eq("hello")
+      expect(math.ms_value.first.value).to eq(["hello"])
     end
 
     it "preserves lquote attribute" do

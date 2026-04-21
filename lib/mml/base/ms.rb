@@ -13,8 +13,7 @@ module Mml
           attribute :mathvariant, :string
           attribute :lquote, :string
           attribute :rquote, :string
-          attribute :value, :string
-
+          attribute :value, :string, collection: true
           xml do
             namespace Mml::Namespace
             element "ms"

@@ -9,7 +9,7 @@ RSpec.describe Mml::V2::Csymbol do
               "<csymbol>mySymbol</csymbol></math>"
       math = Mml::V2.parse(input)
       expect(math.csymbol_value).not_to be_empty
-      expect(math.csymbol_value.first.value).to eq("mySymbol")
+      expect(math.csymbol_value.first.value).to eq(["mySymbol"])
     end
 
     it "preserves definitionURL attribute" do

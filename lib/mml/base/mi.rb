@@ -7,7 +7,7 @@ module Mml
       # Use fully qualified names (e.g., Mml::Namespace).
       def self.included(klass)
         klass.class_eval do
-          attribute :value, :string
+          attribute :value, :string, collection: true
           attribute :mathcolor, :string
           attribute :mathbackground, :string
           attribute :mathsize, :string

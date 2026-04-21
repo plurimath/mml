@@ -22,7 +22,7 @@ RSpec.describe Mml::V3::Ci do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<ci>x</ci></math>"
       math = Mml.parse(input)
-      expect(math.ci_value.first.value).to eq("x")
+      expect(math.ci_value.first.value).to eq(["x"])
     end
   end
 end

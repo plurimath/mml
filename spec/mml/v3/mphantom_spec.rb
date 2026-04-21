@@ -22,7 +22,7 @@ RSpec.describe Mml::V3::Mphantom do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<mphantom><mi>hidden</mi></mphantom></math>"
       math = Mml.parse(input)
-      expect(math.mphantom_value.first.mi_value.first.value).to eq("hidden")
+      expect(math.mphantom_value.first.mi_value.first.value).to eq(["hidden"])
     end
   end
 end

@@ -15,7 +15,7 @@ RSpec.describe Mml::V2::Mn do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<mn>3.14</mn></math>"
       math = Mml::V2.parse(input)
-      expect(math.mn_value.first.value).to eq("3.14")
+      expect(math.mn_value.first.value).to eq(["3.14"])
     end
 
     it "preserves mathvariant attribute" do

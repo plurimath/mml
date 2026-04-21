@@ -19,7 +19,7 @@ RSpec.describe Mml::V4::Mi do
     it "preserves value content" do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>D</mi></math>'
       math = Mml::V4.parse(input)
-      expect(math.mi_value.first.value).to eq("D")
+      expect(math.mi_value.first.value).to eq(["D"])
     end
 
     it "preserves mathvariant attribute" do

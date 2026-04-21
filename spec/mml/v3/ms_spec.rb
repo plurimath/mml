@@ -22,7 +22,7 @@ RSpec.describe Mml::V3::Ms do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<ms>test</ms></math>"
       math = Mml.parse(input)
-      expect(math.ms_value.first.value).to eq("test")
+      expect(math.ms_value.first.value).to eq(["test"])
     end
 
     it "preserves mathsize attribute" do

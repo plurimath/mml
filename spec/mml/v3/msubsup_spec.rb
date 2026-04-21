@@ -38,9 +38,9 @@ RSpec.describe Mml::V3::Msubsup do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup></math>"
       math = Mml.parse(input)
-      expect(math.msubsup_value.first.mi_value.first.value).to eq("x")
-      expect(math.msubsup_value.first.mn_value.first.value).to eq("1")
-      expect(math.msubsup_value.first.mn_value.last.value).to eq("2")
+      expect(math.msubsup_value.first.mi_value.first.value).to eq(["x"])
+      expect(math.msubsup_value.first.mn_value.first.value).to eq(["1"])
+      expect(math.msubsup_value.first.mn_value.last.value).to eq(["2"])
     end
   end
 end

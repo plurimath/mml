@@ -13,7 +13,7 @@ RSpec.describe Mml::V4::Cn do
     it "extracts value" do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML"><cn>42</cn></math>'
       math = Mml::V4.parse(input)
-      expect(math.cn_value.first.value).to eq("42")
+      expect(math.cn_value.first.value).to eq(["42"])
     end
   end
 end

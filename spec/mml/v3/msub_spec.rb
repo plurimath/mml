@@ -30,8 +30,8 @@ RSpec.describe Mml::V3::Msub do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<msub><mi>x</mi><mn>1</mn></msub></math>"
       math = Mml.parse(input)
-      expect(math.msub_value.first.mi_value.first.value).to eq("x")
-      expect(math.msub_value.first.mn_value.first.value).to eq("1")
+      expect(math.msub_value.first.mi_value.first.value).to eq(["x"])
+      expect(math.msub_value.first.mn_value.first.value).to eq(["1"])
     end
   end
 end

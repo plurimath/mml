@@ -30,7 +30,7 @@ RSpec.describe Mml::V3::Mover do
               "<mover><mo>∫</mo><mi>b</mi></mover></math>"
       math = Mml.parse(input)
       expect(math.mover_value.first.mo_value.first.value).to eq("∫")
-      expect(math.mover_value.first.mi_value.first.value).to eq("b")
+      expect(math.mover_value.first.mi_value.first.value).to eq(["b"])
     end
   end
 end
