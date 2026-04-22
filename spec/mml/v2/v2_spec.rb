@@ -14,7 +14,6 @@ UNSUPPORTED_PATTERNS = [
   [/class\s*=/, "class attribute"],
   [/id\s*=/, "id attribute"],
   [/dir\s*=/, "dir attribute"],
-  [/mode\s*=/, "mode attribute"],
   # Foreign namespace attributes (we don't support these)
   [/:background/, "foreign namespace attribute"],
   [/:color/, "foreign namespace attribute"],
@@ -50,8 +49,9 @@ UNSUPPORTED_PATTERNS = [
 
 # Some tests represent known issues that could be fixed with lutaml-model changes
 PENDING_TESTS = [
-  # Unicode spacing characters may not parse correctly - could be lutaml-model bug
-  [/&#x02009;/, "Unicode spacing character reference"],
+  # Double-encoded entities (e.g. &amp;#x02009;) are incorrectly resolved by
+  # lutaml-model's add_text_with_entities, producing a char ref instead of literal text.
+  [/&amp;#x0/, "double-encoded entity reference (lutaml-model bug)"],
 ].freeze
 
 # Load files that are invalid according to MathML 2.0 XSD
