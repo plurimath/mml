@@ -8,6 +8,7 @@ module Mml
       def self.included(klass)
         klass.class_eval do
           attribute :display, :string
+          attribute :mode, :string
           attribute :alttext, :string
           attribute :decimalpoint, :string
           attribute :macros, :string
@@ -39,6 +40,7 @@ module Mml
             mixed_content
 
             map_attribute :display, to: :display
+            map_attribute "mode", to: :mode
             map_attribute "alttext", to: :alttext
             map_attribute "decimalpoint", to: :decimalpoint
             map_attribute :macros, to: :macros
