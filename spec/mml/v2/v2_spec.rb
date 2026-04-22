@@ -9,10 +9,7 @@ UNSUPPORTED_PATTERNS = [
   # HTML elements not valid in MathML
   [/<\/span>/, "HTML <span> elements"],
   [/<span[\/\s>]/, "HTML <span> elements"],
-  # HTML attributes not valid in MathML V2
-  [/style\s*=/, "style attribute"],
-  [/class\s*=/, "class attribute"],
-  [/id\s*=/, "id attribute"],
+  # dir attribute not in V2 (only in V3+)
   [/dir\s*=/, "dir attribute"],
   # Foreign namespace attributes (we don't support these)
   [/:background/, "foreign namespace attribute"],
@@ -22,27 +19,9 @@ UNSUPPORTED_PATTERNS = [
   [/:mathbackground/, "foreign namespace attribute"],
   # Entity references not handled
   [/&mathml;/, "&mathml; entity"],
-  # Content elements not fully supported in V2 presentation context
-  [/<infinity\/>/, "content element <infinity>"],
-  [/<integers\/>/, "content element <integers>"],
-  [/<rationals\/>/, "content element <rationals>"],
-  [/<reals\/>/, "content element <reals>"],
-  [/<complexes\/>/, "content element <complexes>"],
-  [/<primes\/>/, "content element <primes>"],
-  [/<naturalnumbers\/>/, "content element <naturalnumbers>"],
-  [/<exponentiale\/>/, "content element <exponentiale>"],
-  [/<imaginaryi\/>/, "content element <imaginaryi>"],
-  [/<eulergamma\/>/, "content element <eulergamma>"],
-  [/<pi\/>/, "content element <pi>"],
-  [/<true\/>/, "content element <true>"],
-  [/<false\/>/, "content element <false>"],
-  [/<notanumber\/>/, "content element <notanumber>"],
-  [/<emptyset\/>/, "content element <emptyset>"],
   # V2 content elements not implemented
   [/<declare[\/\s>]/, "content element <declare> not implemented in V2"],
   [/<declare>/, "content element <declare> not implemented in V2"],
-  [/<reln[\/\s>]/, "content element <reln> not implemented in V2"],
-  [/<reln>/, "content element <reln> not implemented in V2"],
   # XML comments inside elements
   [/<!--.*-->/, "XML comments inside elements"],
 ].freeze
@@ -52,6 +31,13 @@ PENDING_TESTS = [
   # Double-encoded entities (e.g. &amp;#x02009;) are incorrectly resolved by
   # lutaml-model's add_text_with_entities, producing a char ref instead of literal text.
   [/&amp;#x0/, "double-encoded entity reference (lutaml-model bug)"],
+  # Common attributes (id, class, style, xref) on leaf elements not supported in V2.
+  # Container elements support them via CommonAttributes, but leaf elements (Mi, Mn, Mo, Ms, Mtext)
+  # don't include CommonAttributes.
+  [/General\/GenAttribs\/class2\.mml/, "V2 leaf elements don't support common attributes"],
+  [/General\/GenAttribs\/id1\.mml/, "V2 leaf elements don't support common attributes"],
+  [/General\/GenAttribs\/style2\.mml/, "V2 leaf elements don't support common attributes"],
+  [/General\/GenAttribs\/xref1\.mml/, "V2 leaf elements don't support common attributes"],
 ].freeze
 
 # Load files that are invalid according to MathML 2.0 XSD
@@ -76,9 +62,9 @@ def unsupported_reason(content)
 end
 
 # Check if a file should be marked as pending due to known issues
-def pending_reason(content)
+def pending_reason(content, path = "")
   PENDING_TESTS.each do |pattern, reason|
-    return reason if pattern.match?(content)
+    return reason if pattern.match?(content) || pattern.match?(path)
   end
   nil
 end
@@ -113,7 +99,7 @@ RSpec.describe Mml::V2 do
       test_name = file.sub("#{fixture_dir}/", "")
 
       # Handle pending tests - mark as skip with reason
-      pending = pending_reason(file_content)
+      pending = pending_reason(file_content, test_name)
       if pending
         it "round-trips #{test_name}", skip: pending do
           input = File.read(file)
