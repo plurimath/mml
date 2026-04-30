@@ -13,7 +13,7 @@ RSpec.describe Mml::V3::Mstyle do
 
     it "parses mstyle with child elements" do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
-              '<mstyle mathcolor=\"red\"><mi>y</mi></mstyle></math>'
+              '<mstyle mathcolor="red"><mi>y</mi></mstyle></math>'
       output = Mml.parse(input).to_xml
       expect(output).to be_xml_equivalent_to(input)
     end
