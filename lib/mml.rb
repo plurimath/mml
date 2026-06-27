@@ -25,6 +25,8 @@ module Mml
   autoload :Namespace, "mml/namespace"
   autoload :CommonElements, "mml/common_elements"
   autoload :ContextOptions, "mml/context_options"
+  autoload :ContextConfiguration, "mml/context_configuration"
+  autoload :VersionedParser, "mml/versioned_parser"
   autoload :Base, "mml/base"
   autoload :V2, "mml/v2"
   autoload :V3, "mml/v3"

@@ -22,6 +22,12 @@ module Mml
 
       return populate_context! if normalized_id == context_id
 
+      # Ensure the built-in context exists before creating a derived context.
+      # TypeContext snapshots fallback_contexts at creation time, so a derived
+      # context created before the version's models are registered would have
+      # empty fallbacks and fail to resolve version types.
+      ensure_version_registered
+
       Lutaml::Model::GlobalContext.unregister_context(normalized_id) if Lutaml::Model::GlobalContext.context(normalized_id)
       create_type_context(
         id: normalized_id,
@@ -33,6 +39,7 @@ module Mml
 
     # Explicitly rebuild the built-in version context.
     def populate_context!
+      ensure_version_registered
       Lutaml::Model::GlobalContext.unregister_context(context_id) if context
       register_models_in(base_type_context)
     end
@@ -134,6 +141,26 @@ module Mml
       Array(fallback_to).map do |fallback|
         Mml::ContextOptions.normalize_context_reference(fallback)
       end
+    end
+
+    # Trigger the owning version module's lazy registration so the built-in
+    # context is populated before any operation that depends on its types.
+    # Uses `name` to walk up the namespace (e.g. "Mml::V4::Configuration" →
+    # Mml::V4) without each version declaring an explicit back-reference.
+    def ensure_version_registered
+      parent = version_parent_module
+      parent.ensure_registered! if parent.respond_to?(:ensure_registered!)
+    end
+
+    def version_parent_module
+      return nil unless name
+
+      parent_const_name = name.split("::")[0..-2].join("::")
+      return nil if parent_const_name.empty?
+
+      Object.const_get(parent_const_name)
+    rescue NameError
+      nil
     end
 
     def registered_models
