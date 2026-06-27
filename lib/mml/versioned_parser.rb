@@ -5,6 +5,7 @@ module Mml
     # Shared parse entrypoint for versioned modules.
     def parse(input, namespace_exist: true,
               context: Mml::UNSPECIFIED_CONTEXT, register: nil)
+      ensure_registered!
       context_id = parse_context_id(context, register)
       root_class = Lutaml::Model::GlobalContext.resolve_type(
         :math,
@@ -15,6 +16,24 @@ module Mml
         xml_input(input, namespace_exist),
         register: context_id,
       )
+    end
+
+    # Populate this version's registry on first use. Memoized so subsequent
+    # parses skip the cost. Version modules may override `register_models!`
+    # to provide a centralized registration block; the default triggers
+    # autoload resolution which fires per-file `register_model` calls.
+    def ensure_registered!
+      return if @models_registered
+
+      register_models!
+      @models_registered = true
+    end
+
+    # Default registration: force every autoloaded entry point to load so
+    # per-file `Configuration.register_model` side-effects fire. Versions
+    # with a centralized registration block override this method.
+    def register_models!
+      eager_load_entry_points!
     end
 
     # Version modules keep their own default context id.
@@ -38,6 +57,14 @@ module Mml
       return input if namespace_exist
 
       inject_namespace(input, self::Namespace.uri)
+    end
+
+    # Force resolution of every autoloaded entry point on this version module.
+    # Needed because element files self-register with Configuration at load
+    # time, and autoload declarations alone don't trigger that side-effect.
+    # Under Opal this is a no-op: the boot file eager-requires everything.
+    def eager_load_entry_points!
+      constants.each { |name| const_get(name) }
     end
 
     private

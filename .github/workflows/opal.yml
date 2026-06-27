@@ -1,0 +1,36 @@
+name: opal
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  boot-file-spec:
+    name: Opal boot file verification
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3'
+        bundler-cache: true
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Run opal boot file spec
+      # Verifies lib/mml/opal.rb is well-formed:
+      # - every autoload has a matching eager require,
+      # - the boot file references real files,
+      # - version module files load after their elements,
+      # - and Opal::Builder can compile the boot file end-to-end with
+      #   native-only deps stubbed (the consumer provides them).
+      run: bundle exec rspec spec/mml/opal_boot_spec.rb
