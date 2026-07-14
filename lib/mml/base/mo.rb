@@ -7,7 +7,7 @@ module Mml
       # Use fully qualified names (e.g., Mml::Namespace).
       def self.included(klass)
         klass.class_eval do
-          attribute :value, :string
+          attribute :value, :string, collection: true
           attribute :mathcolor, :string
           attribute :mathbackground, :string
           attribute :mathvariant, :string
@@ -34,11 +34,14 @@ module Mml
           attribute :indentshiftfirst, :string
           attribute :indentalignlast, :string
           attribute :indentshiftlast, :string
+          attribute :mglyph_value, :mglyph, collection: true
+          attribute :malignmark_value, :malignmark, collection: true
 
           # rubocop:disable Metrics/BlockLength
           xml do
             namespace Mml::Namespace
             element "mo"
+            mixed_content
 
             map_content to: :value
             map_attribute "form", to: :form
@@ -67,6 +70,8 @@ module Mml
             map_attribute "indentalignfirst", to: :indentalignfirst
             map_attribute "indentshiftfirst", to: :indentshiftfirst
             map_attribute "linebreakmultchar", to: :linebreakmultchar
+            map_element "mglyph", to: :mglyph_value
+            map_element "malignmark", to: :malignmark_value
           end
           # rubocop:enable Metrics/BlockLength
         end

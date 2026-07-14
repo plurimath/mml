@@ -11,13 +11,11 @@ module Mml
           attribute :mathbackground, :string
           attribute :position, :integer
           attribute :shift, :integer
-          attribute :msgroup_text, :string, collection: true
           xml do
             namespace Mml::Namespace
             element "msgroup"
-            mixed_content
+            ordered
 
-            map_content to: :msgroup_text
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "position", to: :position

@@ -13,6 +13,7 @@ module Mml
           attribute :mathsize, :string
           attribute :mathvariant, :string
           attribute :mglyph_value, :mglyph, collection: true
+          attribute :malignmark_value, :malignmark, collection: true
           attribute :lang, :string
 
           xml do
@@ -27,6 +28,7 @@ module Mml
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "xml:lang", to: :lang
             map_element "mglyph", to: :mglyph_value
+            map_element "malignmark", to: :malignmark_value
           end
         end
       end

@@ -37,7 +37,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "math"
-            mixed_content
+            ordered
 
             map_attribute :display, to: :display
             map_attribute "mode", to: :mode

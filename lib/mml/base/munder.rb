@@ -10,19 +10,17 @@ module Mml
           attribute :mathbackground, :string
           attribute :accentunder, :string
           attribute :mathcolor, :string
-          attribute :content, :string, collection: true
           attribute :align, :string
 
           xml do
             namespace Mml::Namespace
             element "munder"
-            mixed_content
+            ordered
 
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "accentunder", to: :accentunder
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "align", to: :align
-            map_content to: :content
           end
         end
       end

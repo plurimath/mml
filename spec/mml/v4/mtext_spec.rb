@@ -14,7 +14,7 @@ RSpec.describe Mml::V4::Mtext do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<mtext>sample text</mtext></math>"
       math = Mml::V4.parse(input)
-      expect(math.mtext_value.first.value).to eq("sample text")
+      expect(math.mtext_value.first.value).to eq(["sample text"])
     end
 
     it "preserves mathcolor attribute" do

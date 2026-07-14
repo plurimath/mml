@@ -42,7 +42,7 @@ RSpec.describe Mml::V4::Math do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<mi>x</mi><mo>+</mo><mn>1</mn></math>"
       math = Mml::V4.parse(input)
-      expect(math.mo_value.first.value).to eq("+")
+      expect(math.mo_value.first.value).to eq(["+"])
     end
 
     it "extracts mn child element" do

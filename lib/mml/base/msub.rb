@@ -14,7 +14,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "msub"
-            mixed_content
+            ordered
 
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "subscriptshift", to: :subscriptshift

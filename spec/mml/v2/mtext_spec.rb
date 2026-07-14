@@ -15,7 +15,7 @@ RSpec.describe Mml::V2::Mtext do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<mtext>some text</mtext></math>"
       math = Mml::V2.parse(input)
-      expect(math.mtext_value.first.value).to eq("some text")
+      expect(math.mtext_value.first.value).to eq(["some text"])
     end
   end
 end

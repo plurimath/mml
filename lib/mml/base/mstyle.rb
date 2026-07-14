@@ -94,7 +94,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "mstyle"
-            mixed_content
+            ordered
 
             map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier
             map_attribute "scriptminsize", to: :scriptminsize

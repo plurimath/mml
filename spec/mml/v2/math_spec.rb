@@ -43,7 +43,7 @@ RSpec.describe Mml::V2::Math do
               "<mi>x</mi><mo>+</mo><mn>1</mn></math>"
       math = Mml::V2.parse(input)
       expect(math.mi_value.first.value).to eq(["x"])
-      expect(math.mo_value.first.value).to eq("+")
+      expect(math.mo_value.first.value).to eq(["+"])
       expect(math.mn_value.first.value).to eq(["1"])
     end
 

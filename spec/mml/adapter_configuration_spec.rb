@@ -98,7 +98,7 @@ RSpec.describe "MML adapter configuration and namespace injection" do
     it "handles namespace-free XML with inline text content" do
       xml = "<math><mtext>hello world</mtext></math>"
       math = Mml::V3.parse(xml, namespace_exist: false)
-      expect(math.mtext_value.first.value).to eq("hello world")
+      expect(math.mtext_value.first.value).to eq(["hello world"])
     end
 
     it "handles multi-level nested elements without namespace" do

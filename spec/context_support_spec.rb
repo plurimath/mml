@@ -145,7 +145,7 @@ RSpec.describe "Mml context support" do
     math = Mml::V4.parse(xml, context: :custom_models)
 
     expect(math.mover_value.first).to be_a(MmlSubst::V4Mover)
-    expect(math.mover_value.first.mo_value.first.value).to eq("∫")
+    expect(math.mover_value.first.mo_value.first.value).to eq(["∫"])
     expect(math.mover_value.first.mi_value.first.value).to eq(["b"])
   ensure
     Mml::V4::Configuration.clear_custom_models

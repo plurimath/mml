@@ -15,7 +15,7 @@ RSpec.describe Mml::V2::Mo do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML">' \
               "<mo>∑</mo></math>"
       math = Mml::V2.parse(input)
-      expect(math.mo_value.first.value).to eq("∑")
+      expect(math.mo_value.first.value).to eq(["∑"])
     end
 
     it "preserves lspace attribute" do

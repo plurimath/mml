@@ -17,7 +17,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "mscarries"
-            mixed_content
+            ordered
 
             map_attribute "scriptsizemultiplier", to: :scriptsizemultiplier
             map_attribute "mathbackground", to: :mathbackground

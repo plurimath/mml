@@ -15,7 +15,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "mover"
-            mixed_content
+            ordered
 
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "mathcolor", to: :mathcolor

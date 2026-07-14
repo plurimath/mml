@@ -9,13 +9,11 @@ module Mml
         klass.class_eval do
           attribute :mathbackground, :string
           attribute :mathcolor, :string
-          attribute :content, :string, collection: true
           xml do
             namespace Mml::Namespace
             element "mrow"
-            mixed_content
+            ordered
 
-            map_content to: :content
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground
           end

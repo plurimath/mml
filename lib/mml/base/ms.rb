@@ -14,6 +14,8 @@ module Mml
           attribute :lquote, :string
           attribute :rquote, :string
           attribute :value, :string, collection: true
+          attribute :mglyph_value, :mglyph, collection: true
+          attribute :malignmark_value, :malignmark, collection: true
           xml do
             namespace Mml::Namespace
             element "ms"
@@ -26,6 +28,8 @@ module Mml
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "lquote", to: :lquote, render_empty: true
             map_attribute "rquote", to: :rquote, render_empty: true
+            map_element "mglyph", to: :mglyph_value
+            map_element "malignmark", to: :malignmark_value
           end
         end
       end

@@ -10,16 +10,13 @@ module Mml
           attribute :mathbackground, :string
           attribute :separators, :string
           attribute :mathcolor, :string
-          attribute :content, :string, collection: true
           attribute :close, :string
           attribute :open, :string
 
           xml do
             namespace Mml::Namespace
             element "mfenced"
-            mixed_content
-
-            map_content to: :content
+            ordered
 
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "separators", to: :separators, render_empty: true
