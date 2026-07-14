@@ -13,6 +13,7 @@ module Mml
           attribute :mathvariant, :string
           attribute :mathsize, :string
           attribute :mglyph_value, :mglyph, collection: true
+          attribute :malignmark_value, :malignmark, collection: true
 
           xml do
             namespace Mml::Namespace
@@ -25,6 +26,7 @@ module Mml
             map_attribute "mathvariant", to: :mathvariant
             map_attribute "mathsize", to: :mathsize
             map_element "mglyph", to: :mglyph_value
+            map_element "malignmark", to: :malignmark_value
           end
         end
       end
