@@ -13,7 +13,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "semantics"
-            mixed_content
+            ordered
 
             map_attribute "definitionURL", to: :definition_url
             map_attribute "encoding", to: :semantics_encoding

@@ -19,7 +19,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "mpadded"
-            mixed_content
+            ordered
 
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "mathcolor", to: :mathcolor

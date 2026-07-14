@@ -18,7 +18,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "mtd"
-            mixed_content
+            ordered
 
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground

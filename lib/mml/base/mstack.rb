@@ -17,7 +17,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "mstack"
-            mixed_content
+            ordered
 
             map_attribute "mathcolor", to: :mathcolor
             map_attribute "mathbackground", to: :mathbackground

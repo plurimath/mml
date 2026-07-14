@@ -18,7 +18,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "mlabeledtr"
-            mixed_content
+            ordered
 
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "columnalign", to: :columnalign

@@ -16,7 +16,7 @@ module Mml
           xml do
             namespace Mml::Namespace
             element "mlongdiv"
-            mixed_content
+            ordered
 
             map_attribute "mathbackground", to: :mathbackground
             map_attribute "longdivstyle", to: :longdivstyle
