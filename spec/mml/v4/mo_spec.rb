@@ -19,7 +19,7 @@ RSpec.describe Mml::V4::Mo do
     it "extracts operator value" do
       input = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mo>+</mo></math>'
       math = Mml::V4.parse(input)
-      expect(math.mo_value.first.value).to eq("+")
+      expect(math.mo_value.first.value).to eq(["+"])
     end
 
     it "preserves form attribute" do

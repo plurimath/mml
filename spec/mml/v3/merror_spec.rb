@@ -16,7 +16,7 @@ RSpec.describe Mml::V3::Merror do
               "<merror><mtext>Error message</mtext></merror></math>"
       math = Mml.parse(input)
       expect(math.merror_value.first.mtext_value.first.value)
-        .to eq("Error message")
+        .to eq(["Error message"])
     end
 
     it "parses error with complex children" do
