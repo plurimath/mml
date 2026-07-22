@@ -5,6 +5,5 @@ module Mml
     class Maction < CommonElements
       include Base::Maction
     end
-    Configuration.register_model(Maction, id: :maction)
   end
 end

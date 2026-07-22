@@ -9,6 +9,5 @@ module Mml
 
       include Base::Mtr
     end
-    Configuration.register_model(Mtr, id: :mtr)
   end
 end

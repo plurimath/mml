@@ -5,6 +5,5 @@ module Mml
     class Mstack < CommonElements
       include Base::Mstack
     end
-    Configuration.register_model(Mstack, id: :mstack)
   end
 end

@@ -31,7 +31,7 @@ module Mml
       return nil if reference.nil?
       return reference if reference.is_a?(Symbol)
       return reference.to_sym if reference.is_a?(String)
-      return reference.id.to_sym if reference.respond_to?(:id)
+      return reference.id.to_sym if lutaml_context_reference?(reference)
 
       raise ArgumentError,
             "Unsupported context/register reference: #{reference.inspect}"
@@ -46,6 +46,15 @@ module Mml
 
     def context_specified?(context)
       !context.equal?(Mml::UNSPECIFIED_CONTEXT)
+    end
+
+    # Lutaml::Model exposes context identity through both TypeContext (returned
+    # by GlobalContext.context) and Register (the public registration handle).
+    # Both classes expose `attr_reader :id`. We accept either by explicit type
+    # check rather than `respond_to?` duck-typing so the contract is verifiable.
+    def lutaml_context_reference?(reference)
+      reference.is_a?(Lutaml::Model::TypeContext) ||
+        reference.is_a?(Lutaml::Model::Register)
     end
 
     # MML accepts the old `register:` alias, but never both inputs at once.

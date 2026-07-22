@@ -9,6 +9,5 @@ module Mml
 
       include Base::Content::Cn
     end
-    Configuration.register_model(Cn, id: :cn)
   end
 end

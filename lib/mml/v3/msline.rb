@@ -9,6 +9,5 @@ module Mml
 
       include Base::Msline
     end
-    Configuration.register_model(Msline, id: :msline)
   end
 end

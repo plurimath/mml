@@ -12,6 +12,5 @@ module Mml
       include Base::DeprecatedFontAttributes
       include Base::V3Only::OperatorAttributes
     end
-    Configuration.register_model(Mo, id: :mo)
   end
 end

@@ -5,6 +5,5 @@ module Mml
     class Merror < CommonElements
       include Base::Merror
     end
-    Configuration.register_model(Merror, id: :merror)
   end
 end

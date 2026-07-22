@@ -5,6 +5,5 @@ module Mml
     class Munderover < CommonElements
       include Base::Munderover
     end
-    Configuration.register_model(Munderover, id: :munderover)
   end
 end

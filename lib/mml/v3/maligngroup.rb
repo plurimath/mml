@@ -9,6 +9,5 @@ module Mml
 
       include Base::Maligngroup
     end
-    Configuration.register_model(Maligngroup, id: :maligngroup)
   end
 end

@@ -5,6 +5,5 @@ module Mml
     class Menclose < CommonElements
       include Base::Menclose
     end
-    Configuration.register_model(Menclose, id: :menclose)
   end
 end

@@ -194,6 +194,5 @@ module Mml
     class Logbase < CommonElements
       include Base::Content::Logbase
     end
-    Configuration.register_model(Logbase, id: :logbase)
   end
 end

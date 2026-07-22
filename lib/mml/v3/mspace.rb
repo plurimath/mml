@@ -10,6 +10,5 @@ module Mml
       include Base::Mspace
       include Base::DeprecatedFontAttributes
     end
-    Configuration.register_model(Mspace, id: :mspace)
   end
 end

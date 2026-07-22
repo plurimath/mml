@@ -9,6 +9,5 @@ module Mml
 
       include Base::None
     end
-    Configuration.register_model(None, id: :none)
   end
 end

@@ -8,6 +8,5 @@ module Mml
       include Base::DeprecatedFontAttributes
       include Base::V3Only::StyleAttributes
     end
-    Configuration.register_model(Mstyle, id: :mstyle)
   end
 end

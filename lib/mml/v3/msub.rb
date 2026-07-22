@@ -5,6 +5,5 @@ module Mml
     class Msub < CommonElements
       include Base::Msub
     end
-    Configuration.register_model(Msub, id: :msub)
   end
 end

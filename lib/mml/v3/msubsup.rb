@@ -5,6 +5,5 @@ module Mml
     class Msubsup < CommonElements
       include Base::Msubsup
     end
-    Configuration.register_model(Msubsup, id: :msubsup)
   end
 end

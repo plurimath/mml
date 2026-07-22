@@ -5,6 +5,5 @@ module Mml
     class Msgroup < CommonElements
       include Base::Msgroup
     end
-    Configuration.register_model(Msgroup, id: :msgroup)
   end
 end
