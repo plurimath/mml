@@ -5,6 +5,5 @@ module Mml
     class Bind < CommonElements
       include Base::Content::Bind
     end
-    Configuration.register_model(Bind, id: :bind)
   end
 end

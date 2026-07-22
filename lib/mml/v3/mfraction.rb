@@ -5,6 +5,5 @@ module Mml
     class Mfraction < CommonElements
       include Base::Mfraction
     end
-    Configuration.register_model(Mfraction, id: :mfraction)
   end
 end

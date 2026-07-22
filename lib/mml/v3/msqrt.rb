@@ -5,6 +5,5 @@ module Mml
     class Msqrt < CommonElements
       include Base::Msqrt
     end
-    Configuration.register_model(Msqrt, id: :msqrt)
   end
 end

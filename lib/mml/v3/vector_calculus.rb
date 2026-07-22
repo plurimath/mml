@@ -9,7 +9,6 @@ module Mml
 
       include Base::Content::Divergence
     end
-    Configuration.register_model(Divergence, id: :divergence)
 
     class Grad < Lutaml::Model::Serializable
       def self.lutaml_default_register
@@ -18,7 +17,6 @@ module Mml
 
       include Base::Content::Grad
     end
-    Configuration.register_model(Grad, id: :grad)
 
     class Curl < Lutaml::Model::Serializable
       def self.lutaml_default_register
@@ -27,7 +25,6 @@ module Mml
 
       include Base::Content::Curl
     end
-    Configuration.register_model(Curl, id: :curl)
 
     class Laplacian < Lutaml::Model::Serializable
       def self.lutaml_default_register
@@ -36,6 +33,5 @@ module Mml
 
       include Base::Content::Laplacian
     end
-    Configuration.register_model(Laplacian, id: :laplacian)
   end
 end

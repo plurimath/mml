@@ -95,9 +95,15 @@ end
 
 A `no_root` Lutaml model imported into container elements via `import_model`. It dynamically creates `#{tag}_value` attributes for each tag in `Configuration::SUPPORTED_TAGS`. Classes that receive it are listed in `Configuration::COMMON_ATTRIBUTES_CLASSES`.
 
-### Per-file registration
+### Version module body registration
 
-Each `lib/mml/v{2,3,4}/<tag>.rb` ends with `Configuration.register_model(Klass, id: :tag)` so the type is registered as soon as the file is loaded (eager via `require_relative` at the bottom of each version file).
+Each `lib/mml/v{2,3,4}.rb` declares `autoload :Klass, "mml/v{2,3,4}/klass"` for every element class, then calls `Configuration.register_model(Klass, id: :tag)` in the module body. The register_model call triggers autoload on first reference, preserving eager-registration semantics while using Ruby autoload (no `require_relative` for internal code).
+
+Per-element files (e.g. `lib/mml/v3/math.rb`) define only the class — they no longer call `register_model` themselves. The version module is the single source of truth for registration.
+
+For grouped files (e.g. `lib/mml/v3/arith.rb` defines 22 classes), each class has its own `autoload` entry pointing at the shared file.
+
+`spec/mml/code_quality_spec.rb` enforces the lint rules and verifies every expected element ID is registered in its version's context.
 
 **Namespace:** All versions use the same URI (`http://www.w3.org/1998/Math/MathML`) — MathML 4 chose backward compatibility over a new namespace.
 

@@ -40,6 +40,5 @@ module Mml
     class Domainofapplication < CommonElements
       include Base::Content::Domainofapplication
     end
-    Configuration.register_model(Domainofapplication, id: :domainofapplication)
   end
 end

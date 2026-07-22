@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require "lutaml/model"
-require_relative "versioned_parser"
-
-require_relative "v4/configuration"
-require_relative "v4/namespace"
-require_relative "v4/common_elements"
 
 module Mml
   module V4
     extend Mml::VersionedParser
+
+    # Foundational
+    autoload :Configuration,   "mml/v4/configuration"
+    autoload :Namespace,       "mml/v4/namespace"
+    autoload :CommonElements,  "mml/v4/common_elements"
 
     # Presentation elements
     autoload :A,             "mml/v4/a"
@@ -144,11 +144,12 @@ module Mml
     autoload :Grad,         "mml/v4/vector_calculus"
     autoload :Curl,         "mml/v4/vector_calculus"
     autoload :Laplacian,    "mml/v4/vector_calculus"
-    autoload :Compose,      "mml/v4/functions"
-    autoload :Domain,       "mml/v4/functions"
-    autoload :Codomain,     "mml/v4/functions"
-    autoload :Image,        "mml/v4/functions"
-    autoload :Ident,        "mml/v4/functions"
+    autoload :Compose,             "mml/v4/functions"
+    autoload :Domain,              "mml/v4/functions"
+    autoload :Codomain,            "mml/v4/functions"
+    autoload :Image,               "mml/v4/functions"
+    autoload :Ident,               "mml/v4/functions"
+    autoload :Domainofapplication, "mml/v4/functions"
     autoload :Sin,          "mml/v4/elementary_functions"
     autoload :Cos,          "mml/v4/elementary_functions"
     autoload :Tan,          "mml/v4/elementary_functions"
@@ -176,6 +177,7 @@ module Mml
     autoload :Exp,          "mml/v4/elementary_functions"
     autoload :Ln,           "mml/v4/elementary_functions"
     autoload :Log,          "mml/v4/elementary_functions"
+    autoload :Logbase,      "mml/v4/elementary_functions"
     autoload :Integers,     "mml/v4/constants"
     autoload :Reals,        "mml/v4/constants"
     autoload :Rationals,    "mml/v4/constants"
@@ -358,14 +360,15 @@ module Mml
     Configuration.register_model(Curl,         id: :curl)
     Configuration.register_model(Laplacian,    id: :laplacian)
 
-    # Functions (5 - no Domainofapplication)
-    Configuration.register_model(Compose,   id: :compose)
-    Configuration.register_model(Domain,    id: :domain)
-    Configuration.register_model(Codomain,  id: :codomain)
-    Configuration.register_model(Image,     id: :image)
-    Configuration.register_model(Ident, id: :ident)
+    # Functions (5 + Domainofapplication)
+    Configuration.register_model(Compose,           id: :compose)
+    Configuration.register_model(Domain,            id: :domain)
+    Configuration.register_model(Codomain,          id: :codomain)
+    Configuration.register_model(Image,             id: :image)
+    Configuration.register_model(Ident,             id: :ident)
+    Configuration.register_model(Domainofapplication, id: :domainofapplication)
 
-    # Elementary Functions (27 - no Logbase)
+    # Elementary Functions (27 + Logbase)
     Configuration.register_model(Sin,       id: :sin)
     Configuration.register_model(Cos,       id: :cos)
     Configuration.register_model(Tan,       id: :tan)
@@ -393,6 +396,7 @@ module Mml
     Configuration.register_model(Exp,       id: :exp)
     Configuration.register_model(Ln,         id: :ln)
     Configuration.register_model(Log,        id: :log)
+    Configuration.register_model(Logbase,    id: :logbase)
 
     # Constants (15 - uses True/False not Mtrue/Mfalse)
     Configuration.register_model(Integers,       id: :integers)

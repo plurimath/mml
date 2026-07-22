@@ -5,6 +5,5 @@ module Mml
     class Apply < CommonElements
       include Base::Content::Apply
     end
-    Configuration.register_model(Apply, id: :apply)
   end
 end

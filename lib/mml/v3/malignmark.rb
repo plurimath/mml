@@ -9,6 +9,5 @@ module Mml
 
       include Base::Malignmark
     end
-    Configuration.register_model(Malignmark, id: :malignmark)
   end
 end

@@ -5,6 +5,5 @@ module Mml
     class Mroot < CommonElements
       include Base::Mroot
     end
-    Configuration.register_model(Mroot, id: :mroot)
   end
 end

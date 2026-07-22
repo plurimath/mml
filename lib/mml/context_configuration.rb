@@ -141,7 +141,9 @@ module Mml
     end
 
     def clear_cache(klass)
-      klass.clear_cache(context_id) if klass.respond_to?(:clear_cache)
+      return unless klass.is_a?(Class) && (klass <= Lutaml::Model::Serialize)
+
+      klass.clear_cache(context_id)
     end
   end
 end

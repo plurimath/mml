@@ -9,6 +9,5 @@ module Mml
 
       include Base::Mprescripts
     end
-    Configuration.register_model(Mprescripts, id: :mprescripts)
   end
 end

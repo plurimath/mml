@@ -9,6 +9,5 @@ module Mml
 
       include Base::Content::Csymbol
     end
-    Configuration.register_model(Csymbol, id: :csymbol)
   end
 end

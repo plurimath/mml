@@ -9,6 +9,5 @@ module Mml
 
       include Base::Content::Cbytes
     end
-    Configuration.register_model(Cbytes, id: :cbytes)
   end
 end

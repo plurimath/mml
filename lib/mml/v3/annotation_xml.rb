@@ -5,6 +5,5 @@ module Mml
     class AnnotationXml < CommonElements
       include Base::Content::AnnotationXml
     end
-    Configuration.register_model(AnnotationXml, id: :"annotation-xml")
   end
 end

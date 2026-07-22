@@ -10,6 +10,5 @@ module Mml
       include Base::Mglyph
       include Base::DeprecatedFontAttributes
     end
-    Configuration.register_model(Mglyph, id: :mglyph)
   end
 end

@@ -9,6 +9,5 @@ module Mml
 
       include Base::Content::Ci
     end
-    Configuration.register_model(Ci, id: :ci)
   end
 end

@@ -12,8 +12,6 @@ module Mml
         map_attribute "overflow", to: :overflow
       end
     end
-    Configuration.register_model(Math, id: :math)
-
     MathWithNamespace = Math
   end
 end

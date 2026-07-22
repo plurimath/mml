@@ -11,6 +11,5 @@ module Mml
       include Base::V3Common
       include Base::DeprecatedFontAttributes
     end
-    Configuration.register_model(Mtext, id: :mtext)
   end
 end

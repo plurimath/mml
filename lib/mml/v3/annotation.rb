@@ -5,6 +5,5 @@ module Mml
     class Annotation < CommonElements
       include Base::Content::Annotation
     end
-    Configuration.register_model(Annotation, id: :annotation)
   end
 end
