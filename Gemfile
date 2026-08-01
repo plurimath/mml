@@ -13,3 +13,4 @@ gem "rubocop"
 gem "rubocop-performance"
 gem "rubocop-rake"
 gem "rubocop-rspec"
+gem "opal", "~> 1.8", group: :opal

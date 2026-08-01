@@ -1,0 +1,51 @@
+# Hand-maintained cross-repo trigger.
+name: notify-mml-js
+
+# After every mml release (which bumps lib/mml/version.rb on main),
+# dispatch to plurimath/mml-js so it can compile the new version and
+# publish to npm as @plurimath/mml.
+#
+# mml-js's release.yml is idempotent: if a version is already on npm
+# it skips cleanly, so re-running after a transient failure is safe.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lib/mml/version.rb"
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    if: contains(github.event.head_commit.message, 'Bump mml to')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Extract released version
+        id: ver
+        run: |
+          set -eu
+          VERSION=$(grep -oE 'VERSION = "[^"]+"' lib/mml/version.rb | head -1 | cut -d'"' -f2)
+          if [ -z "$VERSION" ]; then
+            echo "::error::could not read VERSION from lib/mml/version.rb"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Detected version $VERSION"
+
+      - name: Dispatch do-release to plurimath/mml-js
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
+          repository: plurimath/mml-js
+          event-type: do-release
+          client-payload: |
+            {
+              "version": "${{ steps.ver.outputs.version }}",
+              "ruby_ref": "v${{ steps.ver.outputs.version }}"
+            }
