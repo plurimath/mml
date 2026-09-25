@@ -87,7 +87,7 @@ RSpec.describe "Mml context support" do
     Lutaml::Model::GlobalContext.unregister_context(:custom_v4_substitution)
   end
 
-  # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
+  # rubocop:disable-next RSpec/ExampleLength, RSpec/MultipleExpectations
   it "warns and accepts register context ids" do
     Mml::V3::Configuration.create_context(id: :compat_v3)
 
@@ -98,11 +98,10 @@ RSpec.describe "Mml context support" do
   ensure
     Lutaml::Model::GlobalContext.unregister_context(:compat_v3)
   end
-  # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
 
   # Skipping on GHA: substitution tests fail due to GlobalContext type resolution
   # differences in GHA environment. These tests pass locally.
-  # rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations
+  # rubocop:disable-next RSpec/ExampleLength, RSpec/MultipleExpectations
   it "warns and accepts legacy register objects" do
     Mml::V3::Configuration.context
 
@@ -120,7 +119,6 @@ RSpec.describe "Mml context support" do
   ensure
     Lutaml::Model::GlobalContext.unregister_context(:legacy_v3_register)
   end
-  # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
 
   it "raises when both context and register are provided" do
     expect do

@@ -262,8 +262,8 @@ module Mml
     Configuration.register_model(Apply,         id: :apply)
     Configuration.register_model(Cbytes, id: :cbytes)
     Configuration.register_model(Cerror, id: :cerror)
-    Configuration.register_model(Ci,             id: :ci)
-    Configuration.register_model(Cn,             id: :cn)
+    Configuration.register_model(Ci, id: :ci)
+    Configuration.register_model(Cn, id: :cn)
     Configuration.register_model(Cs, id: :cs)
     Configuration.register_model(Csymbol, id: :csymbol)
 
