@@ -13,7 +13,7 @@ require "spec_helper"
 # If a base file drifts back to `mixed_content`, the corresponding spec
 # below will fail.
 
-# rubocop:disable-next RSpec/DescribeClass
+# rubocop:disable RSpec/DescribeClass
 RSpec.describe "ordered content" do
   def yielded_children(node)
     children = []
@@ -122,3 +122,4 @@ RSpec.describe "ordered content" do
     end
   end
 end
+# rubocop:enable RSpec/DescribeClass
