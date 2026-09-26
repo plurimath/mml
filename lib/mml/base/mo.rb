@@ -37,7 +37,6 @@ module Mml
           attribute :mglyph_value, :mglyph, collection: true
           attribute :malignmark_value, :malignmark, collection: true
 
-          # rubocop:disable-next Metrics/BlockLength
           xml do
             namespace Mml::Namespace
             element "mo"
