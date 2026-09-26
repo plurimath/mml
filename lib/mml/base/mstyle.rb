@@ -90,7 +90,6 @@ module Mml
           attribute :verythickmathspace, :string
           attribute :veryverythickmathspace, :string
 
-          # rubocop:disable-next Metrics/BlockLength
           xml do
             namespace Mml::Namespace
             element "mstyle"
