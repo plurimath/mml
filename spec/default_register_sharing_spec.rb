@@ -16,9 +16,15 @@ RSpec.describe "default register sharing" do
       "<mprescripts/><mn>2</mn></mmultiscripts></math>"
   end
 
-  it "resolves :mmultiscripts in the default context" do
-    expect(Lutaml::Model::GlobalContext.default_context.registry.lookup(:mmultiscripts))
-      .to eq(Mml::V3::Mmultiscripts)
+  let(:default_registry) do
+    Lutaml::Model::GlobalContext.context(:default).registry
+  end
+
+  it "registers model ids in the default context" do
+    resolved = default_registry.lookup(:mmultiscripts)
+
+    expect(resolved).to be_a(Class)
+    expect(resolved.name).to start_with("Mml::")
   end
 
   it "parses with bare from_xml" do
@@ -34,6 +40,44 @@ RSpec.describe "default register sharing" do
 
     expect(math).to be_a(Mml::V3::Math)
     expect(math.to_xml).to be_xml_equivalent_to(input)
+  end
+
+  it "targets :default regardless of the ambient default context" do
+    original = default_registry.lookup(:mi)
+    Lutaml::Model::GlobalContext.create_context(
+      id: :host_app_context, registry: Lutaml::Model::TypeRegistry.new,
+    )
+    Lutaml::Model::GlobalContext.default_context_id = :host_app_context
+
+    Mml::V3::Configuration.register_model(Mml::V3::Mi, id: :mi)
+
+    expect(default_registry.lookup(:mi)).to eq(Mml::V3::Mi)
+    expect(Lutaml::Model::GlobalContext.context(:host_app_context).registry.lookup(:mi))
+      .to be_nil
+  ensure
+    default_registry.register(:mi, original) if original
+    Lutaml::Model::GlobalContext.default_context_id = :default
+    Lutaml::Model::GlobalContext.unregister_context(:host_app_context)
+  end
+
+  it "gives the last registration precedence in the default context" do
+    original = default_registry.lookup(:mmultiscripts)
+
+    Mml::V4::Configuration.register_model(Mml::V4::Mmultiscripts, id: :mmultiscripts)
+
+    expect(default_registry.lookup(:mmultiscripts)).to eq(Mml::V4::Mmultiscripts)
+  ensure
+    default_registry.register(:mmultiscripts, original) if original
+  end
+
+  it "re-shares model ids when the version context is rebuilt" do
+    original = default_registry.lookup(:mmultiscripts)
+
+    Mml::V3::Configuration.populate_context!
+
+    expect(default_registry.lookup(:mmultiscripts)).to eq(Mml::V3::Mmultiscripts)
+  ensure
+    default_registry.register(:mmultiscripts, original) if original
   end
 end
 # rubocop:enable RSpec/SpecFilePathFormat, RSpec/DescribeClass

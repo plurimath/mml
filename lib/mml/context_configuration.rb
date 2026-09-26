@@ -41,9 +41,9 @@ module Mml
     def register_model(klass, id:)
       normalized_id = id.to_sym
       registered_models[normalized_id] = klass
-      (context || populate_base_context).registry.register(normalized_id, klass)
-      share_with_default_context(normalized_id, klass)
-      clear_cache(klass)
+      type_context = context || populate_base_context
+      shared = register_model_in(type_context, normalized_id, klass)
+      Lutaml::Model::GlobalContext.clear_caches if shared
       klass
     end
 
@@ -123,9 +123,7 @@ module Mml
 
     def register_models_in(type_context)
       registered_models.each do |model_id, klass|
-        type_context.registry.register(model_id, klass)
-        share_with_default_context(model_id, klass)
-        clear_cache(klass)
+        register_model_in(type_context, model_id, klass)
       end
 
       Lutaml::Model::GlobalContext.clear_caches
@@ -148,19 +146,31 @@ module Mml
       klass.clear_cache(context_id)
     end
 
+    # Registers a model in one context, mirrors its id in the default
+    # register for embedded usage, and clears the class's per-context
+    # caches. Returns true when the default register changed.
+    def register_model_in(type_context, id, klass)
+      type_context.registry.register(id, klass)
+      share_with_default_register?(id, klass)
+      clear_cache(klass)
+    end
+
     # Embedded MML usage (e.g. a MathML subtree inside a larger consumer
     # document) goes through context-less from_xml/to_xml on the model
     # class, which lutaml-model resolves in the default context. Mirror
     # every model id there so such operations resolve instead of raising
-    # UnknownTypeError. When several versions are loaded, the last one
-    # wins in the default context; version-specific parsing via
-    # Mml::Vx.parse always uses its own context.
-    def share_with_default_context(id, klass)
-      registry = Lutaml::Model::GlobalContext.default_context.registry
-      return if registry.lookup(id) == klass
+    # UnknownTypeError. The canonical :default context is targeted
+    # explicitly — the ambient default follows host reassignment of
+    # default_context_id, which would silently misplace the mirrored ids.
+    # When several versions are loaded, the last one wins in the default
+    # context; version-specific parsing via Mml::Vx.parse always uses its
+    # own context.
+    def share_with_default_register?(id, klass)
+      registry = Lutaml::Model::GlobalContext.context(:default).registry
+      return false if registry.lookup(id) == klass
 
       registry.register(id, klass)
-      Lutaml::Model::GlobalContext.clear_caches
+      true
     end
   end
 end
