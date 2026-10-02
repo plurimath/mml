@@ -655,8 +655,8 @@ works with this gem: `0.1.0` (`latest`) contains no `dist/` files, and the
 `next` dev build is older than the lutaml-model version this gem requires.
 Locally it needs an `@lutaml/lutaml-model` compiled with Opal from a
 lutaml-model version this gem accepts, for example a local build of
-https://github.com/lutaml/lutaml-model-js[lutaml-model-js]. A CI job can be added once such a build is
-published to npm.
+https://github.com/lutaml/lutaml-model-js[lutaml-model-js]. A CI job can be
+added once such a build is published to npm.
 
 == Contributing
 

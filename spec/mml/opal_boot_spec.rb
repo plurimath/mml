@@ -196,7 +196,7 @@ RSpec.describe "Mml Opal boot file" do # rubocop:disable RSpec/DescribeClass
       builder = Opal::Builder.new
       builder.append_paths(lib_root.to_s)
       # Stub native-only deps that have no Opal-compatible build at this layer.
-      # The gem's Opal consumer (plurimath-js) provides these at runtime.
+      # The gem's Opal consumer (e.g. plurimath/mml-js) provides these at runtime.
       builder.stubs += %w[lutaml/model]
 
       expect { builder.build("mml/opal") }.not_to raise_error
