@@ -3,7 +3,7 @@
 require "spec_helper"
 require "mml/v3"
 
-# rubocop:disable RSpec/SpecFilePathFormat, RSpec/DescribeClass
+# rubocop:disable-next RSpec/SpecFilePathFormat, RSpec/DescribeClass
 RSpec.describe "embedded usage without an explicit context" do
   # Embedded MML: a consumer document (e.g. a Metanorma presentation XML
   # carrying a MathML stem) parses the subtree through its own models and
@@ -33,4 +33,3 @@ RSpec.describe "embedded usage without an explicit context" do
     expect(math.to_xml).to be_xml_equivalent_to(input)
   end
 end
-# rubocop:enable RSpec/SpecFilePathFormat, RSpec/DescribeClass
