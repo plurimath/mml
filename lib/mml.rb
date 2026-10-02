@@ -22,6 +22,17 @@ module Mml
     end
   end
 
+  # True while lib/mml/opal.rb is booting (or under Opal itself). The
+  # version files then skip load-time registration and opal.rb registers
+  # each version once, after its last element file is loaded.
+  def opal_boot?
+    RUBY_ENGINE == "opal" || @opal_boot == true
+  end
+
+  def opal_boot!
+    @opal_boot = true
+  end
+
   autoload :Namespace, "mml/namespace"
   autoload :CommonElements, "mml/common_elements"
   autoload :ContextOptions, "mml/context_options"

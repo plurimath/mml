@@ -69,7 +69,9 @@ RSpec.describe "Mml code quality" do
     end
 
     it "does not use `require` with an internal path" do
-      offenders = MML_LIB_FILES.select do |f|
+      # lib/mml/opal.rb is the Opal entry point: autoload does not
+      # lazy-execute under Opal, so it must eager-require internal paths.
+      offenders = (MML_LIB_FILES - ["lib/mml/opal.rb"]).select do |f|
         # Allow `require "lutaml/model"` and other external gems.
         MML_SOURCE_BY_FILE[f].match?(/^\s*require\s+["']mml\//)
       end

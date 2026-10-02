@@ -1,0 +1,94 @@
+# Hand-maintained cross-repo trigger.
+name: notify-mml-js
+
+# After every mml release (which bumps lib/mml/version.rb on main),
+# dispatch to plurimath/mml-js so it can compile the new version and
+# publish to npm as @plurimath/mml.
+#
+# mml-js's release.yml is idempotent: if a version is already on npm
+# it skips cleanly, so re-running after a transient failure is safe.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lib/mml/version.rb"
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Detect a VERSION change in this push
+        id: ver
+        # Compares VERSION before and after the whole push, so a bump
+        # followed by other commits in the same push is still detected.
+        # The SHAs reach the shell through env and are checked to be hex
+        # before use.
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          set -eu
+          read_version() {
+            git show "$1:lib/mml/version.rb" 2>/dev/null \
+              | grep -oE 'VERSION = "[^"]+"' | head -1 | cut -d'"' -f2
+          }
+          is_sha() { printf '%s' "$1" | grep -qE '^[0-9a-f]{40}$'; }
+          if ! is_sha "$AFTER"; then
+            echo "::error::unexpected commit SHA: $AFTER"
+            exit 1
+          fi
+          if [ -n "$BEFORE" ] && ! is_sha "$BEFORE"; then
+            echo "::error::unexpected commit SHA: $BEFORE"
+            exit 1
+          fi
+          NEW=$(read_version "$AFTER")
+          if [ -z "$NEW" ]; then
+            echo "::error::could not read VERSION from lib/mml/version.rb"
+            exit 1
+          fi
+          # VERSION goes into the dispatch payload and on to mml-js, which
+          # publishes it to npm, so only an npm (semver) version string may
+          # leave this job. A RubyGems prerelease such as 2.5.0.rc1 is not one.
+          if ! printf '%s' "$NEW" \
+            | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+([-+][0-9A-Za-z.-]+)?$'; then
+            echo "::error::VERSION $NEW is not a semver version mml-js can publish"
+            exit 1
+          fi
+          OLD=""
+          # An empty or all-zero BEFORE (the push created the branch) and a
+          # BEFORE missing from history (a force push) all count as a
+          # change.
+          if [ -n "$BEFORE" ] \
+            && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] \
+            && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            OLD=$(read_version "$BEFORE")
+          fi
+          if [ "$OLD" = "$NEW" ]; then
+            echo "VERSION unchanged ($NEW); not dispatching"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "VERSION ${OLD:-<none>} -> $NEW"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "version=$NEW" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch do-release to plurimath/mml-js
+        if: steps.ver.outputs.changed == 'true'
+        uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3.0.0
+        with:
+          token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
+          repository: plurimath/mml-js
+          event-type: do-release
+          client-payload: |
+            {
+              "version": "${{ steps.ver.outputs.version }}",
+              "ruby_ref": "v${{ steps.ver.outputs.version }}"
+            }
