@@ -210,7 +210,7 @@ module Mml
     attribute :moment_value, :moment, collection: true
     attribute :momentabout_value, :momentabout, collection: true
 
-    # rubocop:disable Metrics/BlockLength
+    # rubocop:disable-next Metrics/BlockLength
     xml do
       # Presentation elements
       map_element "mmultiscripts", to: :mmultiscripts_value
@@ -416,6 +416,5 @@ module Mml
       map_element "moment", to: :moment_value
       map_element "momentabout", to: :momentabout_value
     end
-    # rubocop:enable Metrics/BlockLength
   end
 end

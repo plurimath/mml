@@ -55,7 +55,7 @@ V4_EXPECTED_IDS = COMMON_ELEMENT_IDS + %i[declare share logbase domainofapplicat
 MML_LIB_FILES = Dir.glob("lib/mml/**/*.rb").freeze
 MML_SOURCE_BY_FILE = MML_LIB_FILES.to_h { |f| [f, File.read(f)] }.freeze
 
-# rubocop:disable RSpec/ExampleLength, RSpec/MultipleExpectations, RSpec/DescribeClass
+# rubocop:disable-next RSpec/ExampleLength, RSpec/MultipleExpectations, RSpec/DescribeClass
 RSpec.describe "Mml code quality" do
   describe "no internal `require_relative`" do
     it "uses `autoload` instead of require_relative for every lib file" do
@@ -206,4 +206,3 @@ RSpec.describe "Mml code quality" do
     end
   end
 end
-# rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations, RSpec/DescribeClass
