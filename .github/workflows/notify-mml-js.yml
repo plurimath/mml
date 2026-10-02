@@ -10,9 +10,11 @@ name: notify-mml-js
 # repository GITHUB_TOKEN, and GitHub starts no push-triggered runs for
 # pushes made with that token.
 #
-# A release that published no new version (for example
-# next_version=skip) still dispatches; mml-js's release.yml checks npm
-# and skips publishing a version that is already there.
+# The version is bound to the release run, not read from main: the
+# release bumps the version in a commit directly on top of the run's
+# head_sha and tags that commit, so only a version whose tag points at
+# that commit is dispatched. A run that made no bump (next_version=skip)
+# dispatches nothing.
 
 on:
   workflow_run:
@@ -31,16 +33,30 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: main
+          fetch-depth: 0
+          fetch-tags: true
 
-      - name: Read the released VERSION
+      - name: Find the version this release run tagged
         id: ver
+        env:
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           set -eu
-          NEW=$(grep -oE 'VERSION = "[^"]+"' lib/mml/version.rb \
-            | head -1 | cut -d'"' -f2)
-          if [ -z "$NEW" ]; then
-            echo "::error::could not read VERSION from lib/mml/version.rb"
+          if ! printf '%s' "$HEAD_SHA" | grep -qxE '[0-9a-f]{40}'; then
+            printf '::error::unexpected head_sha: %q\n' "$HEAD_SHA"
             exit 1
+          fi
+          # The bump commit is the first commit on main after head_sha.
+          BUMP=$(git rev-list --ancestry-path --reverse "$HEAD_SHA..origin/main" | head -1)
+          NEW=""
+          if [ -n "$BUMP" ]; then
+            NEW=$(git show "$BUMP:lib/mml/version.rb" 2>/dev/null \
+              | grep -oE 'VERSION = "[^"]+"' | head -1 | cut -d'"' -f2 || true)
+          fi
+          if [ -z "$NEW" ] || [ "$(git rev-parse -q --verify "refs/tags/v$NEW^{commit}" || true)" != "$BUMP" ]; then
+            echo "no release commit for this run; not dispatching"
+            echo "dispatch=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
           # VERSION goes into the dispatch payload and on to mml-js, which
           # publishes it to npm, so only an npm (semver) version string may
@@ -49,16 +65,15 @@ jobs:
           # refused before it reaches grep.
           if [[ "$NEW" == *$'\n'* ]] || ! printf '%s' "$NEW" \
             | grep -qE '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-((0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*))?(\+([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*))?$'; then
-            echo "::error::VERSION $NEW is not a semver version mml-js can publish"
+            printf '::error::VERSION %q is not a semver version mml-js can publish\n' "$NEW"
             exit 1
           fi
-          if ! git ls-remote --exit-code --tags origin "refs/tags/v$NEW" >/dev/null; then
-            echo "::error::release tag v$NEW not found on origin"
-            exit 1
-          fi
+          echo "release commit $BUMP is tagged v$NEW; dispatching"
+          echo "dispatch=true" >> "$GITHUB_OUTPUT"
           echo "version=$NEW" >> "$GITHUB_OUTPUT"
 
       - name: Dispatch do-release to plurimath/mml-js
+        if: steps.ver.outputs.dispatch == 'true'
         # v3.0.0
         uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0
         with:
