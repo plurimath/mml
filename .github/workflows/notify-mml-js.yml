@@ -10,9 +10,9 @@ name: notify-mml-js
 # repository GITHUB_TOKEN, and GitHub starts no push-triggered runs for
 # pushes made with that token.
 #
-# mml-js's release.yml is idempotent: if a version is already on npm
-# it skips cleanly, so a release that published no new version (for
-# example next_version=skip) dispatches harmlessly.
+# A release that published no new version (for example
+# next_version=skip) still dispatches; mml-js's release.yml checks npm
+# and skips publishing a version that is already there.
 
 on:
   workflow_run:
