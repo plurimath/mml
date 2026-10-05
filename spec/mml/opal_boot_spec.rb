@@ -68,6 +68,28 @@ module OpalBootSpecHelpers
   def boot_required_paths
     boot_source.scan(/^require\s+["']([^"']+)["']/).flatten
   end
+
+  # Requires the boot file after +preload+ in a fresh process, since the
+  # boot file's flag and each version's registration are process-wide.
+  # Prints how many models registered and the most registrations per id.
+  def run_boot(preload)
+    script = <<~RUBY
+      require "mml"
+      counts = Hash.new(0)
+      Mml::ContextConfiguration.prepend(Module.new do
+        define_method(:register_model) do |klass, id:|
+          counts[[self, id]] += 1
+          super(klass, id: id)
+        end
+      end)
+      #{preload}
+      require "mml/opal"
+      xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>'
+      %w[V2 V3 V4].each { |v| Mml.const_get(v)::Math.from_xml(xml) }
+      puts counts.size, counts.values.max
+    RUBY
+    Open3.capture2e(RbConfig.ruby, "-I#{lib_root}", "-e", script)
+  end
 end
 
 RSpec.describe "Mml Opal boot file" do # rubocop:disable RSpec/DescribeClass
@@ -145,27 +167,6 @@ RSpec.describe "Mml Opal boot file" do # rubocop:disable RSpec/DescribeClass
   end
 
   describe "requiring the boot file on MRI" do
-    # Runs in a fresh process: the boot file's flag and each version's
-    # registration are process-wide.
-    def run_boot(preload)
-      script = <<~RUBY
-        require "mml"
-        counts = Hash.new(0)
-        Mml::ContextConfiguration.prepend(Module.new do
-          define_method(:register_model) do |klass, id:|
-            counts[[self, id]] += 1
-            super(klass, id: id)
-          end
-        end)
-        #{preload}
-        require "mml/opal"
-        xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>'
-        %w[V2 V3 V4].each { |v| Mml.const_get(v)::Math.from_xml(xml) }
-        puts counts.size, counts.values.max
-      RUBY
-      Open3.capture2e(RbConfig.ruby, "-I#{lib_root}", "-e", script)
-    end
-
     ["", "Mml::V2; Mml::V3; Mml::V4"].each do |preload|
       it "loads and registers each model once (preload: #{preload.inspect})" do
         output, status = run_boot(preload)
