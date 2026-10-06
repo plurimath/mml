@@ -18,7 +18,7 @@ ENTITY_DECODINGS = {
   "&gt;" => ">",
   "&amp;" => "&",
 }.freeze
-# rubocop:disable RSpec/DescribeClass, RSpec/ExampleLength, RSpec/MultipleExpectations
+# rubocop:disable-next RSpec/DescribeClass, RSpec/ExampleLength, RSpec/MultipleExpectations
 RSpec.describe "Mml::Math nested in a mixed_content host" do
   def formula_class_for(math_type)
     Class.new(Lutaml::Model::Serializable) do
@@ -136,4 +136,3 @@ RSpec.describe "Mml::Math nested in a mixed_content host" do
     end
   end
 end
-# rubocop:enable RSpec/DescribeClass, RSpec/ExampleLength, RSpec/MultipleExpectations
