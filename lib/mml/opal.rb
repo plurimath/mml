@@ -4,10 +4,10 @@
 #
 # Under MRI, lib/mml.rb (and lib/mml/v{2,3,4}.rb) use autoload for lazy
 # loading, and each version registers its models when it loads. Under
-# Opal that load-time registration is skipped (see below), and
-# registration names every element class, so it can only run once all
-# of them are loaded. This boot file therefore requires every entry
-# point explicitly, in dependency order, and registers at the end.
+# Opal that load-time registration is skipped (see below); it runs once
+# at the end of this file instead. Before that, this file requires every
+# entry point explicitly, in dependency order, so the whole gem is
+# loaded by the time the models are registered.
 #
 # Consumers (e.g. plurimath-js) add `-r mml/opal` to their Opal compile
 # command. Ordering rules:
