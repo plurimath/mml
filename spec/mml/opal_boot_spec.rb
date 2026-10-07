@@ -5,10 +5,8 @@ require "open3"
 require "pathname"
 require "rbconfig"
 
-# Verifies the Opal boot file (lib/mml/opal.rb) stays in sync with the
-# autoload declarations across the gem. The boot file requires every
-# entry point explicitly before it registers the models, so each new
-# autoload needs a matching `require` there.
+# Keeps lib/mml/opal.rb in sync with the gem's autoloads: each autoload
+# needs a matching `require` there.
 
 # Helpers for reading autoload declarations and the boot file's requires.
 module OpalBootSpecHelpers
@@ -195,8 +193,7 @@ RSpec.describe "Mml Opal boot file" do # rubocop:disable RSpec/DescribeClass
 
       builder = Opal::Builder.new
       builder.append_paths(lib_root.to_s)
-      # Stub native-only deps that have no Opal-compatible build at this layer.
-      # The gem's Opal consumer (e.g. plurimath/mml-js) provides these at runtime.
+      # At runtime lutaml/model comes from the @lutaml/lutaml-model package.
       builder.stubs += %w[lutaml/model]
 
       expect { builder.build("mml/opal") }.not_to raise_error

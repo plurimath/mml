@@ -22,10 +22,4 @@ jobs:
         bundler-cache: true
 
     - name: Run opal boot file spec
-      # Verifies lib/mml/opal.rb is well-formed:
-      # - every autoload has a matching eager require,
-      # - the boot file references real files,
-      # - version module files load after their elements,
-      # - and Opal::Builder can compile the boot file end-to-end with
-      #   native-only deps stubbed (the consumer provides them).
       run: bundle exec rspec spec/mml/opal_boot_spec.rb

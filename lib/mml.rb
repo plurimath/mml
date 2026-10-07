@@ -22,9 +22,8 @@ module Mml
     end
   end
 
-  # True while lib/mml/opal.rb is booting (or under Opal itself). The
-  # version files then skip load-time registration and opal.rb registers
-  # each version once, after its last element file is loaded.
+  # True under Opal or after Mml.opal_boot!. The version files then leave
+  # model registration to lib/mml/opal.rb.
   def opal_boot?
     RUBY_ENGINE == "opal" || @opal_boot == true
   end

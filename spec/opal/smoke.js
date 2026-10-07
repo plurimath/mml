@@ -5,10 +5,8 @@
 // gem's dependency:
 //   bundle exec ruby spec/opal/build_smoke.rb /path/to/mml-opal.js
 //   node /path/to/mml/spec/opal/smoke.js /path/to/mml-opal.js
-// Loads those two packages, then the bundle built by
-// spec/opal/build_smoke.rb, and round-trips one document per MathML
-// version through the direct Mml::VN::Math.from_xml API, with no prior
-// Mml.parse call. Exits non-zero on any failure.
+// Round-trips one document per MathML version through
+// Mml::VN::Math.from_xml, with no prior Mml.parse. Exits non-zero on failure.
 const path = require("path");
 
 const bundle = process.argv[2];

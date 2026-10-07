@@ -2,16 +2,11 @@
 
 module Mml
   module VersionedParser
-    # Guards register_models! across threads; one lock serves every
-    # version. No lock is created under Opal, which runs one thread and
-    # keeps Mutex in an optional stdlib file.
+    # Guards register_models! for every version. Not defined under Opal,
+    # which is single-threaded and defines Mutex only in stdlib "thread".
     REGISTRATION_LOCK = Mutex.new unless RUBY_ENGINE == "opal"
 
-    # Runs the version's register_all_models once per process, also when
-    # several threads call it at the same time.
-    # The flag is read and written only inside the lock, so the check is
-    # safe under any Ruby memory model; registration runs once per
-    # process, so always taking the lock costs nothing that matters.
+    # Runs each version's register_all_models once per process, across threads.
     def register_models!
       with_registration_lock do
         next if @models_registered

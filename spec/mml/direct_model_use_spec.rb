@@ -7,8 +7,7 @@ require "rbconfig"
 module DirectModelUseSpec
   module_function
 
-  # Runs the script in a new Ruby process, so no earlier example can have
-  # loaded or parsed with a version on its behalf.
+  # Returns stdout, stderr and status from +script+ in a fresh Ruby process.
   def run_fresh(script)
     lib_dir = File.expand_path("../../lib", __dir__)
     Open3.capture3(RbConfig.ruby, "-rbundler/setup", "-I", lib_dir,

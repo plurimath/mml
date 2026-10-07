@@ -2,33 +2,17 @@
 
 # Opal entry point for mml.
 #
-# Under MRI, lib/mml.rb (and lib/mml/v{2,3,4}.rb) use autoload for lazy
-# loading, and each version registers its models when it loads. Under
-# Opal that load-time registration is skipped (see below); it runs once
-# at the end of this file instead. Before that, this file requires every
-# entry point explicitly, in dependency order, so the whole gem is
-# loaded by the time the models are registered.
+# Requires every file under lib/mml in dependency order, then registers
+# each version's models once. Mml.opal_boot! keeps the version files from
+# registering at load time, before their element files are loaded.
 #
-# Consumers (e.g. plurimath-js) add `-r mml/opal` to their Opal compile
-# command. Ordering rules:
-#   - Each version's shared infrastructure (Configuration, Namespace,
-#     CommonElements) must load before its element files, which build on
-#     it. Registration itself is not per file: `Mml::VN.register_all_models`
-#     names every element class, so it can only run after all of them load.
-#   - `module Mml::VN` in the first per-version file autoloads mml/vN.rb,
-#     so each version module body runs early in the sequence, before its
-#     element files exist. It therefore does not register models under
-#     Opal; the explicit `require "mml/vN"` lines below are then no-ops.
-#   - Registration runs once at the end of this file, after every element
-#     file of every version is loaded (`Mml::VN.register_models!`), so the
-#     direct `Mml::VN::Math.from_xml(xml, register: ...)` API works without
-#     a prior parse, as on MRI.
-#   - `Mml.opal_boot!` makes MRI follow the same path when this file is
-#     required there: the version files skip their load-time registration,
-#     which would otherwise run before their element files are loaded.
-#     `register_models!` runs at most once per version, so a version that
-#     was already loaded (and registered) before this file is not
-#     registered again.
+# Ordering:
+#   - Each version's Configuration, Namespace and CommonElements load
+#     before its element files.
+#   - The first `module Mml::VN` autoloads mml/vN.rb. The later
+#     `require "mml/vN"` is a no-op.
+#   - Mml::VN.register_models! runs after the last element file. It skips
+#     a version whose models are already registered.
 
 require "lutaml/model"
 
@@ -146,7 +130,7 @@ require "mml/v2/configuration"
 require "mml/v2/namespace"
 require "mml/v2/common_elements"
 
-# v2 element files (registered by the register_models! calls at the end)
+# v2 element files
 require "mml/v2/annotation"
 require "mml/v2/annotation_xml"
 require "mml/v2/apply"
@@ -221,7 +205,7 @@ require "mml/v2/sets"
 require "mml/v2/statistics"
 require "mml/v2/vector_calculus"
 
-# v2 module (already autoloaded above; kept so the list mirrors the autoloads)
+# v2 module (already autoloaded above)
 require "mml/v2"
 
 # v3 shared infrastructure
@@ -229,7 +213,7 @@ require "mml/v3/configuration"
 require "mml/v3/namespace"
 require "mml/v3/common_elements"
 
-# v3 element files (registered by the register_models! calls at the end)
+# v3 element files
 require "mml/v3/annotation"
 require "mml/v3/annotation_xml"
 require "mml/v3/apply"
@@ -298,7 +282,7 @@ require "mml/v3/statistics"
 require "mml/v3/vector_calculus"
 require "mml/v3/version"
 
-# v3 module (already autoloaded above; kept so the list mirrors the autoloads)
+# v3 module (already autoloaded above)
 require "mml/v3"
 
 # v4 shared infrastructure
@@ -306,7 +290,7 @@ require "mml/v4/configuration"
 require "mml/v4/namespace"
 require "mml/v4/common_elements"
 
-# v4 element files (registered by the register_models! calls at the end)
+# v4 element files
 require "mml/v4/a"
 require "mml/v4/annotation"
 require "mml/v4/annotation_xml"
@@ -378,7 +362,7 @@ require "mml/v4/tendsto"
 require "mml/v4/vector_calculus"
 require "mml/v4/version"
 
-# v4 module (already autoloaded above; kept so the list mirrors the autoloads)
+# v4 module (already autoloaded above)
 require "mml/v4"
 
 # Register every version now that all element files are loaded.

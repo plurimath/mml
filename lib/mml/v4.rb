@@ -211,12 +211,7 @@ module Mml
     autoload :Momentabout,  "mml/v4/statistics"
 
     # Registers every element class with this version's Configuration.
-    # Called through register_models! (Mml::VersionedParser), which runs it
-    # once per process.
-    # On MRI it runs when this file finishes loading (bottom of this module).
-    # Under Opal, this file is autoloaded by the first `module Mml::VN` in
-    # the boot sequence, before the element files it names exist, so
-    # lib/mml/opal.rb calls it after its last require instead.
+    # Call it through register_models!, which runs it once per process.
     def self.register_all_models # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
       # Presentation element registrations
       Configuration.register_model(A,             id: :a)
@@ -444,8 +439,7 @@ module Mml
       Configuration.register_model(Momentabout,  id: :momentabout)
     end
 
-    # Under Opal, or when booted through lib/mml/opal.rb on MRI, opal.rb
-    # calls this at the end of boot instead.
+    # During an Opal boot, lib/mml/opal.rb calls this after its last require.
     register_models! unless Mml.opal_boot?
   end
 end
