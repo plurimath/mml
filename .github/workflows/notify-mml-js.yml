@@ -10,11 +10,29 @@ name: notify-mml-js
 # repository GITHUB_TOKEN, and GitHub starts no push-triggered runs for
 # pushes made with that token.
 #
-# The version is bound to the release run, not read from main: the
-# release bumps the version in a commit directly on top of the run's
-# head_sha and tags that commit, so only a version whose tag points at
-# that commit is dispatched. A run that made no bump (next_version=skip)
-# dispatches nothing.
+# The version is bound to the release run, not read from main. Only a
+# commit that carries the tag v<VERSION> for its own lib/mml/version.rb
+# is dispatched, and that commit must be one of two:
+#
+# - the bump commit: the release bumps the version in a commit that it
+#   expects to sit directly on top of the run's head_sha (main's
+#   first-parent child of head_sha), and tags it. This is the normal
+#   case. If main moved between the release being started and its
+#   checkout, the bump is not that child, and nothing is dispatched.
+# - head_sha itself: a recovery run. When a release run bumps and tags
+#   but then fails, it is re-run with next_version=skip on main, whose
+#   tip is the tagged bump commit, so that run's head_sha is the
+#   release commit.
+#
+# A run that made no bump, on a head_sha that is not a tagged release
+# commit, dispatches nothing. A version file that cannot be read, or
+# that has no `VERSION = "..."` line, fails the job.
+#
+# The same version can be dispatched more than once: re-running a
+# successful release run dispatches its version again, and so does a
+# next_version=skip run started while main's tip is still the commit
+# of an earlier, successful release. plurimath/mml-js has to treat an
+# already-published version as done.
 
 on:
   workflow_run:
@@ -46,21 +64,45 @@ jobs:
             printf '::error::unexpected head_sha: %q\n' "$HEAD_SHA"
             exit 1
           fi
-          # The bump commit is the commit on main's first-parent line
-          # whose parent is head_sha.
-          BUMP=$(git rev-list --first-parent --parents origin/main \
-            | awk -v h="$HEAD_SHA" '!found && $2 == h { print $1; found = 1 }')
-          NEW=""
-          if [ -n "$BUMP" ]; then
-            # A version file that cannot be read is an error, not a skip.
-            if ! SOURCE=$(git show "$BUMP:lib/mml/version.rb"); then
-              printf '::error::cannot read lib/mml/version.rb at %s\n' "$BUMP"
+          # Sets V to the VERSION string in lib/mml/version.rb at commit
+          # $1; fails the job if the file or the line is missing.
+          read_version() {
+            local source
+            if ! source=$(git show "$1:lib/mml/version.rb"); then
+              printf '::error::cannot read lib/mml/version.rb at %s\n' "$1"
               exit 1
             fi
-            NEW=$(printf '%s\n' "$SOURCE" \
+            V=$(printf '%s\n' "$source" \
               | { grep -oE 'VERSION = "[^"]+"' || true; } | sed -n 1p | cut -d'"' -f2)
+            if [ -z "$V" ]; then
+              printf '::error::no VERSION = "..." line in lib/mml/version.rb at %s\n' "$1"
+              exit 1
+            fi
+          }
+          tag_commit() { git rev-parse -q --verify "refs/tags/v$1^{commit}" || true; }
+          RELEASE=""
+          NEW=""
+          # Normal run: the bump commit is the commit on main's
+          # first-parent line whose parent is head_sha.
+          BUMP=$(git rev-list --first-parent --parents origin/main \
+            | awk -v h="$HEAD_SHA" '!found && $2 == h { print $1; found = 1 }')
+          if [ -n "$BUMP" ]; then
+            read_version "$BUMP"
+            if [ "$(tag_commit "$V")" = "$BUMP" ]; then
+              RELEASE=$BUMP
+              NEW=$V
+            fi
           fi
-          if [ -z "$NEW" ] || [ "$(git rev-parse -q --verify "refs/tags/v$NEW^{commit}" || true)" != "$BUMP" ]; then
+          # Recovery run: head_sha is on main and is itself the tagged
+          # release commit.
+          if [ -z "$RELEASE" ] && git merge-base --is-ancestor "$HEAD_SHA" origin/main 2>/dev/null; then
+            read_version "$HEAD_SHA"
+            if [ "$(tag_commit "$V")" = "$HEAD_SHA" ]; then
+              RELEASE=$HEAD_SHA
+              NEW=$V
+            fi
+          fi
+          if [ -z "$RELEASE" ]; then
             echo "no release commit for this run; not dispatching"
             echo "dispatch=false" >> "$GITHUB_OUTPUT"
             exit 0
@@ -75,14 +117,14 @@ jobs:
             printf '::error::VERSION %q is not a semver version mml-js can publish\n' "$NEW"
             exit 1
           fi
-          echo "release commit $BUMP is tagged v$NEW; dispatching"
+          echo "release commit $RELEASE is tagged v$NEW; dispatching"
           echo "dispatch=true" >> "$GITHUB_OUTPUT"
           echo "version=$NEW" >> "$GITHUB_OUTPUT"
 
       - name: Dispatch do-release to plurimath/mml-js
         if: steps.ver.outputs.dispatch == 'true'
-        # v3.0.0
-        uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0
+        # v4.0.1
+        uses: peter-evans/repository-dispatch@28959ce8df70de7be546dd1250a005dd32156697
         with:
           token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
           repository: plurimath/mml-js
