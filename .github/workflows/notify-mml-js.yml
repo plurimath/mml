@@ -22,7 +22,9 @@ name: notify-mml-js
 # - head_sha itself: a recovery run. When a release run bumps and tags
 #   but then fails, it is re-run with next_version=skip on main, whose
 #   tip is the tagged bump commit, so that run's head_sha is the
-#   release commit.
+#   release commit. This applies only while no later v* tag exists on
+#   main after head_sha; otherwise head_sha's release is not the latest
+#   and a run on it is not treated as its recovery.
 #
 # A run that made no bump, on a head_sha that is not a tagged release
 # commit, dispatches nothing. A version file that cannot be read, or
@@ -95,7 +97,10 @@ jobs:
           fi
           # Recovery run: head_sha is on main and is itself the tagged
           # release commit.
-          if [ -z "$RELEASE" ] && git merge-base --is-ancestor "$HEAD_SHA" origin/main 2>/dev/null; then
+          # A v* tag on a commit after head_sha means a later release
+          # exists, so this run is not a recovery of head_sha's release.
+          if [ -z "$RELEASE" ] && git merge-base --is-ancestor "$HEAD_SHA" origin/main 2>/dev/null \
+            && [ -z "$(git tag -l 'v*' --merged origin/main --no-merged "$HEAD_SHA")" ]; then
             read_version "$HEAD_SHA"
             if [ "$(tag_commit "$V")" = "$HEAD_SHA" ]; then
               RELEASE=$HEAD_SHA

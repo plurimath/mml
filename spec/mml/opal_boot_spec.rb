@@ -6,11 +6,11 @@ require "pathname"
 require "rbconfig"
 
 # Verifies the Opal boot file (lib/mml/opal.rb) stays in sync with the
-# autoload declarations across the gem. Opal cannot bundle an autoload
-# whose path is computed ("#{__dir__}/..."), and model registration needs
-# every element loaded, so the boot file eager-requires every entry
-# point. A new autoload without a matching `require` there can be missing
-# from an Opal bundle, or load after the models are registered.
+# autoload declarations across the gem. Under Opal, model registration
+# runs once at the end of the boot file and names every element class,
+# so the boot file requires every entry point before it. A new autoload
+# without a matching `require` there is not loaded when the models are
+# registered.
 
 # Helpers for reading autoload declarations and the boot file's requires.
 module OpalBootSpecHelpers

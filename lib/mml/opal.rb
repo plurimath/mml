@@ -3,11 +3,11 @@
 # Opal entry point for mml.
 #
 # Under MRI, lib/mml.rb (and lib/mml/v{2,3,4}.rb) use autoload for lazy
-# loading. Opal bundles an autoload only when its path is a literal
-# string; the autoloads with computed paths ("#{__dir__}/...", in
-# lib/mml/base.rb and lib/mml/base/) are left out of the bundle. Model
-# registration also needs every element class loaded first. So this boot
-# file eager-requires every entry point in dependency order.
+# loading, and each version registers its models when it loads. Under
+# Opal that load-time registration is skipped (see below), and
+# registration names every element class, so it can only run once all
+# of them are loaded. This boot file therefore requires every entry
+# point explicitly, in dependency order, and registers at the end.
 #
 # Consumers (e.g. plurimath-js) add `-r mml/opal` to their Opal compile
 # command. Ordering rules:
