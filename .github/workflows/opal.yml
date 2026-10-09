@@ -1,0 +1,25 @@
+name: opal
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  boot-file-spec:
+    name: Opal boot file verification
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3'
+        bundler-cache: true
+
+    - name: Run opal boot file spec
+      run: bundle exec rspec spec/mml/opal_boot_spec.rb

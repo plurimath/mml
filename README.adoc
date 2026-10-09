@@ -630,6 +630,33 @@ bundle exec rubocop     # Lint
 bin/console             # Interactive IRB
 ----
 
+=== Opal build
+
+`lib/mml/opal.rb` is the Opal entry point. It requires every file under
+`lib/mml` in load order and registers the V2, V3 and V4 models at its end.
+`spec/mml/opal_boot_spec.rb` checks it on MRI and compiles it with
+`Opal::Builder`; the `opal` workflow runs that spec.
+
+`spec/opal/` holds a runtime smoke test that runs only locally. It compiles
+the boot file with Opal, loads it in Node after `@lutaml/opal-runtime` and
+`@lutaml/lutaml-model`, and round-trips one document through
+`Mml::V2::Math.from_xml`, `Mml::V3::Math.from_xml` and
+`Mml::V4::Math.from_xml`:
+
+[source,bash]
+----
+bundle exec ruby spec/opal/build_smoke.rb /tmp/mml-opal.js
+cd <directory whose node_modules has both packages>
+node /path/to/mml/spec/opal/smoke.js /tmp/mml-opal.js
+----
+
+There is no CI job for it, because no published `@lutaml/lutaml-model`
+works with this gem: `0.1.0` (`latest`) contains no `dist/` files, and the
+`next` dev build is older than the lutaml-model version this gem requires.
+Locally it needs an `@lutaml/lutaml-model` compiled with Opal from a
+lutaml-model version this gem accepts, for example a local build of
+https://github.com/lutaml/lutaml-model-js[lutaml-model-js].
+
 == Contributing
 
 Bug reports and pull requests are welcome on GitHub at

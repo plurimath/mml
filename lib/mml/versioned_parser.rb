@@ -2,6 +2,20 @@
 
 module Mml
   module VersionedParser
+    # Guards register_models! for every version. Not defined under Opal,
+    # which is single-threaded and defines Mutex only in stdlib "thread".
+    REGISTRATION_LOCK = Mutex.new unless RUBY_ENGINE == "opal"
+
+    # Runs each version's register_all_models once per process, across threads.
+    def register_models!
+      with_registration_lock do
+        next if @models_registered
+
+        register_all_models
+        @models_registered = true
+      end
+    end
+
     # Shared parse entrypoint for versioned modules.
     def parse(input, namespace_exist: true,
               context: Mml::UNSPECIFIED_CONTEXT, register: nil)
@@ -41,6 +55,12 @@ module Mml
     end
 
     private
+
+    def with_registration_lock(&block)
+      return yield if RUBY_ENGINE == "opal"
+
+      REGISTRATION_LOCK.synchronize(&block)
+    end
 
     def inject_namespace(xml_string, namespace_uri)
       # Add xmlns attribute to the <math> root element in the raw XML string.

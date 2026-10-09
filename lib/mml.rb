@@ -22,6 +22,16 @@ module Mml
     end
   end
 
+  # True under Opal or after Mml.opal_boot!. The version files then leave
+  # model registration to lib/mml/opal.rb.
+  def opal_boot?
+    RUBY_ENGINE == "opal" || @opal_boot == true
+  end
+
+  def opal_boot!
+    @opal_boot = true
+  end
+
   autoload :Namespace, "mml/namespace"
   autoload :CommonElements, "mml/common_elements"
   autoload :ContextOptions, "mml/context_options"
