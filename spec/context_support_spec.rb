@@ -98,8 +98,6 @@ RSpec.describe "Mml context support" do
     Lutaml::Model::GlobalContext.unregister_context(:compat_v3)
   end
 
-  # Skipping on GHA: substitution tests fail due to GlobalContext type resolution
-  # differences in GHA environment. These tests pass locally.
   it "warns and accepts legacy register objects" do
     Mml::V3::Configuration.context
 
@@ -132,8 +130,6 @@ RSpec.describe "Mml context support" do
     expect([math_has_register, mi_has_register]).to all(be(false))
   end
 
-  # Skipping on GHA: custom_models substitution tests fail due to GlobalContext
-  # type resolution differences in GHA environment. These tests pass locally.
   it "supports custom_models= convenience API for container element substitution" do
     Mml::V4::Configuration.custom_models = { Mml::V4::Mover => MmlSubst::V4Mover }
 
