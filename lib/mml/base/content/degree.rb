@@ -7,6 +7,8 @@ module Mml
       module Degree
         def self.included(klass)
           klass.class_eval do
+            include WildcardAttributes
+
             xml do
               namespace Mml::Namespace
               element "degree"

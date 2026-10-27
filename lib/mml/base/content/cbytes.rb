@@ -6,6 +6,8 @@ module Mml
       module Cbytes
         def self.included(klass)
           klass.class_eval do
+            include WildcardAttributes
+
             attribute :encoding_value, :string
             attribute :value, :string
 

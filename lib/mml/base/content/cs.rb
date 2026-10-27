@@ -6,6 +6,8 @@ module Mml
       module Cs
         def self.included(klass)
           klass.class_eval do
+            include WildcardAttributes
+
             attribute :value, :string
 
             xml do
