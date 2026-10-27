@@ -11,5 +11,5 @@ on:
 jobs:
   rake:
     uses: metanorma/ci/.github/workflows/generic-rake.yml@main
-    with:
-      cascade: ${{ github.event_name != 'pull_request' }}
+    secrets:
+      pat_token: ${{ secrets.PLURIMATH_CI_PAT_TOKEN }}
