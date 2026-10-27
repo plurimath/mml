@@ -280,7 +280,6 @@ require "mml/v3/semantics"
 require "mml/v3/sets"
 require "mml/v3/statistics"
 require "mml/v3/vector_calculus"
-require "mml/v3/version"
 
 # v3 module (already autoloaded above)
 require "mml/v3"
@@ -360,7 +359,6 @@ require "mml/v4/sets"
 require "mml/v4/statistics"
 require "mml/v4/tendsto"
 require "mml/v4/vector_calculus"
-require "mml/v4/version"
 
 # v4 module (already autoloaded above)
 require "mml/v4"

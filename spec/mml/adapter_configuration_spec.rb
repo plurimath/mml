@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-# rubocop:disable-next RSpec/DescribeClass
+# rubocop:disable RSpec/DescribeClass
 RSpec.describe "MML adapter configuration and namespace injection" do
   describe "adapter delegation" do
     it "delegates to Lutaml::Model::Config for adapter on CRuby" do
@@ -123,3 +123,4 @@ RSpec.describe "MML adapter configuration and namespace injection" do
     end
   end
 end
+# rubocop:enable RSpec/DescribeClass
