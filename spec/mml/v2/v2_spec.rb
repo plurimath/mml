@@ -77,7 +77,7 @@ rescue StandardError
   false
 end
 
-# rubocop:disable RSpec/SpecFilePathFormat
+# rubocop:disable-next RSpec/SpecFilePathFormat
 RSpec.describe Mml::V2 do
   # mml2-testsuite .mml files are pre-processed to strip HTML wrappers
   # and extract the MathML content. Cleaned fixtures are in tmp/cleaned_fixtures/.
@@ -116,4 +116,3 @@ RSpec.describe Mml::V2 do
     end
   end
 end
-# rubocop:enable RSpec/SpecFilePathFormat

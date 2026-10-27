@@ -3,7 +3,7 @@
 require "spec_helper"
 require "mml/v2"
 
-# rubocop:disable RSpec/SpecFilePathFormat
+# rubocop:disable-next RSpec/SpecFilePathFormat
 RSpec.describe Mml do
   # Every class inheriting from Lutaml::Model::Serializable in a version
   # namespace must define lutaml_default_register so that lutaml-model
@@ -76,4 +76,3 @@ RSpec.describe Mml do
     end
   end
 end
-# rubocop:enable RSpec/SpecFilePathFormat

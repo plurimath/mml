@@ -3,7 +3,7 @@
 require "spec_helper"
 require "mml/v4"
 
-# rubocop:disable RSpec/SpecFilePathFormat, RSpec/DescribeClass
+# rubocop:disable-next RSpec/SpecFilePathFormat, RSpec/DescribeClass
 RSpec.describe "V4 wildcard attributes (data-*/on*)" do
   # MathML 4 allows data-* and on* attributes on every element
   # (plurimath/mml#23). lutaml-model's map_all_attributes captures the
@@ -62,4 +62,3 @@ RSpec.describe "V4 wildcard attributes (data-*/on*)" do
     expect(math.to_xml).to be_xml_equivalent_to(input)
   end
 end
-# rubocop:enable RSpec/SpecFilePathFormat, RSpec/DescribeClass
