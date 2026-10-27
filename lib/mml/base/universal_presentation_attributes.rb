@@ -33,11 +33,13 @@ module Mml
         klass.class_eval do
           attribute :intent, :string
           attribute :arg, :string
+          attribute :other_attributes, :hash
 
           xml do
             namespace Mml::Namespace
             map_attribute "intent", to: :intent
             map_attribute "arg", to: :arg
+            map_all_attributes to: :other_attributes
           end
         end
       end

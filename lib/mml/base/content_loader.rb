@@ -4,6 +4,7 @@ module Mml
   module Base
     # Content MathML elements autoloader
     module Content
+      autoload :WildcardAttributes, "#{__dir__}/content/wildcard_attributes"
       autoload :Cn, "#{__dir__}/content/cn"
       autoload :Ci, "#{__dir__}/content/ci"
       autoload :Csymbol, "#{__dir__}/content/csymbol"

@@ -6,6 +6,8 @@ module Mml
       module Cn
         def self.included(klass)
           klass.class_eval do
+            include WildcardAttributes
+
             attribute :type, :string
             attribute :definition_url, :string
             attribute :enc, :string

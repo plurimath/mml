@@ -8,6 +8,8 @@ module Mml
       module Cerror
         def self.included(klass)
           klass.class_eval do
+            include WildcardAttributes
+
             attribute :csymbol_value, :csymbol, collection: true
 
             xml do

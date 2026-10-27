@@ -8,6 +8,8 @@ module Mml
       module AnnotationXml
         def self.included(klass)
           klass.class_eval do
+            include WildcardAttributes
+
             attribute :definitionURL, :string
             attribute :annotation_xml_encoding, :string
             attribute :cd, :string
