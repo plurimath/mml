@@ -7,6 +7,8 @@ module Mml
       module Interval
         def self.included(klass)
           klass.class_eval do
+            include WildcardAttributes
+
             attribute :closure, :string
 
             xml do

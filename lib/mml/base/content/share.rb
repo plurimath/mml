@@ -7,6 +7,8 @@ module Mml
       module Share
         def self.included(klass)
           klass.class_eval do
+            include WildcardAttributes
+
             attribute :src, :string
 
             xml do

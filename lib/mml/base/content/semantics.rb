@@ -8,6 +8,8 @@ module Mml
       module Semantics
         def self.included(klass)
           klass.class_eval do
+            include WildcardAttributes
+
             attribute :definition_url, :string
             attribute :semantics_encoding, :string
 

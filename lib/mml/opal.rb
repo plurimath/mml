@@ -43,6 +43,7 @@ require "mml/base/v3_only/table_attrs"
 
 # Base content loader + content modules
 require "mml/base/content_loader"
+require "mml/base/content/wildcard_attributes"
 require "mml/base/content/annotation"
 require "mml/base/content/annotation_xml"
 require "mml/base/content/apply"
