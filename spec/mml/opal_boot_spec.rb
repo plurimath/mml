@@ -85,7 +85,7 @@ module OpalBootSpecHelpers
       %w[V2 V3 V4].each { |v| Mml.const_get(v)::Math.from_xml(xml) }
       puts counts.size, counts.values.max
     RUBY
-    Open3.capture2e(RbConfig.ruby, "-I#{lib_root}", "-e", script)
+    Open3.capture3(RbConfig.ruby, "-I#{lib_root}", "-e", script)
   end
 end
 
@@ -166,8 +166,8 @@ RSpec.describe "Mml Opal boot file" do # rubocop:disable RSpec/DescribeClass
   describe "requiring the boot file on MRI" do
     ["", "Mml::V2; Mml::V3; Mml::V4"].each do |preload|
       it "loads and registers each model once (preload: #{preload.inspect})" do
-        output, status = run_boot(preload)
-        expect(status).to be_success, output
+        output, errors, status = run_boot(preload)
+        expect(status).to be_success, "#{output}#{errors}"
         registered, max_per_id = output.lines.map(&:to_i)
         expect(registered).to be_positive
         expect(max_per_id).to eq(1)
@@ -177,9 +177,9 @@ RSpec.describe "Mml Opal boot file" do # rubocop:disable RSpec/DescribeClass
 
   describe "concurrent registration on MRI" do
     it "registers each model once when threads race register_models!" do
-      output, status = Open3.capture2e(RbConfig.ruby, "-I#{lib_root}",
-                                       "-e", OpalBootSpecHelpers::RACE_SCRIPT)
-      expect(status).to be_success, output
+      output, errors, status = Open3.capture3(RbConfig.ruby, "-I#{lib_root}",
+                                              "-e", OpalBootSpecHelpers::RACE_SCRIPT)
+      expect(status).to be_success, "#{output}#{errors}"
       racing, single = output.lines.map(&:to_i)
       expect(single).to be_positive
       expect(racing).to eq(single)
