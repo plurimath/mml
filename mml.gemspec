@@ -30,6 +30,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "lutaml-model", "~> 0.8.155"
-  spec.add_dependency "moxml", "~> 0.6.0"
+  spec.add_dependency "moxml", "~> 0.6.1"
   spec.metadata["rubygems_mfa_required"] = "true"
 end
