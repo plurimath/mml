@@ -16,3 +16,8 @@ AllCops:
     - 'spec/fixtures/mml3-testsuite/**/*'
     - 'spec/fixtures/mmlcore-testsuite/**/*'
     - 'spec/tasks/**/*'
+
+# .gitattributes checks Ruby files out with LF on every OS, so check for LF
+# rather than the platform-native line ending.
+Layout/EndOfLine:
+  EnforcedStyle: lf
