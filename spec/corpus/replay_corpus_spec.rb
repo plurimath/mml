@@ -41,18 +41,18 @@ RSpec.describe "scripts/replay_corpus.rb" do # rubocop:disable RSpec/DescribeCla
                                                           "group" => "model-roundtrip-sample",
                                                           "boundary" => "model-roundtrip", "cases" => cases),
     }
-    payloads.each { |path, bytes| File.write(File.join(gen, path), bytes) }
+    payloads.each { |path, bytes| File.binwrite(File.join(gen, path), bytes) }
     provenance = YAML.dump(
       "schema" => "plurimath-stage/provenance/1", "language" => "mathml", "generation" => 1,
       "payloads" => payloads.sort.map { |path, bytes| { "path" => path, "sha256" => Digest::SHA256.hexdigest(bytes) } }
     )
-    File.write(File.join(gen, "provenance.yaml"), provenance)
+    File.binwrite(File.join(gen, "provenance.yaml"), provenance)
     digest = corpus.snapshot_digest(payloads.merge("provenance.yaml" => provenance))
     FileUtils.mkdir_p(File.join(dir, "generations"))
     ledger = { "schema" => "plurimath-stage/ledger/1", "language" => "mathml", "layout" => 1,
                "entries" => [{ "generation" => 1, "path" => "stages/mathml/generations/000001",
                                "snapshot_digest" => digest }] }
-    File.write(File.join(dir, "generations/mathml.yaml"), YAML.dump(ledger))
+    File.binwrite(File.join(dir, "generations/mathml.yaml"), YAML.dump(ledger))
     git = ["git", "-C", dir, "-c", "user.name=t", "-c", "user.email=t@example.com"]
     system("git", "init", "-q", dir, exception: true)
     system(*git, "add", ".", exception: true)
@@ -63,7 +63,7 @@ RSpec.describe "scripts/replay_corpus.rb" do # rubocop:disable RSpec/DescribeCla
   def write_pin(path, **fields)
     pin = { "schema" => "plurimath-stage/pin/1", "repository" => "https://github.com/plurimath/plurimath-testsuite",
             "commit" => nil, "language" => "mathml", "generation" => 1, "snapshot_digest" => nil }
-    File.write(path, YAML.dump(pin.merge(fields.transform_keys(&:to_s)).compact))
+    File.binwrite(path, YAML.dump(pin.merge(fields.transform_keys(&:to_s)).compact))
     path
   end
 
@@ -122,7 +122,7 @@ RSpec.describe "scripts/replay_corpus.rb" do # rubocop:disable RSpec/DescribeCla
     it "refuses a pin with an unknown field" do
       Dir.mktmpdir do |dir|
         ok = YAML.load_file(write_pin(File.join(dir, "ok.yml"), **good))
-        File.write(File.join(dir, "extra.yml"), YAML.dump(ok.merge("x" => 1)))
+        File.binwrite(File.join(dir, "extra.yml"), YAML.dump(ok.merge("x" => 1)))
         expect { corpus.load_pin(File.join(dir, "extra.yml")) }
           .to raise_error(corpus::Error, /unknown keys x/)
       end
@@ -155,7 +155,7 @@ RSpec.describe "scripts/replay_corpus.rb" do # rubocop:disable RSpec/DescribeCla
 
     it "fails when a committed generation file no longer matches the ledger digest" do
       with_testsuite do |dir, testsuite, commit, digest|
-        File.write(File.join(testsuite, "stages/mathml/generations/000001/payloads/sample.yaml"), "x\n", mode: "a")
+        File.open(File.join(testsuite, "stages/mathml/generations/000001/payloads/sample.yaml"), "ab") { |io| io.write("x\n") }
         system("git", "-C", testsuite, "-c", "user.name=t", "-c", "user.email=t@example.com",
                "commit", "-qam", "tamper", exception: true)
         head = corpus.git(testsuite, "rev-parse", "HEAD")
@@ -167,7 +167,7 @@ RSpec.describe "scripts/replay_corpus.rb" do # rubocop:disable RSpec/DescribeCla
 
     it "fails when the checkout has uncommitted stage files" do
       with_testsuite do |dir, testsuite, commit, digest|
-        File.write(File.join(testsuite, "stages/mathml/generations/000001/payloads/sample.yaml"), "x\n", mode: "a")
+        File.open(File.join(testsuite, "stages/mathml/generations/000001/payloads/sample.yaml"), "ab") { |io| io.write("x\n") }
         pin = write_pin(File.join(dir, "pin.yml"), commit: commit, snapshot_digest: digest)
         expect { run_replay(testsuite, pin) }.to raise_error(corpus::Error, /uncommitted stage files/)
       end

@@ -404,7 +404,7 @@ module MmlReplayCorpus
     return unless report
 
     FileUtils.mkdir_p(File.dirname(report))
-    File.write(report, "#{JSON.pretty_generate(summary, max_nesting: false)}\n")
+    File.binwrite(report, "#{JSON.pretty_generate(summary, max_nesting: false)}\n")
   end
 
   def finish(log, rows, summary)
