@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-require "digest"
-require "json"
+if RUBY_ENGINE != "opal"
+  require "digest"
+  require "json"
+end
 
 module Mml
   # Immutable model declarations for supported portable LML consumers.
@@ -9,12 +11,16 @@ module Mml
   module Portable
     class ArtifactError < Mml::Error; end
 
-    DIRECTORY = File.expand_path("../../model/portable", __dir__)
+    DIRECTORY = RUBY_ENGINE == "opal" ? nil : File.expand_path("../../model/portable", __dir__)
     FORMAT = "mml-portable-models/1"
 
     module_function
 
     def manifest
+      if RUBY_ENGINE == "opal"
+        raise ArtifactError, "load model bundle JSON through the target runtime; Ruby filesystem access is unavailable"
+      end
+
       data = JSON.parse(File.read(File.join(DIRECTORY, "manifest.json"), encoding: "UTF-8"))
       unless data.is_a?(Hash) && data["format"] == FORMAT
         raise ArtifactError, "unsupported portable model manifest"
