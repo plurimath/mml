@@ -1,2 +1,12 @@
-# Portable bundle digests cover exact bytes on every checkout platform.
-model/portable/*.json text eol=lf
+# Preserve the bytes the pinned replay hashes on every checkout.
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.parg text eol=lf
+*.txt text eol=lf
+*.rb text eol=lf
+*.mml text eol=lf
+*.gemspec text eol=lf
+Gemfile text eol=lf
+Rakefile text eol=lf
+bin/* text eol=lf
