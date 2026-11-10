@@ -33,6 +33,7 @@ module Mml
   end
 
   autoload :Namespace, "mml/namespace"
+  autoload :Portable, "mml/portable"
   autoload :CommonElements, "mml/common_elements"
   autoload :ContextOptions, "mml/context_options"
   autoload :ContextConfiguration, "mml/context_configuration"

@@ -1,0 +1,32 @@
+name: Portable MathML model graphs
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  portable-models:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      LUTAML_MODEL_SOURCE: ${{ github.workspace }}/tmp/lutaml-model-candidate
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: lutaml/lutaml-model
+          ref: fd2989fd8478b1ecb2508d98fa2d66792c09c72b
+          path: tmp/lutaml-model-candidate
+          persist-credentials: false
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      - name: Regenerate the complete versioned graphs through the upstream API
+        run: bundle exec ruby scripts/export_portable_models.rb "$RUNNER_TEMP/portable-models"
+      - run: diff -r model/portable "$RUNNER_TEMP/portable-models"
+      - name: Qualify namespaces, mixed content, order and writer roundtrips
+        run: bundle exec ruby scripts/verify_portable_models.rb
+      - name: Record resolved dependencies
+        run: bundle list
