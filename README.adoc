@@ -657,6 +657,20 @@ Locally it needs an `@lutaml/lutaml-model` compiled with Opal from a
 lutaml-model version this gem accepts, for example a local build of
 https://github.com/lutaml/lutaml-model-js[lutaml-model-js].
 
+== Portable model declarations
+
+`Mml::Portable.bundle(version: 3)` returns checksum-verified UTF-8 LML bundle
+bytes for a compatible target importer or generator. The shipped MathML 3 and 4
+graphs contain 194 and 195 models. Their producer, source revision and pinned
+upstream LML candidate are recorded in `model/portable/manifest.json`.
+Portable bundle generation currently uses an open upstream candidate; the
+ordinary Ruby parser dependency range is unchanged.
+
+Regenerate from that pinned framework checkout with
+`LUTAML_MODEL_SOURCE=/path/to/lutaml-model bundle exec ruby scripts/export_portable_models.rb model/portable`.
+The dedicated CI job checks the complete graphs and six namespace,
+mixed-content, element-order and imported-writer roundtrips.
+
 == Contributing
 
 Bug reports and pull requests are welcome on GitHub at

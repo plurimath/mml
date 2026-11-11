@@ -1,0 +1,31 @@
+{
+  "format": "mml-portable-models/1",
+  "source_repository": "https://github.com/plurimath/mml",
+  "source_revision": "a88197810737e7eb809bbb5f887703a25beac3db",
+  "source_version": "2.4.7",
+  "framework_repository": "https://github.com/lutaml/lutaml-model",
+  "framework_revision": "fd2989fd8478b1ecb2508d98fa2d66792c09c72b",
+  "framework_status": "open candidate; not a released dependency",
+  "versions": {
+    "3": {
+      "path": "mathml-v3.bundle.json",
+      "sha256": "ee79ea4bcc910f91f1b118ae0accc5baeb058501c76f4d233e5c4724ef74aab4",
+      "bundle_checksum": "sha256:23bc156260b4dab3933351dadbae27a8f146c239875c630b2d76adcb27b778a4",
+      "models": 194,
+      "root": "Mml::V3::Math@mml_v3",
+      "capabilities": [
+        "xml"
+      ]
+    },
+    "4": {
+      "path": "mathml-v4.bundle.json",
+      "sha256": "7b1041645156d9df7b94a8c9c3acce6256b12d1df5f6cc611d39465e0556e26a",
+      "bundle_checksum": "sha256:5b823b450161072ff2adbdf4cf5b765909f4c85a7ea4e53dd17706a86165404c",
+      "models": 195,
+      "root": "Mml::V4::Math@mml_v4",
+      "capabilities": [
+        "xml"
+      ]
+    }
+  }
+}

@@ -19,6 +19,7 @@ require "lutaml/model"
 require "mml"
 Mml.opal_boot!
 require "mml/version"
+require "mml/portable"
 require "mml/namespace"
 require "mml/context_options"
 require "mml/context_configuration"
