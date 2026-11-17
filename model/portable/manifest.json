@@ -2,7 +2,7 @@
   "format": "mml-portable-models/1",
   "source_repository": "https://github.com/plurimath/mml",
   "source_revision": "a88197810737e7eb809bbb5f887703a25beac3db",
-  "source_version": "2.4.7",
+  "source_version": "2.4.8",
   "framework_repository": "https://github.com/lutaml/lutaml-model",
   "framework_revision": "fd2989fd8478b1ecb2508d98fa2d66792c09c72b",
   "framework_status": "open candidate; not a released dependency",

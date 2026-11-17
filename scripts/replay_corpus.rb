@@ -212,13 +212,23 @@ module MmlReplayCorpus
   end
 
   # Every model-roundtrip row of the generation, with its payload path.
+  # Append-only supersession: a row whose id has an -r2 sibling is kept
+  # for history and is superseded by that sibling; only the sibling runs.
   def roundtrip_rows(payloads)
-    payloads.flat_map do |rel, bytes|
+    rows = payloads.flat_map do |rel, bytes|
       doc = YAML.safe_load(bytes, aliases: false)
       next [] unless doc["boundary"] == BOUNDARY
 
       doc.fetch("cases").map { |row| [rel, row] }
     end
+    superseded = superseding_ids(rows)
+    rows.reject { |_, row| superseded.key?(row["id"]) }
+  end
+
+  # The ids superseded by their -r2 siblings, keyed by the original id.
+  def superseding_ids(rows)
+    ids = rows.map { |_, row| row["id"] }.select { |id| id.include?("-r2") }
+    ids.to_h { |id| [id.sub("-r2", ""), id] }
   end
 
   def decode(row, where)
