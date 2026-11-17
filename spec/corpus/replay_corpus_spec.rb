@@ -80,9 +80,9 @@ RSpec.describe "scripts/replay_corpus.rb" do # rubocop:disable RSpec/DescribeCla
   end
 
   describe "the committed pin" do
-    it "names mathml generation 2 at an exact testsuite commit" do
+    it "names mathml generation 3 at an exact testsuite commit" do
       expect(corpus.load_pin(pin_file)).to have_attributes(
-        language: "mathml", generation: 2, commit: match(/\A\h{40}\z/),
+        language: "mathml", generation: 3, commit: match(/\A\h{40}\z/),
         digest: match(/\Asha256:\h{64}\z/)
       )
     end
