@@ -221,10 +221,14 @@ module MmlReplayCorpus
 
       doc.fetch("cases").map { |row| [rel, row] }
     end
-    superseded = rows.map { |_, row| row["id"] }
-                     .select { |id| id.include?("-r2") }
-                     .to_h { |id| [id.sub("-r2", ""), id] }
+    superseded = superseding_ids(rows)
     rows.reject { |_, row| superseded.key?(row["id"]) }
+  end
+
+  # The ids superseded by their -r2 siblings, keyed by the original id.
+  def superseding_ids(rows)
+    ids = rows.map { |_, row| row["id"] }.select { |id| id.include?("-r2") }
+    ids.to_h { |id| [id.sub("-r2", ""), id] }
   end
 
   def decode(row, where)
